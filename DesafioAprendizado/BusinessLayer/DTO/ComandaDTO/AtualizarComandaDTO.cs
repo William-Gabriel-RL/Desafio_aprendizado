@@ -2,8 +2,7 @@
 {
     public class AtualizarComandaDTO
     {
-        public Guid ComandaId { get; set; }
-        public DateTime ComandaHoraAbertura { get; set; }
+        public string ComandaId { get; set; }
         public bool ComandaFinalizada { get; set; }
         public bool ComandaDeletado { get; set; }
         public string AtendenteMatricula { get; set; }

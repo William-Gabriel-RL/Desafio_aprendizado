@@ -15,29 +15,37 @@ namespace BusinessLayer.Services
             _mesaRepo = new MesaRepo(new DesafioAprendizadoContext());
         }
 
-        public void AtualizarMesa(AtualizarMesaDTO mesa)
+        public void AtualizarMesa(AtualizarMesaDTO atualizarMesaDTO)
         {
-            throw new NotImplementedException();
+            Mesa mesa = new()
+            {
+                MesaId = atualizarMesaDTO.MesaId,
+                MesaOcupada = atualizarMesaDTO.MesaOcupada,
+                MesaDeletada = atualizarMesaDTO.MesaDeletada,
+                MesaDataUltimaAtualizacao = DateTime.Now
+            };
+            _mesaRepo.AtualizarMesa(mesa);
         }
 
-        public void CriarMesa(CriarMesaDTO mesa)
+        public void CriarMesa(CriarMesaDTO criarMesaDTO)
         {
-            throw new NotImplementedException();
+            Mesa mesa = new();
+            _mesaRepo.CriarMesa(mesa);
         }
 
         public void DeletarMesa(int mesaId)
         {
-            throw new NotImplementedException();
+            _mesaRepo.DeletarMesa(mesaId);
         }
 
         public Mesa? ObterMesaPorId(int mesaId)
         {
-            throw new NotImplementedException();
+            return _mesaRepo.ObterMesaPorId(mesaId);
         }
 
-        public Task<IEnumerable<Mesa>> ObterTodasMesas()
+        public async Task<IEnumerable<Mesa>> ObterTodasMesas()
         {
-            throw new NotImplementedException();
+            return await _mesaRepo.ObterTodasMesas();
         }
     }
 }

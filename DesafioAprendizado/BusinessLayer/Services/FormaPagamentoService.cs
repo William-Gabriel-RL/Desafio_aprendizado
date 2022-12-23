@@ -17,27 +17,38 @@ namespace BusinessLayer.Services
 
         public void AtualizarFormaPagamento(AtualizarFormaPagamentoDTO atualizarFormaPagamentoDTO)
         {
-            throw new NotImplementedException();
+            FormaPagamento formaPagamento = new()
+            {
+                FormaPagamentoId = atualizarFormaPagamentoDTO.FormaPagamentoId,
+                FormaPagamentoNome = atualizarFormaPagamentoDTO.FormaPagamentoNome,
+                FormaPagamentoDeletado = atualizarFormaPagamentoDTO.FormaPagamentoDeletado,
+                FormaPagamentoDataUltimaAtualizacao = DateTime.Now
+            };
+            _formaPagamentoRepo.AtualizarFormaPagamento(formaPagamento);
         }
 
         public void CriarFormaPagamento(CriarFormaPagamentoDTO criarFormaPagamentoDTO)
         {
-            throw new NotImplementedException();
+            FormaPagamento formaPagamento = new()
+            {
+                FormaPagamentoNome = criarFormaPagamentoDTO.FormaPagamentoNome
+            };
+            _formaPagamentoRepo.CriarFormaPagamento(formaPagamento);
         }
 
         public void DeletarFormaPagamento(int formaPagamentoId)
         {
-            throw new NotImplementedException();
+            _formaPagamentoRepo.DeletarFormaPagamento(formaPagamentoId);
         }
 
         public FormaPagamento? ObterFormaPagamentoPorId(int formaPagamentoId)
         {
-            throw new NotImplementedException();
+            return _formaPagamentoRepo.ObterFormaPagamentoPorId(formaPagamentoId);
         }
 
         public Task<IEnumerable<FormaPagamento>> ObterTodasFormasPagamento()
         {
-            throw new NotImplementedException();
+            return _formaPagamentoRepo.ObterTodasFormasPagamento();
         }
     }
 }

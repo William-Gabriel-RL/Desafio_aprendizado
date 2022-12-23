@@ -1,9 +1,9 @@
-﻿using Repositorys.Interfaces;
-using Repositorys.Repos;
-using Repositorys.Context;
+﻿using BusinessLayer.DTO.PagamentoDTO;
 using BusinessLayer.Interfaces;
-using BusinessLayer.DTO.PagamentoDTO;
 using Entities.Models;
+using Repositorys.Context;
+using Repositorys.Interfaces;
+using Repositorys.Repos;
 
 namespace BusinessLayer.Services
 {
@@ -15,29 +15,45 @@ namespace BusinessLayer.Services
             _pagamentoRepo = new PagamentoRepo(new DesafioAprendizadoContext());
         }
 
-        public void AtualizarPagamento(AtualizarPagamentoDTO pagamento)
+        public void AtualizarPagamento(AtualizarPagamentoDTO atualizarPagamentoDTO)
         {
-            throw new NotImplementedException();
+            Pagamento pagamento = new()
+            {
+                PagamentoId = atualizarPagamentoDTO.PagamentoId,
+                Valor = atualizarPagamentoDTO.Valor,
+                FormaPagamentoId = atualizarPagamentoDTO.FormaPagamentoId,
+                ComandaId = new Guid(atualizarPagamentoDTO.ComandaId),
+                UsuarioMatricula = atualizarPagamentoDTO.UsuarioMatricula,
+                PagamentoDeletado = atualizarPagamentoDTO.PagamentoDeletado
+            };
+            _pagamentoRepo.AtualizarPagamento(pagamento);
         }
 
-        public void CriarPagamento(CriarPagamentoDTO pagamento)
+        public void CriarPagamento(CriarPagamentoDTO criarPagamentoDTO)
         {
-            throw new NotImplementedException();
+            Pagamento pagamento = new()
+            {
+                Valor = criarPagamentoDTO.Valor,
+                FormaPagamentoId = criarPagamentoDTO.FormaPagamentoId,
+                ComandaId = new Guid(criarPagamentoDTO.ComandaId),
+                UsuarioMatricula = criarPagamentoDTO.UsuarioMatricula
+            };
+            _pagamentoRepo.CriarPagamento(pagamento);
         }
 
         public void DeletarPagamento(int pagamentoId)
         {
-            throw new NotImplementedException();
+            _pagamentoRepo.DeletarPagamento(pagamentoId);
         }
 
         public Pagamento? ObterPagamentoPorId(int pagamentoId)
         {
-            throw new NotImplementedException();
+            return _pagamentoRepo.ObterPagamentoPorId(pagamentoId);
         }
 
-        public Task<IEnumerable<Pagamento>> ObterTodosPagamentos()
+        public async Task<IEnumerable<Pagamento>> ObterTodosPagamentos()
         {
-            throw new NotImplementedException();
+            return await _pagamentoRepo.ObterTodosPagamentos();
         }
     }
 }

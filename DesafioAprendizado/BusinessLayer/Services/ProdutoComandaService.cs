@@ -15,29 +15,48 @@ namespace BusinessLayer.Services
             _produtoComandaRepo = new ProdutoComandaRepo(new DesafioAprendizadoContext());
         }
 
-        public void AtualizarProdutoComanda(AtualizarProdutoComandaDTO produtoComanda)
+        public void AtualizarProdutoComanda(AtualizarProdutoComandaDTO atualizarProdutoComandaDTO)
         {
-            throw new NotImplementedException();
+            ProdutoComanda produtoComanda = new()
+            {
+                ProdutoComandaId = atualizarProdutoComandaDTO.ProdutoId,
+                ProdutoComandaQuantidadeProdutos = atualizarProdutoComandaDTO.ProdutoComandaQuantidadeProdutos,
+                ProdutoComandaPreco = atualizarProdutoComandaDTO.ProdutoComandaPreco,
+                ProdutoComandaObservacao = atualizarProdutoComandaDTO.ProdutoComandaObservacao,
+                ProdutoId = atualizarProdutoComandaDTO.ProdutoId,
+                ComandaId = new Guid(atualizarProdutoComandaDTO.ComandaId),
+                ProdutoComandaDeletado = atualizarProdutoComandaDTO.ProdutoComandaDeletado,
+                ProdutoComandaDataUltimaAtualizacao = DateTime.Now
+            };
+            _produtoComandaRepo.AtualizarProdutoComanda(produtoComanda);
         }
 
-        public void CriarProdutoComanda(CriarProdutoComandaDTO produtoComanda)
+        public void CriarProdutoComanda(CriarProdutoComandaDTO criarProdutoComandaDTO)
         {
-            throw new NotImplementedException();
+            ProdutoComanda produtoComanda = new()
+            {
+                ProdutoComandaQuantidadeProdutos = criarProdutoComandaDTO.ProdutoComandaQuantidadeProdutos,
+                ProdutoComandaPreco = criarProdutoComandaDTO.ProdutoComandaPreco,
+                ProdutoComandaObservacao = criarProdutoComandaDTO.ProdutoComandaObservacao,
+                ProdutoId = criarProdutoComandaDTO.ProdutoId,
+                ComandaId = new Guid(criarProdutoComandaDTO.ComandaId)
+            };
+            _produtoComandaRepo.CriarProdutoComanda(produtoComanda);
         }
 
         public void DeletarProdutoComanda(int produtoComandaId)
         {
-            throw new NotImplementedException();
+            _produtoComandaRepo.DeletarProdutoComanda(produtoComandaId);
         }
 
         public ProdutoComanda? ObterProdutoComandaPorId(int produtoComandaId)
         {
-            throw new NotImplementedException();
+            return _produtoComandaRepo.ObterProdutoComandaPorId(produtoComandaId);
         }
 
-        public Task<IEnumerable<ProdutoComanda>> ObterTodosProdutosPorComanda()
+        public async Task<IEnumerable<ProdutoComanda>> ObterTodosProdutosPorComanda()
         {
-            throw new NotImplementedException();
+            return await _produtoComandaRepo.ObterTodosProdutosPorComanda();
         }
     }
 }

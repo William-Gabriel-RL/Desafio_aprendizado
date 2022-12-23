@@ -15,29 +15,51 @@ namespace BusinessLayer.Services
             _produtoRepo = new ProdutoRepo(new DesafioAprendizadoContext());
         }
 
-        public void AtualizarProduto(AtualizarProdutoDTO produto)
+        public void AtualizarProduto(AtualizarProdutoDTO atualizarProdutoDTO)
         {
-            throw new NotImplementedException();
+            Produto produto = new()
+            {
+                ProdutoId = atualizarProdutoDTO.ProdutoId,
+                ProdutoNome = atualizarProdutoDTO.ProdutoNome,
+                ProdutoDescricao = atualizarProdutoDTO.ProdutoDescricao,
+                Preco = atualizarProdutoDTO.Preco,
+                ProdutoDeletado = atualizarProdutoDTO.ProdutoDeletado,
+                CategoriaId = atualizarProdutoDTO.CategoriaId,
+                ProdutoFotoId = atualizarProdutoDTO.ProdutoFotoId,
+                UsuarioId = atualizarProdutoDTO.UsuarioId,
+                ProdutoDataUltimaAtualizacao = DateTime.Now,
+            };
+            _produtoRepo.AtualizarProduto(produto);
         }
 
-        public void CriarProduto(CriarProdutoDTO produto)
+        public void CriarProduto(CriarProdutoDTO criarProdutoDTO)
         {
-            throw new NotImplementedException();
+            Produto produto = new()
+            {
+                ProdutoNome = criarProdutoDTO.ProdutoNome,
+                ProdutoDescricao = criarProdutoDTO.ProdutoDescricao,
+                Preco = criarProdutoDTO.Preco,
+                CategoriaId = criarProdutoDTO.CategoriaId,
+                ProdutoFotoId = criarProdutoDTO.ProdutoFotoId,
+                UsuarioId = criarProdutoDTO.UsuarioId,
+                ProdutoDataUltimaAtualizacao= DateTime.Now,
+            };
+            _produtoRepo.CriarProduto(produto);
         }
 
         public void DeletarProduto(int produtoId)
         {
-            throw new NotImplementedException();
+            _produtoRepo.DeletarProduto(produtoId);
         }
 
         public Produto? ObterProdutoPorId(int produtoId)
         {
-            throw new NotImplementedException();
+            return _produtoRepo.ObterProdutoPorId(produtoId);
         }
 
-        public Task<IEnumerable<Produto>> ObterTodosProdutos()
+        public async Task<IEnumerable<Produto>> ObterTodosProdutos()
         {
-            throw new NotImplementedException();
+            return await _produtoRepo.ObterTodosProdutos();
         }
     }
 }

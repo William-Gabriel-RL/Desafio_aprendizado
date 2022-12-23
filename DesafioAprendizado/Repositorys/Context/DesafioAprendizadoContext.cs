@@ -48,7 +48,7 @@ protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
                 entity.Property(e => e.UsuarioSenha).HasMaxLength(255).IsUnicode(false).IsRequired();
                 entity.Property(e => e.UsuarioDeletado).HasColumnType("bit");
                 entity.Property(e => e.UsuarioDataUltimaAtualizacao).HasColumnType("datetime");
-                entity.HasOne(e => e.Tipo).WithMany().HasForeignKey(e => e.UsuarioTipoId).OnDelete(DeleteBehavior.SetNull);
+                entity.HasOne(e => e.Tipo).WithMany().HasForeignKey(e => e.UsuarioTipoId).OnDelete(DeleteBehavior.Restrict);
             });
 
             modelBuilder.Entity<UsuarioTipo>(entity => 
@@ -94,8 +94,8 @@ protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
                 entity.Property(e => e.ProdutoComandaQuantidadeProdutos).HasColumnType("int").IsRequired();
                 entity.Property(e => e.ProdutoComandaPreco).HasColumnType("decimal(8,2)").IsRequired();
                 entity.Property(e => e.ProdutoComandaObservacao).HasMaxLength(120).IsUnicode(false).IsRequired();
-                entity.HasOne(e => e.Produto).WithMany().HasForeignKey(e => e.ProdutoId).OnDelete(DeleteBehavior.SetNull);
-                entity.HasOne(e => e.Comanda).WithMany().HasForeignKey(e => e.ComandaId).OnDelete(DeleteBehavior.SetNull);
+                entity.HasOne(e => e.Produto).WithMany().HasForeignKey(e => e.ProdutoId).OnDelete(DeleteBehavior.Restrict);
+                entity.HasOne(e => e.Comanda).WithMany().HasForeignKey(e => e.ComandaId).OnDelete(DeleteBehavior.Restrict);
                 // Criar o ICollection
             });
 
@@ -108,8 +108,8 @@ protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
                 entity.Property(e => e.ProdutoComandaSituacaoDeletado).HasColumnType("bit");
                 entity.Property(e => e.ProdutoComandaSituacaoDataUltimaAtualizacao).HasColumnType("datetime");
                 entity.HasOne(e => e.Usuario).WithMany().HasForeignKey(e => e.UsuarioMatricula).OnDelete(DeleteBehavior.SetNull);
-                entity.HasOne(e => e.StatusSituacao).WithMany().HasForeignKey(e => e.StatusSituacaoId).OnDelete(DeleteBehavior.SetNull);
-                entity.HasOne(e => e.ProdutoComanda).WithMany().HasForeignKey(e => e.ProdutoComandaId).OnDelete(DeleteBehavior.SetNull);
+                entity.HasOne(e => e.StatusSituacao).WithMany().HasForeignKey(e => e.StatusSituacaoId).OnDelete(DeleteBehavior.Restrict);
+                entity.HasOne(e => e.ProdutoComanda).WithMany().HasForeignKey(e => e.ProdutoComandaId).OnDelete(DeleteBehavior.Restrict);
             });
 
             modelBuilder.Entity<StatusSituacao>(entity =>
@@ -130,9 +130,9 @@ protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
                 entity.Property(e => e.ComandaFinalizada).HasColumnType("bit");
                 entity.Property(e => e.ComandaDeletado).HasColumnType("bit");
                 entity.Property(e => e.ComandaDataUltimaAtualizacao).HasColumnType("datetime");
-                entity.HasOne(e => e.Atendente).WithMany().HasForeignKey(e => e.AtendenteMatricula).OnDelete(DeleteBehavior.SetNull).IsRequired();
-                entity.HasOne(e => e.Mesa).WithMany().HasForeignKey(e => e.MesaId).OnDelete(DeleteBehavior.SetNull).IsRequired();
-                entity.HasOne(e => e.Pagamento).WithMany().HasForeignKey(e => e.PagamentoId).OnDelete(DeleteBehavior.SetNull).IsRequired();
+                entity.HasOne(e => e.Atendente).WithMany().HasForeignKey(e => e.AtendenteMatricula).OnDelete(DeleteBehavior.Restrict).IsRequired();
+                entity.HasOne(e => e.Mesa).WithMany().HasForeignKey(e => e.MesaId).OnDelete(DeleteBehavior.Restrict).IsRequired();
+                entity.HasOne(e => e.Pagamento).WithMany().HasForeignKey(e => e.PagamentoId).OnDelete(DeleteBehavior.Restrict).IsRequired();
             });
 
             modelBuilder.Entity<Pagamento>(entity => 
@@ -150,7 +150,7 @@ protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
             {
                 entity.ToTable("FormaPagamento");
                 entity.HasKey(e => e.FormaPagamentoId);
-                entity.Property(e => e.FormaPagagamentoNome).HasMaxLength(30).IsUnicode(false).IsRequired();
+                entity.Property(e => e.FormaPagamentoNome).HasMaxLength(30).IsUnicode(false).IsRequired();
                 entity.Property(e => e.FormaPagamentoDeletado).HasColumnType("bit");
                 entity.Property(e => e.FormaPagamentoDataUltimaAtualizacao).HasColumnType("datetime");
             });

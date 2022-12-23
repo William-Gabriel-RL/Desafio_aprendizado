@@ -7,7 +7,7 @@
         public decimal Valor { get; set; } = 0.0m;
         public int FormaPagamentoId { get; set; }
         public Mesa FormaPagamento { get; set; }
-        public string ComandaId { get; set; } = string.Empty;
+        public Guid ComandaId { get; set; }
         public Comanda Comanda { get; set; }
         public string UsuarioMatricula { get; set; } = string.Empty;
         public Usuario Usuario { get; set; }

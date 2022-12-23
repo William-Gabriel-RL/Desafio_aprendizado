@@ -2,6 +2,6 @@
 {
     public class CriarFormaPagamentoDTO
     {
-        public string FormaPagagamentoNome { get; set; } = string.Empty;
+        public string FormaPagamentoNome { get; set; } = string.Empty;
     }
 }

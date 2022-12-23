@@ -4,6 +4,7 @@ using Repositorys.Context;
 using BusinessLayer.Interfaces;
 using BusinessLayer.DTO.ComandaDTO;
 using Entities.Models;
+using System.ComponentModel.Design;
 
 namespace BusinessLayer.Services
 {
@@ -15,29 +16,44 @@ namespace BusinessLayer.Services
             _comandaRepo = new ComandaRepo(new DesafioAprendizadoContext());
         }
 
-        public void AtualizarComanda(AtualizarComandaDTO Comanda)
+        public void AtualizarComanda(AtualizarComandaDTO atualizarComandaDTO)
         {
-            throw new NotImplementedException();
+            Comanda comanda = new()
+            {
+                ComandaId = new Guid(atualizarComandaDTO.ComandaId),
+                ComandaFinalizada = atualizarComandaDTO.ComandaFinalizada,
+                ComandaDeletado = atualizarComandaDTO.ComandaDeletado,
+                AtendenteMatricula = atualizarComandaDTO.AtendenteMatricula,
+                MesaId = atualizarComandaDTO.MesaId,
+                PagamentoId = atualizarComandaDTO.PagamentoId,
+                ComandaDataUltimaAtualizacao = DateTime.Now
+            };
+            _comandaRepo.AtualizarComanda(comanda);
         }
 
-        public void CriarComanda(CriarComandaDTO Comanda)
+        public void CriarComanda(CriarComandaDTO criarComandaDTO)
         {
-            throw new NotImplementedException();
+            Comanda comanda = new()
+            {
+                AtendenteMatricula = criarComandaDTO.AtendenteMatricula,
+                MesaId = criarComandaDTO.MesaId
+            };
+            _comandaRepo.CriarComanda(comanda);
         }
 
         public void DeletarComanda(string ComandaId)
         {
-            throw new NotImplementedException();
+            _comandaRepo.DeletarComanda(ComandaId);
         }
 
         public Comanda? ObterComandaPorId(string ComandaId)
         {
-            throw new NotImplementedException();
+            return _comandaRepo.ObterComandaPorId(ComandaId);
         }
 
-        public Task<IEnumerable<Comanda>> ObterTodasComandas()
+        public async Task<IEnumerable<Comanda>> ObterTodasComandas()
         {
-            throw new NotImplementedException();
+            return await _comandaRepo.ObterTodasComandas();
         }
     }
 }

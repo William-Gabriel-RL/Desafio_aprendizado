@@ -15,7 +15,7 @@ namespace Repositorys.Repos
 
         public void AtualizarCategoria(Categoria Categoria)
         {
-            _context.Update(Categoria);
+            _context.Categorias.Update(Categoria);
             _context.SaveChanges();
         }
 

@@ -1,9 +1,9 @@
-﻿using Repositorys.Interfaces;
-using Repositorys.Repos;
-using Repositorys.Context;
+﻿using BusinessLayer.DTO.ProdutoComandaSituacaoDTO;
 using BusinessLayer.Interfaces;
-using BusinessLayer.DTO.ProdutoComandaDTO;
 using Entities.Models;
+using Repositorys.Context;
+using Repositorys.Interfaces;
+using Repositorys.Repos;
 
 namespace BusinessLayer.Services
 {
@@ -15,29 +15,46 @@ namespace BusinessLayer.Services
             _produtoComandaSituacaoRepo = new ProdutoComandaSituacaoRepo(new DesafioAprendizadoContext());
         }
 
-        public void AtualizarProdutoComandaSituacao(AtualizarProdutoComandaDTO produtoComandaSituacao)
+        public void AtualizarProdutoComandaSituacao(AtualizarProdutoComandaSituacaoDTO atualizarProdutoComandaSituacaoDTO)
         {
-            throw new NotImplementedException();
+            ProdutoComandaSituacao produtoComandaSituacao = new()
+            {
+                ProdutoComandaSituacaoId = atualizarProdutoComandaSituacaoDTO.ProdutoComandaSituacaoId,
+                ProdutoComandaSituacaoMotivo = atualizarProdutoComandaSituacaoDTO.ProdutoComandaSituacaoMotivo,
+                ProdutoComandaSituacaoDeletado = atualizarProdutoComandaSituacaoDTO.ProdutoComandaSituacaoDeletado,
+                UsuarioMatricula = atualizarProdutoComandaSituacaoDTO.UsuarioMatricula,
+                StatusSituacaoId = atualizarProdutoComandaSituacaoDTO.StatusSituacaoId,
+                ProdutoComandaId = atualizarProdutoComandaSituacaoDTO.ProdutoComandaId,
+                ProdutoComandaSituacaoDataUltimaAtualizacao = DateTime.Now
+            };
+            _produtoComandaSituacaoRepo.AtualizarProdutoComandaSituacao(produtoComandaSituacao);
         }
 
-        public void CriarProdutoComandaSituacao(CriarProdutoComandaDTO produtoComandaSituacao)
+        public void CriarProdutoComandaSituacao(CriarProdutoComandaSituacaoDTO criarProdutoComandaSituacaoDTO)
         {
-            throw new NotImplementedException();
+            ProdutoComandaSituacao produtoComandaSituacao = new()
+            {
+                ProdutoComandaSituacaoMotivo = criarProdutoComandaSituacaoDTO.ProdutoComandaSituacaoMotivo,
+                UsuarioMatricula = criarProdutoComandaSituacaoDTO.UsuarioMatricula,
+                StatusSituacaoId = criarProdutoComandaSituacaoDTO.StatusSituacaoId,
+                ProdutoComandaId = criarProdutoComandaSituacaoDTO.ProdutoComandaId
+            };
+            _produtoComandaSituacaoRepo.CriarProdutoComandaSituacao(produtoComandaSituacao);
         }
 
         public void DeletarProdutoComandaSituacao(int produtoComandaSituacaoId)
         {
-            throw new NotImplementedException();
+            _produtoComandaSituacaoRepo.DeletarProdutoComandaSituacao(produtoComandaSituacaoId);
         }
 
         public ProdutoComandaSituacao? ObterProdutoComandaSituacaoPorId(int produtoComandaSituacaoId)
         {
-            throw new NotImplementedException();
+            return _produtoComandaSituacaoRepo.ObterProdutoComandaSituacaoPorId(produtoComandaSituacaoId);
         }
 
-        public Task<IEnumerable<ProdutoComandaSituacao>> ObterTodosProdutosComandaSituacao()
+        public async Task<IEnumerable<ProdutoComandaSituacao>> ObterTodosProdutosComandaSituacao()
         {
-            throw new NotImplementedException();
+            return await _produtoComandaSituacaoRepo.ObterTodosProdutosComandaSituacao();
         }
     }
 }

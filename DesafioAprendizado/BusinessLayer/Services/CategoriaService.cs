@@ -15,29 +15,41 @@ namespace BusinessLayer.Services
             _categoriaRepo = new CategoriaRepo(new DesafioAprendizadoContext());
         }
 
-        public void AtualizarCategoria(AtualizarCategoriaDTO Categoria)
+        public void AtualizarCategoria(AtualizarCategoriaDTO atualizarCategoriaDTO)
         {
-            throw new NotImplementedException();
+            Categoria categoria = new()
+            {
+                CategoriaId = atualizarCategoriaDTO.CategoriaId,
+                CategoriaNome = atualizarCategoriaDTO.CategoriaNome,
+                CategoriaDeletado = atualizarCategoriaDTO.CategoriaDeletado,
+                CategoriaDataUltimaAtualizacao = DateTime.Now,
+            };
+            _categoriaRepo.AtualizarCategoria(categoria);
         }
 
         public void CriarCategoria(CriarCategoriaDTO criarCategoriaDTO)
         {
-            throw new NotImplementedException();
+            Categoria categoria = new()
+            {
+                CategoriaNome = criarCategoriaDTO.CategoriaNome,
+                CategoriaDataUltimaAtualizacao = DateTime.Now
+            };
+            _categoriaRepo.CriarCategoria(categoria);
         }
 
         public void DeletarCategoria(int CategoriaId)
         {
-            throw new NotImplementedException();
+            _categoriaRepo.DeletarCategoria(CategoriaId);
         }
 
         public Categoria? ObterCategoriaPorId(int CategoriaId)
         {
-            throw new NotImplementedException();
+            return _categoriaRepo.ObterCategoriaPorId(CategoriaId);
         }
 
         public Task<IEnumerable<Categoria>> ObterTodasCategorias()
         {
-            throw new NotImplementedException();
+            return _categoriaRepo.ObterTodasCategorias();
         }
     }
 }

@@ -2,7 +2,7 @@
 {
     public class AtualizarProdutoComandaSituacaoDTO
     {
-        public DateTime ProdutoComandaSituacaoDataHora { get; set; }
+        public int ProdutoComandaSituacaoId { get; set; }
         public string? ProdutoComandaSituacaoMotivo { get; set; }
         public bool ProdutoComandaSituacaoDeletado { get; set; }
         public string UsuarioMatricula { get; set; }

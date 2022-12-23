@@ -15,29 +15,40 @@ namespace BusinessLayer.Services
             _statusSituacaoRepo = new StatusSituacaoRepo(new DesafioAprendizadoContext());
         }
 
-        public void AtualizarStatusSituacao(AtualizarStatusSituacaoDTO statusSituacao)
+        public void AtualizarStatusSituacao(AtualizarStatusSituacaoDTO atualizarStatusSituacaoDTO)
         {
-            throw new NotImplementedException();
+            StatusSituacao statusSituacao = new()
+            {
+                StatusSituacaoId = atualizarStatusSituacaoDTO.StatusSituacaoId,
+                StatusSituacaoNome = atualizarStatusSituacaoDTO.StatusSituacaoNome,
+                StatusSituacaoDeletado = atualizarStatusSituacaoDTO.StatusSituacaoDeletado,
+                StatusSituacaoDataUltimaAtualizacao = DateTime.Now,
+            };
+            _statusSituacaoRepo.AtualizarStatusSituacao(statusSituacao);
         }
 
-        public void CriarStatusSituacao(CriarStatusSituacaoDTO statusSituacao)
+        public void CriarStatusSituacao(CriarStatusSituacaoDTO criarStatusSituacaoDTO)
         {
-            throw new NotImplementedException();
+            StatusSituacao statusSituacao = new()
+            {
+                StatusSituacaoNome = criarStatusSituacaoDTO.StatusSituacaoNome
+            };
+            _statusSituacaoRepo.CriarStatusSituacao(statusSituacao);
         }
 
         public void DeletarStatusSituacao(int statusSituacaoId)
         {
-            throw new NotImplementedException();
+            _statusSituacaoRepo.DeletarStatusSituacao(statusSituacaoId);
         }
 
         public StatusSituacao? ObterStatusSituacaoPorId(int statusSituacaoId)
         {
-            throw new NotImplementedException();
+            return _statusSituacaoRepo.ObterStatusSituacaoPorId(statusSituacaoId);
         }
 
-        public Task<IEnumerable<StatusSituacao>> ObterTodosStatusSituacao()
+        public async Task<IEnumerable<StatusSituacao>> ObterTodosStatusSituacao()
         {
-            throw new NotImplementedException();
+            return await _statusSituacaoRepo.ObterTodosStatusSituacao();
         }
     }
 }

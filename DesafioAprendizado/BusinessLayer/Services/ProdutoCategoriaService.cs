@@ -17,27 +17,39 @@ namespace BusinessLayer.Services
 
         public void AtualizarProdutoCategoria(AtualizarProdutoCategoriaDTO atualizarProdutoCategoriaDTO)
         {
-            throw new NotImplementedException();
+            ProdutoCategoria produtoCategoria = new()
+            {
+                ProdutoId = atualizarProdutoCategoriaDTO.ProdutoId,
+                CategoriaId = atualizarProdutoCategoriaDTO.CategoriaId,
+                ProdutoCategoriaDeletado = atualizarProdutoCategoriaDTO.ProdutoCategoriaDeletado,
+                ProdutoCategoriaDataUltimaAtualizacao = DateTime.Now
+            };
+            _produtoCategoriaRepo.AtualizarProdutoCategoria(produtoCategoria);
         }
 
         public void CriarProdutoCategoria(CriarProdutoCategoriaDTO criarProdutoCategoriaDTO)
         {
-            throw new NotImplementedException();
+            ProdutoCategoria produtoCategoria = new()
+            {
+                ProdutoId = criarProdutoCategoriaDTO.ProdutoId,
+                CategoriaId = criarProdutoCategoriaDTO.CategoriaId
+            };
+            _produtoCategoriaRepo.CriarProdutoCategoria(produtoCategoria);
         }
 
         public void DeletarProdutoCategoria(int produtoCategoriaId)
         {
-            throw new NotImplementedException();
+            _produtoCategoriaRepo.DeletarProdutoCategoria(produtoCategoriaId);
         }
 
         public ProdutoCategoria? ObterProdutoCategoriaPorId(int produtoCategoriaId)
         {
-            throw new NotImplementedException();
+            return _produtoCategoriaRepo.ObterProdutoCategoriaPorId(produtoCategoriaId);
         }
 
-        public Task<IEnumerable<ProdutoCategoria>> ObterTodosProdutosCategorias()
+        public async Task<IEnumerable<ProdutoCategoria>> ObterTodosProdutosCategorias()
         {
-            throw new NotImplementedException();
+            return await _produtoCategoriaRepo.ObterTodosProdutosCategorias();
         }
     }
 }
