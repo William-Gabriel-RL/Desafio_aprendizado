@@ -1,6 +1,7 @@
 ﻿using Entities.Models;
 using Microsoft.EntityFrameworkCore;
 using Repositorys.Context;
+using Repositorys.DTO.PagamentoDTO;
 using Repositorys.Interfaces;
 
 namespace Repositorys.Repos
@@ -48,14 +49,42 @@ namespace Repositorys.Repos
             }
         }
 
-        public Pagamento? ObterPagamentoPorId(int pagamentoId)
+        public ExibirPagamentoDTO? ObterPagamentoPorId(int pagamentoId)
         {
-            return _context.Pagamentos.Find(pagamentoId);
+            return _context.Pagamentos
+                .Select(x => new ExibirPagamentoDTO
+                {
+                    PagamentoId = x.PagamentoId,
+                    PagamentoDataHora = x.PagamentoDataHora,
+                    Valor = x.Valor,
+                    FormaPagamentoId = x.FormaPagamentoId,
+                    FormaPagamento = x.FormaPagamento.FormaPagamentoNome,
+                    ComandaId = x.ComandaId,
+                    UsuarioMatricula = x.UsuarioMatricula,
+                    UsuarioNome = x.Usuario.UsuarioNome,
+                    PagamentoDeletado = x.PagamentoDeletado,
+                    PagamentoDataUltimaAtualizacao = x.PagamentoDataUltimaAtualizacao
+                })
+                .FirstOrDefault(x => x.PagamentoId == pagamentoId);
         }
 
-        public async Task<IEnumerable<Pagamento>> ObterTodosPagamentos()
+        public async Task<IEnumerable<ExibirPagamentoDTO>> ObterTodosPagamentos()
         {
-            return await _context.Pagamentos.ToListAsync();
+            return await _context.Pagamentos
+                .Select(x => new ExibirPagamentoDTO
+                {
+                    PagamentoId = x.PagamentoId,
+                    PagamentoDataHora = x.PagamentoDataHora,
+                    Valor = x.Valor,
+                    FormaPagamentoId = x.FormaPagamentoId,
+                    FormaPagamento = x.FormaPagamento.FormaPagamentoNome,
+                    ComandaId = x.ComandaId,
+                    UsuarioMatricula = x.UsuarioMatricula,
+                    UsuarioNome = x.Usuario.UsuarioNome,
+                    PagamentoDeletado = x.PagamentoDeletado,
+                    PagamentoDataUltimaAtualizacao = x.PagamentoDataUltimaAtualizacao
+                })
+                .ToListAsync();
         }
 
         public void Salvar()

@@ -1,8 +1,8 @@
 ﻿using BusinessLayer.DTO.ProdutoCategoriaDTO;
 using BusinessLayer.Interfaces;
 using BusinessLayer.Services;
-using Entities.Models;
 using Microsoft.AspNetCore.Mvc;
+using Repositorys.DTO.ProdutoCategoriaDTO;
 
 namespace API.Controllers
 {
@@ -17,26 +17,26 @@ namespace API.Controllers
         }
 
         [HttpPost]
-        public ActionResult Create([Bind(include: "ProdutoId, CategoriaId")]CriarProdutoCategoriaDTO criarProdutoCategoriaDTO)
+        public ActionResult Create([Bind(include: "ProdutoId, CategoriaId")] CriarProdutoCategoriaDTO criarProdutoCategoriaDTO)
         {
             _produtoCategoriaService.CriarProdutoCategoria(criarProdutoCategoriaDTO);
             return Ok("Relação ProdutoCategoria criada com sucesso");
         }
 
         [HttpGet]
-        public ActionResult<ICollection<ProdutoCategoria>> Get()
+        public ActionResult<ICollection<ExibirProdutoCategoriaDTO>> Get()
         {
             return Ok(_produtoCategoriaService.ObterTodosProdutosCategorias().Result);
         }
 
         [HttpGet("id")]
-        public ActionResult<ProdutoCategoria> Get(int produtoCategoriaId)
+        public ActionResult<ExibirProdutoCategoriaDTO> Get(int categoriaId)
         {
-            return Ok(_produtoCategoriaService.ObterProdutoCategoriaPorId(produtoCategoriaId));
+            return Ok(_produtoCategoriaService.ObterProdutoCategoriaPorCategoria(categoriaId));
         }
 
         [HttpPut]
-        public ActionResult Edit([Bind(include: "ProdutoId, CategoriaId, ProdutoCategoriaDeletado")]AtualizarProdutoCategoriaDTO atualizarProdutoCategoriaDTO)
+        public ActionResult Edit([Bind(include: "ProdutoId, CategoriaId, ProdutoCategoriaDeletado")] AtualizarProdutoCategoriaDTO atualizarProdutoCategoriaDTO)
         {
             _produtoCategoriaService.AtualizarProdutoCategoria(atualizarProdutoCategoriaDTO);
             return Ok("Relação ProdutoCategoria atualizada com sucesso");

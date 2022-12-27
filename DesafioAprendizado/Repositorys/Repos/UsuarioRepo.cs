@@ -1,6 +1,7 @@
 ﻿using Entities.Models;
 using Microsoft.EntityFrameworkCore;
 using Repositorys.Context;
+using Repositorys.DTO.UsuarioDTO;
 using Repositorys.Interfaces;
 
 namespace Repositorys.Repos
@@ -47,15 +48,31 @@ namespace Repositorys.Repos
             }
         }
 
-        public async Task<IEnumerable<Usuario>> ObterTodosUsuarios()
+        public async Task<IEnumerable<ExibirUsuarioDTO>> ObterTodosUsuarios()
         {
-            return await _context.Usuarios.Include(x => x.Tipo).ToListAsync();
+            return await _context.Usuarios
+                .Select(x => new ExibirUsuarioDTO
+                {
+                    UsuarioMatricula = x.UsuarioMatricula,
+                    UsuarioNome = x.UsuarioNome,
+                    UsuarioDeletado = x.UsuarioDeletado,
+                    UsuarioTipo = x.Tipo.UsuarioTipoNome,
+                    UsuarioDataUltimaAtualizacao = x.UsuarioDataUltimaAtualizacao
+                })
+                .ToListAsync();
         }
 
-        public Usuario? ObterUsuarioPorMatricula(string UsuarioMatricula)
+        public ExibirUsuarioDTO? ObterUsuarioPorMatricula(string UsuarioMatricula)
         {
             return _context.Usuarios
-                .Include(x => x.Tipo)
+                .Select(x => new ExibirUsuarioDTO
+                {
+                    UsuarioMatricula = x.UsuarioMatricula,
+                    UsuarioNome = x.UsuarioNome,
+                    UsuarioDeletado = x.UsuarioDeletado,
+                    UsuarioTipo = x.Tipo.UsuarioTipoNome,
+                    UsuarioDataUltimaAtualizacao = x.UsuarioDataUltimaAtualizacao
+                })
                 .FirstOrDefault(x => x.UsuarioMatricula == UsuarioMatricula);
         }
 

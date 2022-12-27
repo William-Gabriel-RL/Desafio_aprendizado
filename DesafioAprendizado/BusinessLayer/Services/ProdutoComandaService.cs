@@ -4,6 +4,7 @@ using Repositorys.Context;
 using BusinessLayer.Interfaces;
 using BusinessLayer.DTO.ProdutoComandaDTO;
 using Entities.Models;
+using Repositorys.DTO.ProdutoComandaDTO;
 
 namespace BusinessLayer.Services
 {
@@ -36,7 +37,6 @@ namespace BusinessLayer.Services
             ProdutoComanda produtoComanda = new()
             {
                 ProdutoComandaQuantidadeProdutos = criarProdutoComandaDTO.ProdutoComandaQuantidadeProdutos,
-                ProdutoComandaPreco = criarProdutoComandaDTO.ProdutoComandaPreco,
                 ProdutoComandaObservacao = criarProdutoComandaDTO.ProdutoComandaObservacao,
                 ProdutoId = criarProdutoComandaDTO.ProdutoId,
                 ComandaId = new Guid(criarProdutoComandaDTO.ComandaId)
@@ -49,12 +49,12 @@ namespace BusinessLayer.Services
             _produtoComandaRepo.DeletarProdutoComanda(produtoComandaId);
         }
 
-        public ProdutoComanda? ObterProdutoComandaPorId(int produtoComandaId)
+        public ExibirProdutoComandaDTO? ObterProdutoComandaPorId(int produtoComandaId)
         {
             return _produtoComandaRepo.ObterProdutoComandaPorId(produtoComandaId);
         }
 
-        public async Task<IEnumerable<ProdutoComanda>> ObterTodosProdutosPorComanda()
+        public async Task<IEnumerable<ExibirProdutoComandaDTO>> ObterTodosProdutosPorComanda()
         {
             return await _produtoComandaRepo.ObterTodosProdutosPorComanda();
         }

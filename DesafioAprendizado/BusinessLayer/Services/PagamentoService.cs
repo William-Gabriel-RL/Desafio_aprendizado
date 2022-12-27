@@ -2,6 +2,7 @@
 using BusinessLayer.Interfaces;
 using Entities.Models;
 using Repositorys.Context;
+using Repositorys.DTO.PagamentoDTO;
 using Repositorys.Interfaces;
 using Repositorys.Repos;
 
@@ -46,12 +47,12 @@ namespace BusinessLayer.Services
             _pagamentoRepo.DeletarPagamento(pagamentoId);
         }
 
-        public Pagamento? ObterPagamentoPorId(int pagamentoId)
+        public ExibirPagamentoDTO? ObterPagamentoPorId(int pagamentoId)
         {
             return _pagamentoRepo.ObterPagamentoPorId(pagamentoId);
         }
 
-        public async Task<IEnumerable<Pagamento>> ObterTodosPagamentos()
+        public async Task<IEnumerable<ExibirPagamentoDTO>> ObterTodosPagamentos()
         {
             return await _pagamentoRepo.ObterTodosPagamentos();
         }

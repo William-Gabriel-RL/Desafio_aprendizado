@@ -1,10 +1,10 @@
-﻿using Repositorys.Interfaces;
-using Repositorys.Repos;
-using Repositorys.Context;
+﻿using BusinessLayer.DTO.ComandaDTO;
 using BusinessLayer.Interfaces;
-using BusinessLayer.DTO.ComandaDTO;
 using Entities.Models;
-using System.ComponentModel.Design;
+using Repositorys.Context;
+using Repositorys.DTO.ComandaDTO;
+using Repositorys.Interfaces;
+using Repositorys.Repos;
 
 namespace BusinessLayer.Services
 {
@@ -25,7 +25,6 @@ namespace BusinessLayer.Services
                 ComandaDeletado = atualizarComandaDTO.ComandaDeletado,
                 AtendenteMatricula = atualizarComandaDTO.AtendenteMatricula,
                 MesaId = atualizarComandaDTO.MesaId,
-                PagamentoId = atualizarComandaDTO.PagamentoId,
                 ComandaDataUltimaAtualizacao = DateTime.Now
             };
             _comandaRepo.AtualizarComanda(comanda);
@@ -46,12 +45,12 @@ namespace BusinessLayer.Services
             _comandaRepo.DeletarComanda(ComandaId);
         }
 
-        public Comanda? ObterComandaPorId(string ComandaId)
+        public ExibirComandaDTO? ObterComandaPorId(string ComandaId)
         {
             return _comandaRepo.ObterComandaPorId(ComandaId);
         }
 
-        public async Task<IEnumerable<Comanda>> ObterTodasComandas()
+        public async Task<IEnumerable<ExibirComandaDTO>> ObterTodasComandas()
         {
             return await _comandaRepo.ObterTodasComandas();
         }

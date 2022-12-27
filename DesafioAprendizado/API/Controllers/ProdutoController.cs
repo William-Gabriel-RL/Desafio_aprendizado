@@ -3,6 +3,7 @@ using BusinessLayer.Interfaces;
 using BusinessLayer.Services;
 using Entities.Models;
 using Microsoft.AspNetCore.Mvc;
+using Repositorys.DTO.ProdutoDTO;
 
 namespace API.Controllers
 {
@@ -24,13 +25,13 @@ namespace API.Controllers
         }
 
         [HttpGet]
-        public ActionResult<ICollection<Produto>> Get()
+        public ActionResult<ICollection<ExibirProdutoDTO>> Get()
         {
             return Ok(_produtoService.ObterTodosProdutos().Result);
         }
 
         [HttpGet("id")]
-        public ActionResult<Produto> Get(int produtoId)
+        public ActionResult<ExibirProdutoDTO> Get(int produtoId)
         {
             return Ok(_produtoService.ObterProdutoPorId(produtoId));
         }

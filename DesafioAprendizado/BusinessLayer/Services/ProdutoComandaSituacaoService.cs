@@ -2,6 +2,7 @@
 using BusinessLayer.Interfaces;
 using Entities.Models;
 using Repositorys.Context;
+using Repositorys.DTO;
 using Repositorys.Interfaces;
 using Repositorys.Repos;
 
@@ -47,12 +48,12 @@ namespace BusinessLayer.Services
             _produtoComandaSituacaoRepo.DeletarProdutoComandaSituacao(produtoComandaSituacaoId);
         }
 
-        public ProdutoComandaSituacao? ObterProdutoComandaSituacaoPorId(int produtoComandaSituacaoId)
+        public ExibirProdutoComandaSituacaoDTO? ObterProdutoComandaSituacaoPorId(int produtoComandaSituacaoId)
         {
             return _produtoComandaSituacaoRepo.ObterProdutoComandaSituacaoPorId(produtoComandaSituacaoId);
         }
 
-        public async Task<IEnumerable<ProdutoComandaSituacao>> ObterTodosProdutosComandaSituacao()
+        public async Task<IEnumerable<ExibirProdutoComandaSituacaoDTO>> ObterTodosProdutosComandaSituacao()
         {
             return await _produtoComandaSituacaoRepo.ObterTodosProdutosComandaSituacao();
         }

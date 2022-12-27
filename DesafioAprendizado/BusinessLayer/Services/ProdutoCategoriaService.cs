@@ -4,6 +4,7 @@ using Repositorys.Context;
 using BusinessLayer.Interfaces;
 using BusinessLayer.DTO.ProdutoCategoriaDTO;
 using Entities.Models;
+using Repositorys.DTO.ProdutoCategoriaDTO;
 
 namespace BusinessLayer.Services
 {
@@ -42,12 +43,12 @@ namespace BusinessLayer.Services
             _produtoCategoriaRepo.DeletarProdutoCategoria(produtoCategoriaId);
         }
 
-        public ProdutoCategoria? ObterProdutoCategoriaPorId(int produtoCategoriaId)
+        public ExibirProdutoCategoriaDTO? ObterProdutoCategoriaPorCategoria(int categoriaId)
         {
-            return _produtoCategoriaRepo.ObterProdutoCategoriaPorId(produtoCategoriaId);
+            return _produtoCategoriaRepo.ObterProdutoCategoriaPorCategoria(categoriaId);
         }
 
-        public async Task<IEnumerable<ProdutoCategoria>> ObterTodosProdutosCategorias()
+        public async Task<IEnumerable<ExibirProdutoCategoriaDTO>> ObterTodosProdutosCategorias()
         {
             return await _produtoCategoriaRepo.ObterTodosProdutosCategorias();
         }

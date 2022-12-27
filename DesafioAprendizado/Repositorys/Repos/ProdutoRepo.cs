@@ -1,6 +1,7 @@
 ﻿using Entities.Models;
 using Microsoft.EntityFrameworkCore;
 using Repositorys.Context;
+using Repositorys.DTO.ProdutoDTO;
 using Repositorys.Interfaces;
 
 namespace Repositorys.Repos
@@ -30,7 +31,7 @@ namespace Repositorys.Repos
             Produto? produto = _context.Produtos.Find(produtoId);
             if (produto != null)
             {
-                if(produto.ProdutoDeletado == false)
+                if (produto.ProdutoDeletado == false)
                 {
                     produto.ProdutoDeletado = true;
                     produto.ProdutoDataUltimaAtualizacao = DateTime.Now;
@@ -48,14 +49,46 @@ namespace Repositorys.Repos
             }
         }
 
-        public Produto? ObterProdutoPorId(int produtoId)
+        public ExibirProdutoDTO? ObterProdutoPorId(int produtoId)
         {
-            return _context.Produtos.Find(produtoId);
+            return _context.Produtos
+                .Select(x => new ExibirProdutoDTO
+                {
+                    ProdutoId = x.ProdutoId,
+                    ProdutoNome = x.ProdutoNome,
+                    ProdutoDescricao = x.ProdutoDescricao,
+                    Preco = x.Preco,
+                    ProdutoDeletado = x.ProdutoDeletado,
+                    ProdutoFotoId = x.ProdutoFotoId,
+                    ProdutoDataUltimaAtualizacao = x.ProdutoDataUltimaAtualizacao,
+                    UsuarioId = x.UsuarioId,
+                    Categorias = (ICollection<ProdutoExibirCategoriaDTO>)x.Categorias.Select(x => new ProdutoExibirCategoriaDTO
+                    {
+                        CategoriaNome = x.Categoria.CategoriaNome
+                    })
+                })
+                .FirstOrDefault(x => x.ProdutoId == produtoId);
         }
 
-        public async Task<IEnumerable<Produto>> ObterTodosProdutos()
+        public async Task<IEnumerable<ExibirProdutoDTO>> ObterTodosProdutos()
         {
-            return await _context.Produtos.ToListAsync();
+            return await _context.Produtos
+                .Select(x => new ExibirProdutoDTO
+                {
+                    ProdutoId = x.ProdutoId,
+                    ProdutoNome = x.ProdutoNome,
+                    ProdutoDescricao = x.ProdutoDescricao,
+                    Preco = x.Preco,
+                    ProdutoDeletado = x.ProdutoDeletado,
+                    ProdutoFotoId = x.ProdutoFotoId,
+                    ProdutoDataUltimaAtualizacao = x.ProdutoDataUltimaAtualizacao,
+                    UsuarioId = x.UsuarioId,
+                    Categorias = (ICollection<ProdutoExibirCategoriaDTO>)x.Categorias.Select(x => new ProdutoExibirCategoriaDTO
+                    {
+                        CategoriaNome = x.Categoria.CategoriaNome
+                    })
+                })
+                .ToListAsync();
         }
 
         public void Salvar()

@@ -2,8 +2,8 @@
 using BusinessLayer.DTO.UsuarioDTO;
 using BusinessLayer.Interfaces;
 using BusinessLayer.Services;
-using Entities.Models;
 using Microsoft.AspNetCore.Mvc;
+using Repositorys.DTO.UsuarioDTO;
 
 namespace API.Controllers
 {
@@ -27,20 +27,20 @@ namespace API.Controllers
         }
 
         [HttpGet("UsuarioId")]
-        public Usuario? Get([FromQuery] string UsuarioId)
+        public ExibirUsuarioDTO? Get([FromQuery] string UsuarioId)
         {
-            Usuario? usuario = _usuarioService.ObterUsuarioPorMatricula(UsuarioId);
+            ExibirUsuarioDTO? usuario = _usuarioService.ObterUsuarioPorMatricula(UsuarioId);
             return usuario;
         }
 
         [HttpGet]
-        public  ActionResult<List<Usuario>> GetAll()
+        public ActionResult<List<ExibirUsuarioDTO>> GetAll()
         {
             return Ok(_usuarioService.ObterTodosUsuarios().Result);
         }
 
         [HttpPut]
-        public ActionResult Edit([Bind(include: "UsuarioMatricula, UsuarioNome, UsuarioSenha, UsuarioTipoId, UsuarioDeletado")]AtualizarUsuarioDTO atualizarUsuarioDTO)
+        public ActionResult Edit([Bind(include: "UsuarioMatricula, UsuarioNome, UsuarioSenha, UsuarioTipoId, UsuarioDeletado")] AtualizarUsuarioDTO atualizarUsuarioDTO)
         {
             _usuarioService.AtualizarUsuario(atualizarUsuarioDTO);
             return Ok("Usuário atualizado com sucesso");

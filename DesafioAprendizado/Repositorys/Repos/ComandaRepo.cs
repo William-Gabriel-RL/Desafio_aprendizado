@@ -1,6 +1,7 @@
 ﻿using Entities.Models;
 using Microsoft.EntityFrameworkCore;
 using Repositorys.Context;
+using Repositorys.DTO.ComandaDTO;
 using Repositorys.Interfaces;
 
 namespace Repositorys.Repos
@@ -15,7 +16,7 @@ namespace Repositorys.Repos
 
         public void AtualizarComanda(Comanda Comanda)
         {
-            _context.Update(Comanda);
+            _context.Comandas.Update(Comanda);
             _context.SaveChanges();
         }
 
@@ -27,8 +28,8 @@ namespace Repositorys.Repos
 
         public void DeletarComanda(string comandaId)
         {
-            Comanda? comanda = _context.Comandas.Find(comandaId);
-            if (comanda != null) 
+            Comanda? comanda = _context.Comandas.Find(new Guid(comandaId));
+            if (comanda != null)
             {
                 if (comanda.ComandaDeletado == false)
                 {
@@ -48,14 +49,78 @@ namespace Repositorys.Repos
             }
         }
 
-        public Comanda? ObterComandaPorId(string comandaId)
+        public ExibirComandaDTO? ObterComandaPorId(string comandaId)
         {
-            return _context.Comandas.Find(comandaId);
+            return _context.Comandas
+                .Select(x => new ExibirComandaDTO
+                {
+                    ComandaId = x.ComandaId,
+                    ComandaHoraAbertura = x.ComandaHoraAbertura,
+                    ComandaTotal = x.ComandaTotal,
+                    ComandaFinalizada = x.ComandaFinalizada,
+                    ComandaDeletado = x.ComandaDeletado,
+                    ComandaDataUltimaAtualizacao = x.ComandaDataUltimaAtualizacao,
+                    AtendenteMatricula = x.AtendenteMatricula,
+                    Atendente = x.Atendente.UsuarioNome,
+                    MesaId = x.MesaId,
+                    ProdutosComanda = x.ProdutosComanda.Select(x => new ComandaExibirProdutoComanda
+                    {
+                        ProdutoComandaQuantidadeProdutos = x.ProdutoComandaQuantidadeProdutos,
+                        ProdutoComandaNome = x.Produto.ProdutoNome,
+                        ProdutoComandaPreco = x.ProdutoComandaPreco,
+                        ProdutoComandaObservacao = x.ProdutoComandaObservacao
+                    }),
+                    Pagamento = x.Pagamento.Select(x => new ComandaExibirPagamento
+                    {
+                        PagamentoId = x.PagamentoId,
+                        PagamentoDataHora = x.PagamentoDataHora,
+                        Valor = x.Valor,
+                        FormaPagamentoId = x.FormaPagamentoId,
+                        FormaPagamento = x.FormaPagamento.FormaPagamentoNome,
+                        UsuarioMatricula = x.UsuarioMatricula,
+                        UsuarioNome = x.Usuario.UsuarioNome,
+                        PagamentoDeletado = x.PagamentoDeletado,
+                        PagamentoDataUltimaAtualizacao = x.PagamentoDataUltimaAtualizacao
+                    })
+                })
+                .FirstOrDefault(x => x.ComandaId.ToString() == comandaId);
         }
 
-        public async Task<IEnumerable<Comanda>> ObterTodasComandas()
+        public async Task<IEnumerable<ExibirComandaDTO>> ObterTodasComandas()
         {
-            return await _context.Comandas.ToListAsync();
+            return await _context.Comandas
+                .Select(x => new ExibirComandaDTO
+                {
+                    ComandaId = x.ComandaId,
+                    ComandaHoraAbertura = x.ComandaHoraAbertura,
+                    ComandaTotal = x.ComandaTotal,
+                    ComandaFinalizada = x.ComandaFinalizada,
+                    ComandaDeletado = x.ComandaDeletado,
+                    ComandaDataUltimaAtualizacao = x.ComandaDataUltimaAtualizacao,
+                    AtendenteMatricula = x.AtendenteMatricula,
+                    Atendente = x.Atendente.UsuarioNome,
+                    MesaId = x.MesaId,
+                    ProdutosComanda = x.ProdutosComanda.Select(x => new ComandaExibirProdutoComanda
+                    {
+                        ProdutoComandaQuantidadeProdutos = x.ProdutoComandaQuantidadeProdutos,
+                        ProdutoComandaNome = x.Produto.ProdutoNome,
+                        ProdutoComandaPreco = x.ProdutoComandaPreco,
+                        ProdutoComandaObservacao = x.ProdutoComandaObservacao
+                    }),
+                    Pagamento = x.Pagamento.Select(x => new ComandaExibirPagamento
+                    {
+                        PagamentoId = x.PagamentoId,
+                        PagamentoDataHora = x.PagamentoDataHora,
+                        Valor = x.Valor,
+                        FormaPagamentoId = x.FormaPagamentoId,
+                        FormaPagamento = x.FormaPagamento.FormaPagamentoNome,
+                        UsuarioMatricula = x.UsuarioMatricula,
+                        UsuarioNome = x.Usuario.UsuarioNome,
+                        PagamentoDeletado = x.PagamentoDeletado,
+                        PagamentoDataUltimaAtualizacao = x.PagamentoDataUltimaAtualizacao
+                    })
+                })
+                .ToListAsync();
         }
 
         public void Salvar()

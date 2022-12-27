@@ -32,7 +32,7 @@ namespace Repositorys.Migrations
                 {
                     FormaPagamentoId = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
-                    FormaPagagamentoNome = table.Column<string>(type: "varchar(30)", unicode: false, maxLength: 30, nullable: false),
+                    FormaPagamentoNome = table.Column<string>(type: "varchar(30)", unicode: false, maxLength: 30, nullable: false),
                     FormaPagamentoDeletado = table.Column<bool>(type: "bit", nullable: false),
                     FormaPagamentoDataUltimaAtualizacao = table.Column<DateTime>(type: "datetime", nullable: false)
                 },
@@ -54,6 +54,25 @@ namespace Repositorys.Migrations
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_Mesa", x => x.MesaId);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "Produto",
+                columns: table => new
+                {
+                    ProdutoId = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    ProdutoNome = table.Column<string>(type: "varchar(20)", unicode: false, maxLength: 20, nullable: false),
+                    ProdutoDescricao = table.Column<string>(type: "varchar(120)", unicode: false, maxLength: 120, nullable: false),
+                    Preco = table.Column<decimal>(type: "decimal(8,2)", nullable: false),
+                    ProdutoDeletado = table.Column<bool>(type: "bit", nullable: false),
+                    ProdutoDataUltimaAtualizacao = table.Column<DateTime>(type: "datetime", nullable: false),
+                    ProdutoFotoId = table.Column<string>(type: "varchar(50)", unicode: false, maxLength: 50, nullable: true),
+                    UsuarioId = table.Column<string>(type: "nvarchar(max)", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Produto", x => x.ProdutoId);
                 });
 
             migrationBuilder.CreateTable(
@@ -87,28 +106,28 @@ namespace Repositorys.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "Produto",
+                name: "ProdutoCategoria",
                 columns: table => new
                 {
-                    ProdutoId = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
-                    ProdutoNome = table.Column<string>(type: "varchar(20)", unicode: false, maxLength: 20, nullable: false),
-                    ProdutoDescricao = table.Column<string>(type: "varchar(120)", unicode: false, maxLength: 120, nullable: false),
-                    Preco = table.Column<decimal>(type: "decimal(8,2)", nullable: false),
-                    ProdutoDeletado = table.Column<bool>(type: "bit", nullable: false),
+                    ProdutoId = table.Column<int>(type: "int", nullable: false),
                     CategoriaId = table.Column<int>(type: "int", nullable: false),
-                    ProdutoDataUltimaAtualizacao = table.Column<DateTime>(type: "datetime", nullable: false),
-                    ProdutoFotoId = table.Column<string>(type: "varchar(50)", unicode: false, maxLength: 50, nullable: true),
-                    UsuarioId = table.Column<string>(type: "nvarchar(max)", nullable: false)
+                    ProdutoCategoriaDeletado = table.Column<bool>(type: "bit", nullable: false),
+                    ProdutoCategoriaDataUltimaAtualizacao = table.Column<DateTime>(type: "datetime2", nullable: false)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Produto", x => x.ProdutoId);
+                    table.PrimaryKey("PK_ProdutoCategoria", x => new { x.ProdutoId, x.CategoriaId });
                     table.ForeignKey(
-                        name: "FK_Produto_Categoria_CategoriaId",
+                        name: "FK_ProdutoCategoria_Categoria_CategoriaId",
                         column: x => x.CategoriaId,
                         principalTable: "Categoria",
                         principalColumn: "CategoriaId",
+                        onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_ProdutoCategoria_Produto_ProdutoId",
+                        column: x => x.ProdutoId,
+                        principalTable: "Produto",
+                        principalColumn: "ProdutoId",
                         onDelete: ReferentialAction.Cascade);
                 });
 
@@ -135,32 +154,6 @@ namespace Repositorys.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "ProdutoCategoria",
-                columns: table => new
-                {
-                    ProdutoId = table.Column<int>(type: "int", nullable: false),
-                    CategoriaId = table.Column<int>(type: "int", nullable: false),
-                    ProdutoCategoriaDeletado = table.Column<bool>(type: "bit", nullable: false),
-                    ProdutoCategoriaDataUltimaAtualizacao = table.Column<DateTime>(type: "datetime2", nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_ProdutoCategoria", x => new { x.ProdutoId, x.CategoriaId });
-                    table.ForeignKey(
-                        name: "FK_ProdutoCategoria_Categoria_CategoriaId",
-                        column: x => x.CategoriaId,
-                        principalTable: "Categoria",
-                        principalColumn: "CategoriaId",
-                        onDelete: ReferentialAction.Restrict);
-                    table.ForeignKey(
-                        name: "FK_ProdutoCategoria_Produto_ProdutoId",
-                        column: x => x.ProdutoId,
-                        principalTable: "Produto",
-                        principalColumn: "ProdutoId",
-                        onDelete: ReferentialAction.Restrict);
-                });
-
-            migrationBuilder.CreateTable(
                 name: "Comanda",
                 columns: table => new
                 {
@@ -171,8 +164,7 @@ namespace Repositorys.Migrations
                     ComandaDeletado = table.Column<bool>(type: "bit", nullable: false),
                     ComandaDataUltimaAtualizacao = table.Column<DateTime>(type: "datetime", nullable: false),
                     AtendenteMatricula = table.Column<string>(type: "nvarchar(450)", nullable: false),
-                    MesaId = table.Column<int>(type: "int", nullable: false),
-                    PagamentoId = table.Column<int>(type: "int", nullable: false)
+                    MesaId = table.Column<int>(type: "int", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -203,7 +195,8 @@ namespace Repositorys.Migrations
                     ComandaId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
                     UsuarioMatricula = table.Column<string>(type: "nvarchar(450)", nullable: false),
                     PagamentoDeletado = table.Column<bool>(type: "bit", nullable: false),
-                    PagamentoDataUltimaAtualizacao = table.Column<DateTime>(type: "datetime2", nullable: false)
+                    PagamentoDataUltimaAtualizacao = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    ComandaId1 = table.Column<Guid>(type: "uniqueidentifier", nullable: true)
                 },
                 constraints: table =>
                 {
@@ -215,10 +208,15 @@ namespace Repositorys.Migrations
                         principalColumn: "ComandaId",
                         onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
-                        name: "FK_Pagamento_Mesa_FormaPagamentoId",
+                        name: "FK_Pagamento_Comanda_ComandaId1",
+                        column: x => x.ComandaId1,
+                        principalTable: "Comanda",
+                        principalColumn: "ComandaId");
+                    table.ForeignKey(
+                        name: "FK_Pagamento_FormaPagamento_FormaPagamentoId",
                         column: x => x.FormaPagamentoId,
-                        principalTable: "Mesa",
-                        principalColumn: "MesaId",
+                        principalTable: "FormaPagamento",
+                        principalColumn: "FormaPagamentoId",
                         onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
                         name: "FK_Pagamento_Usuario_UsuarioMatricula",
@@ -319,14 +317,14 @@ namespace Repositorys.Migrations
                 column: "MesaId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_Comanda_PagamentoId",
-                table: "Comanda",
-                column: "PagamentoId");
-
-            migrationBuilder.CreateIndex(
                 name: "IX_Pagamento_ComandaId",
                 table: "Pagamento",
                 column: "ComandaId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Pagamento_ComandaId1",
+                table: "Pagamento",
+                column: "ComandaId1");
 
             migrationBuilder.CreateIndex(
                 name: "IX_Pagamento_FormaPagamentoId",
@@ -337,11 +335,6 @@ namespace Repositorys.Migrations
                 name: "IX_Pagamento_UsuarioMatricula",
                 table: "Pagamento",
                 column: "UsuarioMatricula");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_Produto_CategoriaId",
-                table: "Produto",
-                column: "CategoriaId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_ProdutoCategoria_CategoriaId",
@@ -387,33 +380,13 @@ namespace Repositorys.Migrations
                 name: "IX_Usuario_UsuarioTipoId",
                 table: "Usuario",
                 column: "UsuarioTipoId");
-
-            migrationBuilder.AddForeignKey(
-                name: "FK_Comanda_Pagamento_PagamentoId",
-                table: "Comanda",
-                column: "PagamentoId",
-                principalTable: "Pagamento",
-                principalColumn: "PagamentoId",
-                onDelete: ReferentialAction.Restrict);
         }
 
         /// <inheritdoc />
         protected override void Down(MigrationBuilder migrationBuilder)
         {
-            migrationBuilder.DropForeignKey(
-                name: "FK_Comanda_Mesa_MesaId",
-                table: "Comanda");
-
-            migrationBuilder.DropForeignKey(
-                name: "FK_Pagamento_Mesa_FormaPagamentoId",
-                table: "Pagamento");
-
-            migrationBuilder.DropForeignKey(
-                name: "FK_Comanda_Pagamento_PagamentoId",
-                table: "Comanda");
-
             migrationBuilder.DropTable(
-                name: "FormaPagamento");
+                name: "Pagamento");
 
             migrationBuilder.DropTable(
                 name: "ProdutoCategoria");
@@ -422,25 +395,25 @@ namespace Repositorys.Migrations
                 name: "ProdutoComandaSituacao");
 
             migrationBuilder.DropTable(
+                name: "FormaPagamento");
+
+            migrationBuilder.DropTable(
+                name: "Categoria");
+
+            migrationBuilder.DropTable(
                 name: "ProdutoComanda");
 
             migrationBuilder.DropTable(
                 name: "StatusSituacao");
 
             migrationBuilder.DropTable(
+                name: "Comanda");
+
+            migrationBuilder.DropTable(
                 name: "Produto");
 
             migrationBuilder.DropTable(
-                name: "Categoria");
-
-            migrationBuilder.DropTable(
                 name: "Mesa");
-
-            migrationBuilder.DropTable(
-                name: "Pagamento");
-
-            migrationBuilder.DropTable(
-                name: "Comanda");
 
             migrationBuilder.DropTable(
                 name: "Usuario");

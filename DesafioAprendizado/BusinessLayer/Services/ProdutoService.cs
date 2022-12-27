@@ -4,6 +4,7 @@ using Repositorys.Context;
 using BusinessLayer.Interfaces;
 using BusinessLayer.DTO.ProdutoDTO;
 using Entities.Models;
+using Repositorys.DTO.ProdutoDTO;
 
 namespace BusinessLayer.Services
 {
@@ -24,7 +25,6 @@ namespace BusinessLayer.Services
                 ProdutoDescricao = atualizarProdutoDTO.ProdutoDescricao,
                 Preco = atualizarProdutoDTO.Preco,
                 ProdutoDeletado = atualizarProdutoDTO.ProdutoDeletado,
-                CategoriaId = atualizarProdutoDTO.CategoriaId,
                 ProdutoFotoId = atualizarProdutoDTO.ProdutoFotoId,
                 UsuarioId = atualizarProdutoDTO.UsuarioId,
                 ProdutoDataUltimaAtualizacao = DateTime.Now,
@@ -39,7 +39,6 @@ namespace BusinessLayer.Services
                 ProdutoNome = criarProdutoDTO.ProdutoNome,
                 ProdutoDescricao = criarProdutoDTO.ProdutoDescricao,
                 Preco = criarProdutoDTO.Preco,
-                CategoriaId = criarProdutoDTO.CategoriaId,
                 ProdutoFotoId = criarProdutoDTO.ProdutoFotoId,
                 UsuarioId = criarProdutoDTO.UsuarioId,
                 ProdutoDataUltimaAtualizacao= DateTime.Now,
@@ -52,12 +51,12 @@ namespace BusinessLayer.Services
             _produtoRepo.DeletarProduto(produtoId);
         }
 
-        public Produto? ObterProdutoPorId(int produtoId)
+        public ExibirProdutoDTO? ObterProdutoPorId(int produtoId)
         {
             return _produtoRepo.ObterProdutoPorId(produtoId);
         }
 
-        public async Task<IEnumerable<Produto>> ObterTodosProdutos()
+        public async Task<IEnumerable<ExibirProdutoDTO>> ObterTodosProdutos()
         {
             return await _produtoRepo.ObterTodosProdutos();
         }

@@ -1,6 +1,7 @@
 ﻿using Entities.Models;
 using Microsoft.EntityFrameworkCore;
 using Repositorys.Context;
+using Repositorys.DTO;
 using Repositorys.Interfaces;
 
 namespace Repositorys.Repos
@@ -28,7 +29,7 @@ namespace Repositorys.Repos
         public void DeletarProdutoComandaSituacao(int produtoComandaSituacaoId)
         {
             ProdutoComandaSituacao? produtoComandaSituacao = _context.ProdutosComandasSituacoes.Find(produtoComandaSituacaoId);
-            if(produtoComandaSituacao != null)
+            if (produtoComandaSituacao != null)
             {
                 if (produtoComandaSituacao.ProdutoComandaSituacaoDeletado == false)
                 {
@@ -48,14 +49,44 @@ namespace Repositorys.Repos
             }
         }
 
-        public ProdutoComandaSituacao? ObterProdutoComandaSituacaoPorId(int produtoComandaSituacaoId)
+        public ExibirProdutoComandaSituacaoDTO? ObterProdutoComandaSituacaoPorId(int produtoComandaSituacaoId)
         {
-            return _context.ProdutosComandasSituacoes.Find(produtoComandaSituacaoId);
+            return _context.ProdutosComandasSituacoes
+                .Select(x => new ExibirProdutoComandaSituacaoDTO
+                {
+                    ProdutoComandaSituacaoId = x.ProdutoComandaSituacaoId,
+                    ProdutoComandaSituacaoDataHora = x.ProdutoComandaSituacaoDataHora,
+                    ProdutoComandaSituacaoMotivo = x.ProdutoComandaSituacaoMotivo,
+                    ProdutoComandaSituacaoDeletado = x.ProdutoComandaSituacaoDeletado,
+                    ProdutoComandaSituacaoDataUltimaAtualizacao = x.ProdutoComandaSituacaoDataUltimaAtualizacao,
+                    UsuarioMatricula = x.UsuarioMatricula,
+                    UsuarioNome = x.Usuario.UsuarioNome,
+                    UsuarioTipo = x.Usuario.Tipo.UsuarioTipoNome,
+                    StatusSituacaoId = x.StatusSituacaoId,
+                    StatusSituacaoNome = x.StatusSituacao.StatusSituacaoNome,
+                    ProdutoComandaId = x.ProdutoComandaId
+                })
+                .FirstOrDefault(x => x.ProdutoComandaSituacaoId == produtoComandaSituacaoId);
         }
 
-        public async Task<IEnumerable<ProdutoComandaSituacao>> ObterTodosProdutosComandaSituacao()
+        public async Task<IEnumerable<ExibirProdutoComandaSituacaoDTO>> ObterTodosProdutosComandaSituacao()
         {
-            return await _context.ProdutosComandasSituacoes.ToListAsync();
+            return await _context.ProdutosComandasSituacoes
+                .Select(x => new ExibirProdutoComandaSituacaoDTO
+                {
+                    ProdutoComandaSituacaoId = x.ProdutoComandaSituacaoId,
+                    ProdutoComandaSituacaoDataHora = x.ProdutoComandaSituacaoDataHora,
+                    ProdutoComandaSituacaoMotivo = x.ProdutoComandaSituacaoMotivo,
+                    ProdutoComandaSituacaoDeletado = x.ProdutoComandaSituacaoDeletado,
+                    ProdutoComandaSituacaoDataUltimaAtualizacao = x.ProdutoComandaSituacaoDataUltimaAtualizacao,
+                    UsuarioMatricula = x.UsuarioMatricula,
+                    UsuarioNome = x.Usuario.UsuarioNome,
+                    UsuarioTipo = x.Usuario.Tipo.UsuarioTipoNome,
+                    StatusSituacaoId = x.StatusSituacaoId,
+                    StatusSituacaoNome = x.StatusSituacao.StatusSituacaoNome,
+                    ProdutoComandaId = x.ProdutoComandaId
+                })
+                .ToListAsync();
         }
 
         public void Salvar()

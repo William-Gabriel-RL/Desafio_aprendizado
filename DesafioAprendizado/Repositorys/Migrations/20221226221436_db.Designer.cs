@@ -12,7 +12,7 @@ using Repositorys.Context;
 namespace Repositorys.Migrations
 {
     [DbContext(typeof(DesafioAprendizadoContext))]
-    [Migration("20221222134629_db")]
+    [Migration("20221226221436_db")]
     partial class db
     {
         /// <inheritdoc />
@@ -78,17 +78,11 @@ namespace Repositorys.Migrations
                     b.Property<int>("MesaId")
                         .HasColumnType("int");
 
-                    b.Property<int?>("PagamentoId")
-                        .IsRequired()
-                        .HasColumnType("int");
-
                     b.HasKey("ComandaId");
 
                     b.HasIndex("AtendenteMatricula");
 
                     b.HasIndex("MesaId");
-
-                    b.HasIndex("PagamentoId");
 
                     b.ToTable("Comanda", (string)null);
                 });
@@ -101,17 +95,17 @@ namespace Repositorys.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("FormaPagamentoId"));
 
-                    b.Property<string>("FormaPagagamentoNome")
-                        .IsRequired()
-                        .HasMaxLength(30)
-                        .IsUnicode(false)
-                        .HasColumnType("varchar(30)");
-
                     b.Property<DateTime>("FormaPagamentoDataUltimaAtualizacao")
                         .HasColumnType("datetime");
 
                     b.Property<bool>("FormaPagamentoDeletado")
                         .HasColumnType("bit");
+
+                    b.Property<string>("FormaPagamentoNome")
+                        .IsRequired()
+                        .HasMaxLength(30)
+                        .IsUnicode(false)
+                        .HasColumnType("varchar(30)");
 
                     b.HasKey("FormaPagamentoId");
 
@@ -151,6 +145,9 @@ namespace Repositorys.Migrations
                     b.Property<Guid>("ComandaId")
                         .HasColumnType("uniqueidentifier");
 
+                    b.Property<Guid?>("ComandaId1")
+                        .HasColumnType("uniqueidentifier");
+
                     b.Property<int>("FormaPagamentoId")
                         .HasColumnType("int");
 
@@ -174,6 +171,8 @@ namespace Repositorys.Migrations
 
                     b.HasIndex("ComandaId");
 
+                    b.HasIndex("ComandaId1");
+
                     b.HasIndex("FormaPagamentoId");
 
                     b.HasIndex("UsuarioMatricula");
@@ -188,9 +187,6 @@ namespace Repositorys.Migrations
                         .HasColumnType("int");
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("ProdutoId"));
-
-                    b.Property<int>("CategoriaId")
-                        .HasColumnType("int");
 
                     b.Property<decimal>("Preco")
                         .HasColumnType("decimal(8,2)");
@@ -223,8 +219,6 @@ namespace Repositorys.Migrations
                         .HasColumnType("nvarchar(max)");
 
                     b.HasKey("ProdutoId");
-
-                    b.HasIndex("CategoriaId");
 
                     b.ToTable("Produto", (string)null);
                 });
@@ -441,17 +435,9 @@ namespace Repositorys.Migrations
                         .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
 
-                    b.HasOne("Entities.Models.Pagamento", "Pagamento")
-                        .WithMany()
-                        .HasForeignKey("PagamentoId")
-                        .OnDelete(DeleteBehavior.Restrict)
-                        .IsRequired();
-
                     b.Navigation("Atendente");
 
                     b.Navigation("Mesa");
-
-                    b.Navigation("Pagamento");
                 });
 
             modelBuilder.Entity("Entities.Models.Pagamento", b =>
@@ -462,7 +448,11 @@ namespace Repositorys.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("Entities.Models.Mesa", "FormaPagamento")
+                    b.HasOne("Entities.Models.Comanda", null)
+                        .WithMany("Pagamento")
+                        .HasForeignKey("ComandaId1");
+
+                    b.HasOne("Entities.Models.FormaPagamento", "FormaPagamento")
                         .WithMany()
                         .HasForeignKey("FormaPagamentoId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -479,17 +469,6 @@ namespace Repositorys.Migrations
                     b.Navigation("FormaPagamento");
 
                     b.Navigation("Usuario");
-                });
-
-            modelBuilder.Entity("Entities.Models.Produto", b =>
-                {
-                    b.HasOne("Entities.Models.Categoria", "Categoria")
-                        .WithMany()
-                        .HasForeignKey("CategoriaId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("Categoria");
                 });
 
             modelBuilder.Entity("Entities.Models.ProdutoCategoria", b =>
@@ -555,7 +534,7 @@ namespace Repositorys.Migrations
                     b.HasOne("Entities.Models.Usuario", "Usuario")
                         .WithMany()
                         .HasForeignKey("UsuarioMatricula")
-                        .OnDelete(DeleteBehavior.SetNull)
+                        .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
 
                     b.Navigation("ProdutoComanda");
@@ -577,6 +556,8 @@ namespace Repositorys.Migrations
 
             modelBuilder.Entity("Entities.Models.Comanda", b =>
                 {
+                    b.Navigation("Pagamento");
+
                     b.Navigation("ProdutosComanda");
                 });
 

@@ -12,8 +12,7 @@
         public Usuario Atendente { get; set; }
         public int MesaId { get; set; }
         public Mesa Mesa { get; set; }
-        public int? PagamentoId { get; set; }
-        public Pagamento Pagamento { get; set; }
         public virtual ICollection<ProdutoComanda> ProdutosComanda { get; set; }
+        public virtual ICollection<Pagamento> Pagamento { get; set; }
     }
 }

@@ -7,8 +7,6 @@
         public string ProdutoDescricao { get; set; } = string.Empty;
         public decimal Preco { get; set; } = 0.0m;
         public bool ProdutoDeletado { get; set; } = false;
-        public int CategoriaId { get; set; }
-        public virtual Categoria? Categoria { get; set; }
         public DateTime ProdutoDataUltimaAtualizacao { get; set; } = DateTime.Now;
         public string? ProdutoFotoId { get; set; } = string.Empty;
         public string UsuarioId { get; set; } = string.Empty;

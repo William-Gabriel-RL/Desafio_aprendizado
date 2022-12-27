@@ -1,13 +1,13 @@
 ﻿using BusinessLayer.DTO.ProdutoDTO;
-using Entities.Models;
+using Repositorys.DTO.ProdutoDTO;
 
 namespace BusinessLayer.Interfaces
 {
     public interface IProdutoService
     {
         public void CriarProduto(CriarProdutoDTO produto);
-        public Produto? ObterProdutoPorId(int produtoId);
-        public Task<IEnumerable<Produto>> ObterTodosProdutos();
+        public ExibirProdutoDTO? ObterProdutoPorId(int produtoId);
+        public Task<IEnumerable<ExibirProdutoDTO>> ObterTodosProdutos();
         public void AtualizarProduto(AtualizarProdutoDTO produto);
         public void DeletarProduto(int produtoId);
     }

@@ -1,6 +1,7 @@
 ﻿using Entities.Models;
 using Microsoft.EntityFrameworkCore;
 using Repositorys.Context;
+using Repositorys.DTO.ProdutoCategoriaDTO;
 using Repositorys.Interfaces;
 
 namespace Repositorys.Repos
@@ -48,14 +49,34 @@ namespace Repositorys.Repos
             }
         }
 
-        public ProdutoCategoria? ObterProdutoCategoriaPorId(int produtoCategoriaId)
+        public ExibirProdutoCategoriaDTO? ObterProdutoCategoriaPorCategoria(int categoriaId)
         {
-            return _context.ProdutosCategorias.Find(produtoCategoriaId);
+            return _context.ProdutosCategorias
+                .Select(x => new ExibirProdutoCategoriaDTO
+                {
+                    ProdutoId = x.ProdutoId,
+                    Produto = x.Produto.ProdutoNome,
+                    CategoriaId = x.CategoriaId,
+                    Categoria = x.Categoria.CategoriaNome,
+                    ProdutoCategoriaDeletado = x.ProdutoCategoriaDeletado,
+                    ProdutoCategoriaDataUltimaAtualizacao = x.ProdutoCategoriaDataUltimaAtualizacao
+                })
+                .FirstOrDefault(x => x.CategoriaId == categoriaId);
         }
 
-        public async Task<IEnumerable<ProdutoCategoria>> ObterTodosProdutosCategorias()
+        public async Task<IEnumerable<ExibirProdutoCategoriaDTO>> ObterTodosProdutosCategorias()
         {
-            return await _context.ProdutosCategorias.ToListAsync();
+            return await _context.ProdutosCategorias
+                .Select(x => new ExibirProdutoCategoriaDTO
+                {
+                    ProdutoId = x.ProdutoId,
+                    Produto = x.Produto.ProdutoNome,
+                    CategoriaId = x.CategoriaId,
+                    Categoria = x.Categoria.CategoriaNome,
+                    ProdutoCategoriaDeletado = x.ProdutoCategoriaDeletado,
+                    ProdutoCategoriaDataUltimaAtualizacao = x.ProdutoCategoriaDataUltimaAtualizacao
+                })
+                .ToListAsync();
         }
 
         public void Salvar()

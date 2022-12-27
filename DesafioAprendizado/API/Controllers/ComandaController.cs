@@ -1,8 +1,8 @@
 ﻿using BusinessLayer.DTO.ComandaDTO;
 using BusinessLayer.Interfaces;
 using BusinessLayer.Services;
-using Entities.Models;
 using Microsoft.AspNetCore.Mvc;
+using Repositorys.DTO.ComandaDTO;
 
 namespace API.Controllers
 {
@@ -24,13 +24,13 @@ namespace API.Controllers
         }
 
         [HttpGet]
-        public ActionResult<ICollection<Comanda>> Get()
+        public ActionResult<ICollection<ExibirComandaDTO>> Get()
         {
             return Ok(_comandaService.ObterTodasComandas().Result);
         }
 
         [HttpGet("id")]
-        public ActionResult<Comanda> Get(string comandaId)
+        public ActionResult<ExibirComandaDTO>? Get(string comandaId)
         {
             return Ok(_comandaService.ObterComandaPorId(comandaId));
         }

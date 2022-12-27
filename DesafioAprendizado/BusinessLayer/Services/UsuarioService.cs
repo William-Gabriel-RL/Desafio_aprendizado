@@ -6,6 +6,7 @@ using System.Text;
 using Repositorys.Interfaces;
 using Repositorys.Repos;
 using Repositorys.Context;
+using Repositorys.DTO.UsuarioDTO;
 
 namespace BusinessLayer.Services
 {
@@ -47,12 +48,12 @@ namespace BusinessLayer.Services
             _usuarioRepository.DeletarUsuario(usuarioMatricula);
         }
 
-        public async Task<IEnumerable<Usuario>> ObterTodosUsuarios()
+        public async Task<IEnumerable<ExibirUsuarioDTO>> ObterTodosUsuarios()
         {
             return await _usuarioRepository.ObterTodosUsuarios();
         }
 
-        public Usuario? ObterUsuarioPorMatricula(string UsuarioMatricula)
+        public ExibirUsuarioDTO? ObterUsuarioPorMatricula(string UsuarioMatricula)
         {
             return _usuarioRepository.ObterUsuarioPorMatricula(UsuarioMatricula);
         }

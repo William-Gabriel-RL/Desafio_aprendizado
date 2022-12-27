@@ -3,6 +3,7 @@ using BusinessLayer.Interfaces;
 using BusinessLayer.Services;
 using Entities.Models;
 using Microsoft.AspNetCore.Mvc;
+using Repositorys.DTO.PagamentoDTO;
 
 namespace API.Controllers
 {
@@ -24,13 +25,13 @@ namespace API.Controllers
         }
 
         [HttpGet]
-        public ActionResult<ICollection<Pagamento>> Get()
+        public ActionResult<ICollection<ExibirPagamentoDTO>> Get()
         {
-            return Ok(_pagamentoService.ObterTodosPagamentos());
+            return Ok(_pagamentoService.ObterTodosPagamentos().Result);
         }
 
         [HttpGet("id")]
-        public ActionResult<Pagamento> Get(int pagamentoId)
+        public ActionResult<ExibirPagamentoDTO> Get(int pagamentoId)
         {
             return Ok(_pagamentoService.ObterPagamentoPorId(pagamentoId));
         }

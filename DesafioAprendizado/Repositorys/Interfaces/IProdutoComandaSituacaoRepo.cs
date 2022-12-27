@@ -1,12 +1,13 @@
 ﻿using Entities.Models;
+using Repositorys.DTO;
 
 namespace Repositorys.Interfaces
 {
     public interface IProdutoComandaSituacaoRepo
     {
         public void CriarProdutoComandaSituacao(ProdutoComandaSituacao produtoComandaSituacao);
-        public ProdutoComandaSituacao? ObterProdutoComandaSituacaoPorId(int produtoComandaSituacaoId);
-        public Task<IEnumerable<ProdutoComandaSituacao>> ObterTodosProdutosComandaSituacao();
+        public ExibirProdutoComandaSituacaoDTO? ObterProdutoComandaSituacaoPorId(int produtoComandaSituacaoId);
+        public Task<IEnumerable<ExibirProdutoComandaSituacaoDTO>> ObterTodosProdutosComandaSituacao();
         public void AtualizarProdutoComandaSituacao(ProdutoComandaSituacao produtoComandaSituacao);
         public void DeletarProdutoComandaSituacao(int produtoComandaSituacaoId);
         public void Salvar();
