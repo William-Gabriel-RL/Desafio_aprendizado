@@ -52,6 +52,7 @@ namespace Repositorys.Repos
         public ExibirProdutoDTO? ObterProdutoPorId(int produtoId)
         {
             return _context.Produtos
+                .Where(x => x.ProdutoId == produtoId)
                 .Select(x => new ExibirProdutoDTO
                 {
                     ProdutoId = x.ProdutoId,
@@ -62,12 +63,13 @@ namespace Repositorys.Repos
                     ProdutoFotoId = x.ProdutoFotoId,
                     ProdutoDataUltimaAtualizacao = x.ProdutoDataUltimaAtualizacao,
                     UsuarioId = x.UsuarioId,
-                    Categorias = (ICollection<ProdutoExibirCategoriaDTO>)x.Categorias.Select(x => new ProdutoExibirCategoriaDTO
+                    Categorias = x.Categorias
+                    .Select(x => new ProdutoExibirCategoriaDTO
                     {
                         CategoriaNome = x.Categoria.CategoriaNome
                     })
                 })
-                .FirstOrDefault(x => x.ProdutoId == produtoId);
+                .FirstOrDefault();
         }
 
         public async Task<IEnumerable<ExibirProdutoDTO>> ObterTodosProdutos()

@@ -10,6 +10,6 @@
         public DateTime ProdutoDataUltimaAtualizacao { get; set; }
         public string? ProdutoFotoId { get; set; }
         public string UsuarioId { get; set; }
-        public ICollection<ProdutoExibirCategoriaDTO> Categorias { get; set; }
+        public IEnumerable<ProdutoExibirCategoriaDTO> Categorias { get; set; }
     }
 }

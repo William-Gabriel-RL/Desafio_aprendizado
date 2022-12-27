@@ -142,9 +142,6 @@ namespace Repositorys.Migrations
                     b.Property<Guid>("ComandaId")
                         .HasColumnType("uniqueidentifier");
 
-                    b.Property<Guid?>("ComandaId1")
-                        .HasColumnType("uniqueidentifier");
-
                     b.Property<int>("FormaPagamentoId")
                         .HasColumnType("int");
 
@@ -167,8 +164,6 @@ namespace Repositorys.Migrations
                     b.HasKey("PagamentoId");
 
                     b.HasIndex("ComandaId");
-
-                    b.HasIndex("ComandaId1");
 
                     b.HasIndex("FormaPagamentoId");
 
@@ -252,9 +247,6 @@ namespace Repositorys.Migrations
                     b.Property<Guid>("ComandaId")
                         .HasColumnType("uniqueidentifier");
 
-                    b.Property<Guid?>("ComandaId1")
-                        .HasColumnType("uniqueidentifier");
-
                     b.Property<DateTime>("ProdutoComandaDataUltimaAtualizacao")
                         .HasColumnType("datetime2");
 
@@ -280,8 +272,6 @@ namespace Repositorys.Migrations
 
                     b.HasIndex("ComandaId");
 
-                    b.HasIndex("ComandaId1");
-
                     b.HasIndex("ProdutoId");
 
                     b.ToTable("ProdutoComanda", (string)null);
@@ -296,9 +286,6 @@ namespace Repositorys.Migrations
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("ProdutoComandaSituacaoId"));
 
                     b.Property<int>("ProdutoComandaId")
-                        .HasColumnType("int");
-
-                    b.Property<int?>("ProdutoComandaId1")
                         .HasColumnType("int");
 
                     b.Property<DateTime>("ProdutoComandaSituacaoDataHora")
@@ -325,8 +312,6 @@ namespace Repositorys.Migrations
                     b.HasKey("ProdutoComandaSituacaoId");
 
                     b.HasIndex("ProdutoComandaId");
-
-                    b.HasIndex("ProdutoComandaId1");
 
                     b.HasIndex("StatusSituacaoId");
 
@@ -440,14 +425,10 @@ namespace Repositorys.Migrations
             modelBuilder.Entity("Entities.Models.Pagamento", b =>
                 {
                     b.HasOne("Entities.Models.Comanda", "Comanda")
-                        .WithMany()
+                        .WithMany("Pagamento")
                         .HasForeignKey("ComandaId")
                         .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
-
-                    b.HasOne("Entities.Models.Comanda", null)
-                        .WithMany("Pagamento")
-                        .HasForeignKey("ComandaId1");
 
                     b.HasOne("Entities.Models.FormaPagamento", "FormaPagamento")
                         .WithMany()
@@ -490,15 +471,10 @@ namespace Repositorys.Migrations
             modelBuilder.Entity("Entities.Models.ProdutoComanda", b =>
                 {
                     b.HasOne("Entities.Models.Comanda", "Comanda")
-                        .WithMany()
+                        .WithMany("ProdutosComanda")
                         .HasForeignKey("ComandaId")
                         .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
-
-                    b.HasOne("Entities.Models.Comanda", null)
-                        .WithMany("ProdutosComanda")
-                        .HasForeignKey("ComandaId1")
-                        .OnDelete(DeleteBehavior.Restrict);
 
                     b.HasOne("Entities.Models.Produto", "Produto")
                         .WithMany()
@@ -514,14 +490,10 @@ namespace Repositorys.Migrations
             modelBuilder.Entity("Entities.Models.ProdutoComandaSituacao", b =>
                 {
                     b.HasOne("Entities.Models.ProdutoComanda", "ProdutoComanda")
-                        .WithMany()
+                        .WithMany("Situacoes")
                         .HasForeignKey("ProdutoComandaId")
                         .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
-
-                    b.HasOne("Entities.Models.ProdutoComanda", null)
-                        .WithMany("Situacoes")
-                        .HasForeignKey("ProdutoComandaId1");
 
                     b.HasOne("Entities.Models.StatusSituacao", "StatusSituacao")
                         .WithMany()

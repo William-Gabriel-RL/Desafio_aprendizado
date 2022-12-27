@@ -1,12 +1,11 @@
-﻿using System;
-using Microsoft.EntityFrameworkCore.Migrations;
+﻿using Microsoft.EntityFrameworkCore.Migrations;
 
 #nullable disable
 
 namespace Repositorys.Migrations
 {
     /// <inheritdoc />
-    public partial class db : Migration
+    public partial class criando : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -195,8 +194,7 @@ namespace Repositorys.Migrations
                     ComandaId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
                     UsuarioMatricula = table.Column<string>(type: "nvarchar(450)", nullable: false),
                     PagamentoDeletado = table.Column<bool>(type: "bit", nullable: false),
-                    PagamentoDataUltimaAtualizacao = table.Column<DateTime>(type: "datetime2", nullable: false),
-                    ComandaId1 = table.Column<Guid>(type: "uniqueidentifier", nullable: true)
+                    PagamentoDataUltimaAtualizacao = table.Column<DateTime>(type: "datetime2", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -206,12 +204,7 @@ namespace Repositorys.Migrations
                         column: x => x.ComandaId,
                         principalTable: "Comanda",
                         principalColumn: "ComandaId",
-                        onDelete: ReferentialAction.Cascade);
-                    table.ForeignKey(
-                        name: "FK_Pagamento_Comanda_ComandaId1",
-                        column: x => x.ComandaId1,
-                        principalTable: "Comanda",
-                        principalColumn: "ComandaId");
+                        onDelete: ReferentialAction.Restrict);
                     table.ForeignKey(
                         name: "FK_Pagamento_FormaPagamento_FormaPagamentoId",
                         column: x => x.FormaPagamentoId,
@@ -238,8 +231,7 @@ namespace Repositorys.Migrations
                     ProdutoId = table.Column<int>(type: "int", nullable: false),
                     ComandaId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
                     ProdutoComandaDeletado = table.Column<bool>(type: "bit", nullable: false),
-                    ProdutoComandaDataUltimaAtualizacao = table.Column<DateTime>(type: "datetime2", nullable: false),
-                    ComandaId1 = table.Column<Guid>(type: "uniqueidentifier", nullable: true)
+                    ProdutoComandaDataUltimaAtualizacao = table.Column<DateTime>(type: "datetime2", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -250,11 +242,6 @@ namespace Repositorys.Migrations
                         principalTable: "Comanda",
                         principalColumn: "ComandaId",
                         onDelete: ReferentialAction.Restrict);
-                    table.ForeignKey(
-                        name: "FK_ProdutoComanda_Comanda_ComandaId1",
-                        column: x => x.ComandaId1,
-                        principalTable: "Comanda",
-                        principalColumn: "ComandaId");
                     table.ForeignKey(
                         name: "FK_ProdutoComanda_Produto_ProdutoId",
                         column: x => x.ProdutoId,
@@ -275,8 +262,7 @@ namespace Repositorys.Migrations
                     ProdutoComandaSituacaoDataUltimaAtualizacao = table.Column<DateTime>(type: "datetime", nullable: false),
                     UsuarioMatricula = table.Column<string>(type: "nvarchar(450)", nullable: false),
                     StatusSituacaoId = table.Column<int>(type: "int", nullable: false),
-                    ProdutoComandaId = table.Column<int>(type: "int", nullable: false),
-                    ProdutoComandaId1 = table.Column<int>(type: "int", nullable: true)
+                    ProdutoComandaId = table.Column<int>(type: "int", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -287,11 +273,6 @@ namespace Repositorys.Migrations
                         principalTable: "ProdutoComanda",
                         principalColumn: "ProdutoComandaId",
                         onDelete: ReferentialAction.Restrict);
-                    table.ForeignKey(
-                        name: "FK_ProdutoComandaSituacao_ProdutoComanda_ProdutoComandaId1",
-                        column: x => x.ProdutoComandaId1,
-                        principalTable: "ProdutoComanda",
-                        principalColumn: "ProdutoComandaId");
                     table.ForeignKey(
                         name: "FK_ProdutoComandaSituacao_StatusSituacao_StatusSituacaoId",
                         column: x => x.StatusSituacaoId,
@@ -322,11 +303,6 @@ namespace Repositorys.Migrations
                 column: "ComandaId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_Pagamento_ComandaId1",
-                table: "Pagamento",
-                column: "ComandaId1");
-
-            migrationBuilder.CreateIndex(
                 name: "IX_Pagamento_FormaPagamentoId",
                 table: "Pagamento",
                 column: "FormaPagamentoId");
@@ -347,11 +323,6 @@ namespace Repositorys.Migrations
                 column: "ComandaId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_ProdutoComanda_ComandaId1",
-                table: "ProdutoComanda",
-                column: "ComandaId1");
-
-            migrationBuilder.CreateIndex(
                 name: "IX_ProdutoComanda_ProdutoId",
                 table: "ProdutoComanda",
                 column: "ProdutoId");
@@ -360,11 +331,6 @@ namespace Repositorys.Migrations
                 name: "IX_ProdutoComandaSituacao_ProdutoComandaId",
                 table: "ProdutoComandaSituacao",
                 column: "ProdutoComandaId");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_ProdutoComandaSituacao_ProdutoComandaId1",
-                table: "ProdutoComandaSituacao",
-                column: "ProdutoComandaId1");
 
             migrationBuilder.CreateIndex(
                 name: "IX_ProdutoComandaSituacao_StatusSituacaoId",
