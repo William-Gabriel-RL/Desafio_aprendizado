@@ -10,7 +10,6 @@
         public string UsuarioTipo { get; set; }
         public int StatusSituacaoId { get; set; }
         public string StatusSituacaoNome { get; set; }
-        public bool ProdutoComandaSituacaoDeletado { get; set; }
         public DateTime ProdutoComandaSituacaoDataUltimaAtualizacao { get; set; }
     }
 }

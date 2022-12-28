@@ -1,14 +1,16 @@
 ﻿using BusinessLayer.DTO.PagamentoDTO;
 using BusinessLayer.Interfaces;
 using BusinessLayer.Services;
-using Entities.Models;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Repositorys.DTO.PagamentoDTO;
+using System.Security.Claims;
 
 namespace API.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
+    [Authorize(Roles = "1, 2")]
     public class PagamentoController : ControllerBase
     {
         private readonly IPagamentoService _pagamentoService;
@@ -20,7 +22,8 @@ namespace API.Controllers
         [HttpPost]
         public ActionResult Create([Bind(include: "Valor, FormaPagamentoId, ComandaId, UsuarioMatricula")] CriarPagamentoDTO criarPagamentoDTO)
         {
-            _pagamentoService.CriarPagamento(criarPagamentoDTO);
+            var matricula = User.FindFirstValue(ClaimTypes.NameIdentifier);
+            _pagamentoService.CriarPagamento(criarPagamentoDTO, matricula);
             return Ok("Pagamento criado com sucesso");
         }
 
@@ -37,7 +40,7 @@ namespace API.Controllers
         }
 
         [HttpPut]
-        public ActionResult Edit([Bind(include: "PagamentoId, PagamentoDataHora, Valor, FormaPagamentoId, ComandaId, UsuarioMatricula, PagamentoDeletado")]AtualizarPagamentoDTO atualizarPagamentoDTO)
+        public ActionResult Edit([Bind(include: "PagamentoId, PagamentoDataHora, Valor, FormaPagamentoId, ComandaId, UsuarioMatricula, PagamentoDeletado")] AtualizarPagamentoDTO atualizarPagamentoDTO)
         {
             _pagamentoService.AtualizarPagamento(atualizarPagamentoDTO);
             return Ok("Pagamento atualizado com sucesso");

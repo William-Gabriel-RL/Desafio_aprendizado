@@ -2,6 +2,7 @@
 using BusinessLayer.Interfaces;
 using Entities.Models;
 using Repositorys.Context;
+using Repositorys.DTO.MesaDTO;
 using Repositorys.Interfaces;
 using Repositorys.Repos;
 
@@ -38,12 +39,12 @@ namespace BusinessLayer.Services
             _mesaRepo.DeletarMesa(mesaId);
         }
 
-        public Mesa? ObterMesaPorId(int mesaId)
+        public ExibirMesaDTO? ObterMesaPorId(int mesaId)
         {
             return _mesaRepo.ObterMesaPorId(mesaId);
         }
 
-        public async Task<IEnumerable<Mesa>> ObterTodasMesas()
+        public async Task<IEnumerable<ExibirMesaDTO>> ObterTodasMesas()
         {
             return await _mesaRepo.ObterTodasMesas();
         }

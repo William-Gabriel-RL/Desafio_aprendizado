@@ -1,6 +1,7 @@
 ﻿using Entities.Models;
 using Microsoft.EntityFrameworkCore;
 using Repositorys.Context;
+using Repositorys.DTO.FormaPagamentoDTO;
 using Repositorys.Interfaces;
 
 namespace Repositorys.Repos
@@ -28,9 +29,9 @@ namespace Repositorys.Repos
         public void DeletarFormaPagamento(int formaPagamentoId)
         {
             FormaPagamento? formaPagamento = _context.FormasPagamento.Find(formaPagamentoId);
-            if (formaPagamento != null) 
+            if (formaPagamento != null)
             {
-                if(formaPagamento.FormaPagamentoDeletado == false)
+                if (formaPagamento.FormaPagamentoDeletado == false)
                 {
                     formaPagamento.FormaPagamentoDeletado = true;
                     formaPagamento.FormaPagamentoDataUltimaAtualizacao = DateTime.Now;
@@ -48,14 +49,29 @@ namespace Repositorys.Repos
             }
         }
 
-        public FormaPagamento? ObterFormaPagamentoPorId(int formaPagamentoId)
+        public ExibirFormaPagamentoDTO? ObterFormaPagamentoPorId(int formaPagamentoId)
         {
-            return _context.FormasPagamento.Find(formaPagamentoId);
+            return _context.FormasPagamento
+                .Where(x => x.FormaPagamentoDeletado == false)
+                .Select(x => new ExibirFormaPagamentoDTO
+                {
+                    FormaPagamentoId = x.FormaPagamentoId,
+                    FormaPagamentoNome = x.FormaPagamentoNome,
+                    FormaPagamentoDataUltimaAtualizacao = x.FormaPagamentoDataUltimaAtualizacao
+                })
+                .FirstOrDefault(x => x.FormaPagamentoId == formaPagamentoId);
         }
 
-        public async Task<IEnumerable<FormaPagamento>> ObterTodasFormasPagamento()
+        public async Task<IEnumerable<ExibirFormaPagamentoDTO>> ObterTodasFormasPagamento()
         {
-            return await _context.FormasPagamento.ToListAsync();
+            return await _context.FormasPagamento
+                .Where(x => x.FormaPagamentoDeletado == false)
+                .Select(x => new ExibirFormaPagamentoDTO
+                {
+                    FormaPagamentoId = x.FormaPagamentoId,
+                    FormaPagamentoNome = x.FormaPagamentoNome,
+                    FormaPagamentoDataUltimaAtualizacao = x.FormaPagamentoDataUltimaAtualizacao
+                }).ToListAsync();
         }
 
         public void Salvar()

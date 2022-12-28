@@ -31,12 +31,12 @@ namespace BusinessLayer.Services
             _produtoComandaSituacaoRepo.AtualizarProdutoComandaSituacao(produtoComandaSituacao);
         }
 
-        public void CriarProdutoComandaSituacao(CriarProdutoComandaSituacaoDTO criarProdutoComandaSituacaoDTO)
+        public void CriarProdutoComandaSituacao(CriarProdutoComandaSituacaoDTO criarProdutoComandaSituacaoDTO, string matricula)
         {
             ProdutoComandaSituacao produtoComandaSituacao = new()
             {
                 ProdutoComandaSituacaoMotivo = criarProdutoComandaSituacaoDTO.ProdutoComandaSituacaoMotivo,
-                UsuarioMatricula = criarProdutoComandaSituacaoDTO.UsuarioMatricula,
+                UsuarioMatricula = matricula,
                 StatusSituacaoId = criarProdutoComandaSituacaoDTO.StatusSituacaoId,
                 ProdutoComandaId = criarProdutoComandaSituacaoDTO.ProdutoComandaId
             };

@@ -32,7 +32,7 @@ namespace BusinessLayer.Services
             _produtoRepo.AtualizarProduto(produto);
         }
 
-        public void CriarProduto(CriarProdutoDTO criarProdutoDTO)
+        public void CriarProduto(CriarProdutoDTO criarProdutoDTO, string matricula)
         {
             Produto produto = new()
             {
@@ -40,7 +40,7 @@ namespace BusinessLayer.Services
                 ProdutoDescricao = criarProdutoDTO.ProdutoDescricao,
                 Preco = criarProdutoDTO.Preco,
                 ProdutoFotoId = criarProdutoDTO.ProdutoFotoId,
-                UsuarioId = criarProdutoDTO.UsuarioId,
+                UsuarioId = matricula,
                 ProdutoDataUltimaAtualizacao= DateTime.Now,
             };
             _produtoRepo.CriarProduto(produto);

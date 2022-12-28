@@ -2,13 +2,16 @@
 using BusinessLayer.DTO.UsuarioDTO;
 using BusinessLayer.Interfaces;
 using BusinessLayer.Services;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Repositorys.DTO.UsuarioDTO;
+using System.Data;
 
 namespace API.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
+    [Authorize(Roles = "1")]
     public class UsuarioController : ControllerBase
     {
         private readonly IUsuarioService _usuarioService;
@@ -53,6 +56,7 @@ namespace API.Controllers
             return Ok("Usuário deletado com sucesso");
         }
 
+        [AllowAnonymous]
         [HttpPost("Autenticação")]
         public ActionResult<string> Authenticate([FromBody] AutenticarUsuarioDTO usuario)
         {

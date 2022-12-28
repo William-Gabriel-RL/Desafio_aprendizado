@@ -9,7 +9,6 @@
         public string FormaPagamento { get; set; }
         public string UsuarioMatricula { get; set; }
         public string UsuarioNome { get; set; }
-        public bool PagamentoDeletado { get; set; }
         public DateTime PagamentoDataUltimaAtualizacao { get; set; }
     }
 }

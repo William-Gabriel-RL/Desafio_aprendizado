@@ -5,7 +5,6 @@
         public int ProdutoComandaSituacaoId { get; set; }
         public DateTime ProdutoComandaSituacaoDataHora { get; set; }
         public string? ProdutoComandaSituacaoMotivo { get; set; }
-        public bool ProdutoComandaSituacaoDeletado { get; set; }
         public DateTime ProdutoComandaSituacaoDataUltimaAtualizacao { get; set; }
         public string UsuarioMatricula { get; set; }
         public string UsuarioNome { get; set; }

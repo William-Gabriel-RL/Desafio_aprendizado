@@ -1,6 +1,7 @@
 ﻿using Entities.Models;
 using Microsoft.EntityFrameworkCore;
 using Repositorys.Context;
+using Repositorys.DTO.StatusSituacaoDTO;
 using Repositorys.Interfaces;
 
 namespace Repositorys.Repos
@@ -30,7 +31,7 @@ namespace Repositorys.Repos
             StatusSituacao? status = _context.StatusSituacao.Find(statusSituacaoId);
             if (status != null)
             {
-                if(status.StatusSituacaoDeletado == false)
+                if (status.StatusSituacaoDeletado == false)
                 {
                     status.StatusSituacaoDeletado = true;
                     status.StatusSituacaoDataUltimaAtualizacao = DateTime.Now;
@@ -48,14 +49,30 @@ namespace Repositorys.Repos
             }
         }
 
-        public StatusSituacao? ObterStatusSituacaoPorId(int statusSituacaoId)
+        public ExibirStatusSituacaoDTO? ObterStatusSituacaoPorId(int statusSituacaoId)
         {
-            return _context.StatusSituacao.Find(statusSituacaoId);
+            return _context.StatusSituacao
+                .Where(x => x.StatusSituacaoDeletado == false)
+                .Select(x => new ExibirStatusSituacaoDTO
+                {
+                    StatusSituacaoId = x.StatusSituacaoId,
+                    StatusSituacaoNome = x.StatusSituacaoNome,
+                    StatusSituacaoDataUltimaAtualizacao = x.StatusSituacaoDataUltimaAtualizacao
+                })
+                .FirstOrDefault(x => x.StatusSituacaoId == statusSituacaoId);
         }
 
-        public async Task<IEnumerable<StatusSituacao>> ObterTodosStatusSituacao()
+        public async Task<IEnumerable<ExibirStatusSituacaoDTO>> ObterTodosStatusSituacao()
         {
-            return await _context.StatusSituacao.ToListAsync();
+            return await _context.StatusSituacao
+                .Where(x => x.StatusSituacaoDeletado == false)
+                .Select(x => new ExibirStatusSituacaoDTO
+                {
+                    StatusSituacaoId = x.StatusSituacaoId,
+                    StatusSituacaoNome = x.StatusSituacaoNome,
+                    StatusSituacaoDataUltimaAtualizacao = x.StatusSituacaoDataUltimaAtualizacao
+                })
+                .ToListAsync();
         }
 
         public void Salvar()

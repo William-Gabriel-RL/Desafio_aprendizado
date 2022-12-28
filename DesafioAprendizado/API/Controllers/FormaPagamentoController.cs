@@ -1,13 +1,15 @@
 ﻿using BusinessLayer.DTO.FormaPagamentoDTO;
 using BusinessLayer.Interfaces;
 using BusinessLayer.Services;
-using Entities.Models;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Repositorys.DTO.FormaPagamentoDTO;
 
 namespace API.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
+    [Authorize(Roles = "1")]
     public class FormaPagamentoController : ControllerBase
     {
         private readonly IFormaPagamentoService _formaPagamentoService;
@@ -24,13 +26,13 @@ namespace API.Controllers
         }
 
         [HttpGet]
-        public ActionResult<ICollection<FormaPagamento>> Get()
+        public ActionResult<ICollection<ExibirFormaPagamentoDTO>> Get()
         {
             return Ok(_formaPagamentoService.ObterTodasFormasPagamento().Result);
         }
 
         [HttpGet("id")]
-        public FormaPagamento? Get([FromQuery] int formaPagamentoId)
+        public ExibirFormaPagamentoDTO? Get([FromQuery] int formaPagamentoId)
         {
             return _formaPagamentoService.ObterFormaPagamentoPorId(formaPagamentoId);
         }

@@ -1,13 +1,16 @@
 ﻿using BusinessLayer.DTO.ProdutoCategoriaDTO;
 using BusinessLayer.Interfaces;
 using BusinessLayer.Services;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Repositorys.DTO.ProdutoCategoriaDTO;
+using System.Data;
 
 namespace API.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
+    [Authorize(Roles = "1")]
     public class ProdutoCategoriaController : ControllerBase
     {
         private readonly IProdutoCategoriaService _produtoCategoriaService;

@@ -52,6 +52,7 @@ namespace Repositorys.Repos
         public ExibirPagamentoDTO? ObterPagamentoPorId(int pagamentoId)
         {
             return _context.Pagamentos
+                .Where(x => x.PagamentoDeletado == false)
                 .Select(x => new ExibirPagamentoDTO
                 {
                     PagamentoId = x.PagamentoId,
@@ -62,7 +63,6 @@ namespace Repositorys.Repos
                     ComandaId = x.ComandaId,
                     UsuarioMatricula = x.UsuarioMatricula,
                     UsuarioNome = x.Usuario.UsuarioNome,
-                    PagamentoDeletado = x.PagamentoDeletado,
                     PagamentoDataUltimaAtualizacao = x.PagamentoDataUltimaAtualizacao
                 })
                 .FirstOrDefault(x => x.PagamentoId == pagamentoId);
@@ -71,6 +71,7 @@ namespace Repositorys.Repos
         public async Task<IEnumerable<ExibirPagamentoDTO>> ObterTodosPagamentos()
         {
             return await _context.Pagamentos
+                .Where(x => x.PagamentoDeletado == false)
                 .Select(x => new ExibirPagamentoDTO
                 {
                     PagamentoId = x.PagamentoId,
@@ -81,7 +82,6 @@ namespace Repositorys.Repos
                     ComandaId = x.ComandaId,
                     UsuarioMatricula = x.UsuarioMatricula,
                     UsuarioNome = x.Usuario.UsuarioNome,
-                    PagamentoDeletado = x.PagamentoDeletado,
                     PagamentoDataUltimaAtualizacao = x.PagamentoDataUltimaAtualizacao
                 })
                 .ToListAsync();

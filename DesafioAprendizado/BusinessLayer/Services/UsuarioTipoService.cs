@@ -5,6 +5,7 @@ using Repositorys.Interfaces;
 using Repositorys.Repos;
 using Repositorys.Context;
 using Microsoft.EntityFrameworkCore;
+using Repositorys.DTO.UsuarioTipoDTO;
 
 namespace BusinessLayer.Services
 {
@@ -42,12 +43,12 @@ namespace BusinessLayer.Services
             _usuarioTipoRepository.DeletarUsuarioTipo(usuarioTipoId);
         }
 
-        public async Task<IEnumerable<UsuarioTipo>> ObterTodosUsuarioTipos()
+        public async Task<IEnumerable<ExibirUsuarioTipoDTO>> ObterTodosUsuarioTipos()
         {
             return await _usuarioTipoRepository.ObterTodosUsuarioTipos();
         }
 
-        public UsuarioTipo? ObterUsuarioTipoPorId(int usuarioTipoId)
+        public ExibirUsuarioTipoDTO? ObterUsuarioTipoPorId(int usuarioTipoId)
         {
             return _usuarioTipoRepository.ObterUsuarioTipoPorId(usuarioTipoId);
         }

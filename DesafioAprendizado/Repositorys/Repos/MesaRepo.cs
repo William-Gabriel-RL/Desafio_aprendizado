@@ -1,12 +1,8 @@
 ﻿using Entities.Models;
 using Microsoft.EntityFrameworkCore;
 using Repositorys.Context;
+using Repositorys.DTO.MesaDTO;
 using Repositorys.Interfaces;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Repositorys.Repos
 {
@@ -46,20 +42,36 @@ namespace Repositorys.Repos
                 {
                     throw new Exception("Mesa já deletada");
                 }
-            }else
+            }
+            else
             {
                 throw new Exception("Mesa não encontrada");
             }
         }
 
-        public Mesa? ObterMesaPorId(int mesaId)
+        public ExibirMesaDTO? ObterMesaPorId(int mesaId)
         {
-            return _context.Mesas.Find(mesaId);
+            return _context.Mesas
+                .Where(x => x.MesaDeletada == false)
+                .Select(x => new ExibirMesaDTO
+                {
+                    MesaId = x.MesaId,
+                    MesaOcupada = x.MesaOcupada,
+                    MesaDataUltimaAtualizacao = x.MesaDataUltimaAtualizacao
+                })
+                .FirstOrDefault();
         }
 
-        public async Task<IEnumerable<Mesa>> ObterTodasMesas()
+        public async Task<IEnumerable<ExibirMesaDTO>> ObterTodasMesas()
         {
-            return await _context.Mesas.ToListAsync();
+            return await _context.Mesas
+                .Where(x => x.MesaDeletada == false)
+                .Select(x => new ExibirMesaDTO
+                {
+                    MesaId = x.MesaId,
+                    MesaOcupada = x.MesaOcupada,
+                    MesaDataUltimaAtualizacao = x.MesaDataUltimaAtualizacao
+                }).ToListAsync();
         }
 
         public void Salvar()

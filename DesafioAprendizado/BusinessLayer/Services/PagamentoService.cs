@@ -30,14 +30,14 @@ namespace BusinessLayer.Services
             _pagamentoRepo.AtualizarPagamento(pagamento);
         }
 
-        public void CriarPagamento(CriarPagamentoDTO criarPagamentoDTO)
+        public void CriarPagamento(CriarPagamentoDTO criarPagamentoDTO, string matricula)
         {
             Pagamento pagamento = new()
             {
                 Valor = criarPagamentoDTO.Valor,
                 FormaPagamentoId = criarPagamentoDTO.FormaPagamentoId,
                 ComandaId = new Guid(criarPagamentoDTO.ComandaId),
-                UsuarioMatricula = criarPagamentoDTO.UsuarioMatricula
+                UsuarioMatricula = matricula
             };
             _pagamentoRepo.CriarPagamento(pagamento);
         }

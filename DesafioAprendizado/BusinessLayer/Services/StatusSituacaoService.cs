@@ -4,6 +4,7 @@ using Repositorys.Context;
 using BusinessLayer.Interfaces;
 using BusinessLayer.DTO.StatusSituacaoDTO;
 using Entities.Models;
+using Repositorys.DTO.StatusSituacaoDTO;
 
 namespace BusinessLayer.Services
 {
@@ -41,12 +42,12 @@ namespace BusinessLayer.Services
             _statusSituacaoRepo.DeletarStatusSituacao(statusSituacaoId);
         }
 
-        public StatusSituacao? ObterStatusSituacaoPorId(int statusSituacaoId)
+        public ExibirStatusSituacaoDTO? ObterStatusSituacaoPorId(int statusSituacaoId)
         {
             return _statusSituacaoRepo.ObterStatusSituacaoPorId(statusSituacaoId);
         }
 
-        public async Task<IEnumerable<StatusSituacao>> ObterTodosStatusSituacao()
+        public async Task<IEnumerable<ExibirStatusSituacaoDTO>> ObterTodosStatusSituacao()
         {
             return await _statusSituacaoRepo.ObterTodosStatusSituacao();
         }

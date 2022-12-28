@@ -63,7 +63,9 @@ namespace Repositorys.Repos
                     ProdutoId = x.ProdutoId,
                     ProdutoNome = x.Produto.ProdutoNome,
                     ComandaId = x.ComandaId,
-                    Situacoes = x.Situacoes.Select(x => new ExibirProdutoComandaSituacaoStatus
+                    Situacoes = x.Situacoes
+                    .Where(x => x.ProdutoComandaSituacaoDeletado == false)
+                    .Select(x => new ExibirProdutoComandaSituacaoStatus
                     {
                         ProdutoComandaSituacaoId = x.ProdutoComandaSituacaoId,
                         StatusSituacaoId = x.StatusSituacaoId,
@@ -73,10 +75,8 @@ namespace Repositorys.Repos
                         UsuarioMatricula = x.UsuarioMatricula,
                         UsuarioNome = x.Usuario.UsuarioNome,
                         UsuarioTipo = x.Usuario.Tipo.UsuarioTipoNome,
-                        ProdutoComandaSituacaoDeletado = x.ProdutoComandaSituacaoDeletado,
                         ProdutoComandaSituacaoDataUltimaAtualizacao = x.ProdutoComandaSituacaoDataHora,
                     }),
-                    ProdutoComandaDeletado = x.ProdutoComandaDeletado,
                     ProdutoComandaDataUltimaAtualizacao = x.ProdutoComandaDataUltimaAtualizacao
                 })
                 .FirstOrDefault();
@@ -94,7 +94,9 @@ namespace Repositorys.Repos
                     ProdutoId = x.ProdutoId,
                     ProdutoNome = x.Produto.ProdutoNome,
                     ComandaId = x.ComandaId,
-                    Situacoes = x.Situacoes.Select(x => new ExibirProdutoComandaSituacaoStatus
+                    Situacoes = x.Situacoes
+                    .Where(x => x.ProdutoComandaSituacaoDeletado == false)
+                    .Select(x => new ExibirProdutoComandaSituacaoStatus
                     {
                         ProdutoComandaSituacaoId = x.ProdutoComandaSituacaoId,
                         ProdutoComandaSituacaoDataHora = x.ProdutoComandaSituacaoDataHora,
@@ -104,10 +106,8 @@ namespace Repositorys.Repos
                         UsuarioTipo = x.Usuario.Tipo.UsuarioTipoNome,
                         StatusSituacaoId = x.StatusSituacaoId,
                         StatusSituacaoNome = x.StatusSituacao.StatusSituacaoNome,
-                        ProdutoComandaSituacaoDeletado = x.ProdutoComandaSituacaoDeletado,
                         ProdutoComandaSituacaoDataUltimaAtualizacao = x.ProdutoComandaSituacaoDataHora
                     }),
-                    ProdutoComandaDeletado = x.ProdutoComandaDeletado,
                     ProdutoComandaDataUltimaAtualizacao = x.ProdutoComandaDataUltimaAtualizacao
                 })
                 .ToListAsync();

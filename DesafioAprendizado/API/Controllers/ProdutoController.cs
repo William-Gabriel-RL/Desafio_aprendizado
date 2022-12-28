@@ -1,14 +1,16 @@
 ﻿using BusinessLayer.DTO.ProdutoDTO;
 using BusinessLayer.Interfaces;
 using BusinessLayer.Services;
-using Entities.Models;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Repositorys.DTO.ProdutoDTO;
+using System.Security.Claims;
 
 namespace API.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
+    [Authorize(Roles = "1")]
     public class ProdutoController : ControllerBase
     {
         private readonly IProdutoService _produtoService;
@@ -20,7 +22,8 @@ namespace API.Controllers
         [HttpPost]
         public ActionResult Create([Bind(include: "ProdutoNome, ProdutoDescricao, Preco, CategoriaId, ProdutoFotoId, UsuarioId")] CriarProdutoDTO criarProdutoDTO)
         {
-            _produtoService.CriarProduto(criarProdutoDTO);
+            var matricula = User.FindFirstValue(ClaimTypes.NameIdentifier);
+            _produtoService.CriarProduto(criarProdutoDTO, matricula);
             return Ok("Produto criado com sucesso");
         }
 

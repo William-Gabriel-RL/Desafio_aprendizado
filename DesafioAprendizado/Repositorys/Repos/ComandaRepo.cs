@@ -52,25 +52,29 @@ namespace Repositorys.Repos
         public ExibirComandaDTO? ObterComandaPorId(string comandaId)
         {
             return _context.Comandas
+                .Where(x => x.ComandaDeletado == false)
                 .Select(x => new ExibirComandaDTO
                 {
                     ComandaId = x.ComandaId,
                     ComandaHoraAbertura = x.ComandaHoraAbertura,
                     ComandaTotal = x.ComandaTotal,
                     ComandaFinalizada = x.ComandaFinalizada,
-                    ComandaDeletado = x.ComandaDeletado,
                     ComandaDataUltimaAtualizacao = x.ComandaDataUltimaAtualizacao,
                     AtendenteMatricula = x.AtendenteMatricula,
                     Atendente = x.Atendente.UsuarioNome,
                     MesaId = x.MesaId,
-                    ProdutosComanda = x.ProdutosComanda.Select(x => new ComandaExibirProdutoComanda
+                    ProdutosComanda = x.ProdutosComanda
+                    .Where(x => x.ProdutoComandaDeletado == false)
+                    .Select(x => new ComandaExibirProdutoComanda
                     {
                         ProdutoComandaQuantidadeProdutos = x.ProdutoComandaQuantidadeProdutos,
                         ProdutoComandaNome = x.Produto.ProdutoNome,
                         ProdutoComandaPreco = x.ProdutoComandaPreco,
                         ProdutoComandaObservacao = x.ProdutoComandaObservacao
                     }),
-                    Pagamento = x.Pagamento.Select(x => new ComandaExibirPagamento
+                    Pagamento = x.Pagamento
+                    .Where(x => x.PagamentoDeletado == false)
+                    .Select(x => new ComandaExibirPagamento
                     {
                         PagamentoId = x.PagamentoId,
                         PagamentoDataHora = x.PagamentoDataHora,
@@ -79,7 +83,6 @@ namespace Repositorys.Repos
                         FormaPagamento = x.FormaPagamento.FormaPagamentoNome,
                         UsuarioMatricula = x.UsuarioMatricula,
                         UsuarioNome = x.Usuario.UsuarioNome,
-                        PagamentoDeletado = x.PagamentoDeletado,
                         PagamentoDataUltimaAtualizacao = x.PagamentoDataUltimaAtualizacao
                     })
                 })
@@ -89,25 +92,29 @@ namespace Repositorys.Repos
         public async Task<IEnumerable<ExibirComandaDTO>> ObterTodasComandas()
         {
             return await _context.Comandas
+                .Where(x => x.ComandaDeletado == false)
                 .Select(x => new ExibirComandaDTO
                 {
                     ComandaId = x.ComandaId,
                     ComandaHoraAbertura = x.ComandaHoraAbertura,
                     ComandaTotal = x.ComandaTotal,
                     ComandaFinalizada = x.ComandaFinalizada,
-                    ComandaDeletado = x.ComandaDeletado,
                     ComandaDataUltimaAtualizacao = x.ComandaDataUltimaAtualizacao,
                     AtendenteMatricula = x.AtendenteMatricula,
                     Atendente = x.Atendente.UsuarioNome,
                     MesaId = x.MesaId,
-                    ProdutosComanda = x.ProdutosComanda.Select(x => new ComandaExibirProdutoComanda
+                    ProdutosComanda = x.ProdutosComanda
+                    .Where(x => x.ProdutoComandaDeletado == false)
+                    .Select(x => new ComandaExibirProdutoComanda
                     {
                         ProdutoComandaQuantidadeProdutos = x.ProdutoComandaQuantidadeProdutos,
                         ProdutoComandaNome = x.Produto.ProdutoNome,
                         ProdutoComandaPreco = x.ProdutoComandaPreco,
                         ProdutoComandaObservacao = x.ProdutoComandaObservacao
                     }),
-                    Pagamento = x.Pagamento.Select(x => new ComandaExibirPagamento
+                    Pagamento = x.Pagamento
+                    .Where(x => x.PagamentoDeletado == false)
+                    .Select(x => new ComandaExibirPagamento
                     {
                         PagamentoId = x.PagamentoId,
                         PagamentoDataHora = x.PagamentoDataHora,
@@ -116,11 +123,20 @@ namespace Repositorys.Repos
                         FormaPagamento = x.FormaPagamento.FormaPagamentoNome,
                         UsuarioMatricula = x.UsuarioMatricula,
                         UsuarioNome = x.Usuario.UsuarioNome,
-                        PagamentoDeletado = x.PagamentoDeletado,
                         PagamentoDataUltimaAtualizacao = x.PagamentoDataUltimaAtualizacao
                     })
                 })
                 .ToListAsync();
+        }
+
+        public void ObterTotal(string comandaId)
+        {
+            Comanda? comanda = _context.Comandas.Find(new Guid(comandaId));
+            comanda.ComandaTotal = _context.ProdutosComandas
+                .Where(x => x.ComandaId == new Guid(comandaId))
+                .Select(x => x.ProdutoComandaPreco)
+                .Sum();
+            _context.SaveChanges();
         }
 
         public void Salvar()

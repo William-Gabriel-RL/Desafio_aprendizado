@@ -52,13 +52,13 @@ namespace Repositorys.Repos
         public ExibirProdutoCategoriaDTO? ObterProdutoCategoriaPorCategoria(int categoriaId)
         {
             return _context.ProdutosCategorias
+                .Where(x => x.ProdutoCategoriaDeletado == false)
                 .Select(x => new ExibirProdutoCategoriaDTO
                 {
                     ProdutoId = x.ProdutoId,
                     Produto = x.Produto.ProdutoNome,
                     CategoriaId = x.CategoriaId,
                     Categoria = x.Categoria.CategoriaNome,
-                    ProdutoCategoriaDeletado = x.ProdutoCategoriaDeletado,
                     ProdutoCategoriaDataUltimaAtualizacao = x.ProdutoCategoriaDataUltimaAtualizacao
                 })
                 .FirstOrDefault(x => x.CategoriaId == categoriaId);
@@ -67,13 +67,13 @@ namespace Repositorys.Repos
         public async Task<IEnumerable<ExibirProdutoCategoriaDTO>> ObterTodosProdutosCategorias()
         {
             return await _context.ProdutosCategorias
+                .Where(x => x.ProdutoCategoriaDeletado == false)
                 .Select(x => new ExibirProdutoCategoriaDTO
                 {
                     ProdutoId = x.ProdutoId,
                     Produto = x.Produto.ProdutoNome,
                     CategoriaId = x.CategoriaId,
                     Categoria = x.Categoria.CategoriaNome,
-                    ProdutoCategoriaDeletado = x.ProdutoCategoriaDeletado,
                     ProdutoCategoriaDataUltimaAtualizacao = x.ProdutoCategoriaDataUltimaAtualizacao
                 })
                 .ToListAsync();

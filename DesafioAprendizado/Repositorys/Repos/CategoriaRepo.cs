@@ -1,6 +1,7 @@
 ﻿using Entities.Models;
 using Microsoft.EntityFrameworkCore;
 using Repositorys.Context;
+using Repositorys.DTO.CategoriaDTO;
 using Repositorys.Interfaces;
 
 namespace Repositorys.Repos
@@ -28,9 +29,9 @@ namespace Repositorys.Repos
         public void DeletarCategoria(int categoriaId)
         {
             Categoria? categoria = _context.Categorias.Find(categoriaId);
-            if (categoria != null) 
+            if (categoria != null)
             {
-                if(categoria.CategoriaDeletado != true)
+                if (categoria.CategoriaDeletado != true)
                 {
                     categoria.CategoriaDeletado = true;
                     categoria.CategoriaDataUltimaAtualizacao = DateTime.Now;
@@ -48,14 +49,30 @@ namespace Repositorys.Repos
             }
         }
 
-        public Categoria? ObterCategoriaPorId(int categoriaId)
+        public ExibirCategoriaDTO? ObterCategoriaPorId(int categoriaId)
         {
-            return _context.Categorias.Find(categoriaId);
+            return _context.Categorias
+                .Where(x => x.CategoriaDeletado == false)
+                .Select(x => new ExibirCategoriaDTO
+                {
+                    CategoriaId = x.CategoriaId,
+                    CategoriaNome = x.CategoriaNome,
+                    CategoriaDataUltimaAtualizacao = x.CategoriaDataUltimaAtualizacao
+                })
+                .FirstOrDefault(x => x.CategoriaId == categoriaId);
         }
 
-        public async Task<IEnumerable<Categoria>> ObterTodasCategorias()
+        public async Task<IEnumerable<ExibirCategoriaDTO>> ObterTodasCategorias()
         {
-            return await _context.Categorias.ToListAsync();
+            return await _context.Categorias
+                .Where(x => x.CategoriaDeletado == false)
+                .Select(x => new ExibirCategoriaDTO
+                {
+                    CategoriaId = x.CategoriaId,
+                    CategoriaNome= x.CategoriaNome,
+                    CategoriaDataUltimaAtualizacao = x.CategoriaDataUltimaAtualizacao
+                })
+                .ToListAsync();
         }
 
         public void Salvar()

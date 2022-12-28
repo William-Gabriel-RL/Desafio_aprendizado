@@ -5,7 +5,7 @@ namespace BusinessLayer.Interfaces
 {
     public interface IProdutoComandaSituacaoService
     {
-        public void CriarProdutoComandaSituacao(CriarProdutoComandaSituacaoDTO produtoComandaSituacao);
+        public void CriarProdutoComandaSituacao(CriarProdutoComandaSituacaoDTO produtoComandaSituacao, string matricula);
         public ExibirProdutoComandaSituacaoDTO? ObterProdutoComandaSituacaoPorId(int produtoComandaSituacaoId);
         public Task<IEnumerable<ExibirProdutoComandaSituacaoDTO>> ObterTodosProdutosComandaSituacao();
         public void AtualizarProdutoComandaSituacao(AtualizarProdutoComandaSituacaoDTO produtoComandaSituacao);

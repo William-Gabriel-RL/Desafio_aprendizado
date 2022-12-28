@@ -6,7 +6,6 @@
         public DateTime ComandaHoraAbertura { get; set; }
         public decimal ComandaTotal { get; set; } = 0.0m;
         public bool ComandaFinalizada { get; set; }
-        public bool ComandaDeletado { get; set; }
         public DateTime ComandaDataUltimaAtualizacao { get; set; }
         public string AtendenteMatricula { get; set; }
         public string Atendente { get; set; }

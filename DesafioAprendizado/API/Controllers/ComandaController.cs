@@ -1,13 +1,16 @@
 ﻿using BusinessLayer.DTO.ComandaDTO;
 using BusinessLayer.Interfaces;
 using BusinessLayer.Services;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Repositorys.DTO.ComandaDTO;
+using System.Security.Claims;
 
 namespace API.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
+    [Authorize(Roles = "1, 2")]
     public class ComandaController : ControllerBase
     {
         private readonly IComandaService _comandaService;
@@ -17,9 +20,10 @@ namespace API.Controllers
         }
 
         [HttpPost]
-        public ActionResult Create([Bind(include: "AtendenteMatricula, MesaId")]CriarComandaDTO criarComandaDTO)
+        public ActionResult Create([Bind(include: "AtendenteMatricula, MesaId")] CriarComandaDTO criarComandaDTO)
         {
-            _comandaService.CriarComanda(criarComandaDTO);
+            var matricula = User.FindFirstValue(ClaimTypes.NameIdentifier);
+            _comandaService.CriarComanda(criarComandaDTO, matricula);
             return Ok("Comanda criada com sucesso");
         }
 
@@ -36,10 +40,17 @@ namespace API.Controllers
         }
 
         [HttpPut]
-        public ActionResult Edit([Bind(include: "ComandaId, ComandaHoraAbertura, ComandaFinalizada, ComandaDeletado, AtendenteMatricula, MesaId, PagamentoId")]AtualizarComandaDTO atualizarComandaDTO)
+        public ActionResult Edit([Bind(include: "ComandaId, ComandaHoraAbertura, ComandaFinalizada, ComandaDeletado, AtendenteMatricula, MesaId, PagamentoId")] AtualizarComandaDTO atualizarComandaDTO)
         {
             _comandaService.AtualizarComanda(atualizarComandaDTO);
             return Ok("Comanda atualizada com sucesso");
+        }
+
+        [HttpPut("id")]
+        public ActionResult ObterTotal(string comandaId)
+        {
+            _comandaService.ObterTotal(comandaId);
+            return Ok("Total da comanda foi calculado com sucesso");
         }
 
         [HttpDelete]

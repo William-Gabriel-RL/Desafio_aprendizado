@@ -10,6 +10,7 @@ namespace Repositorys.Interfaces
         public Task<IEnumerable<ExibirComandaDTO>> ObterTodasComandas();
         public void AtualizarComanda(Comanda Comanda);
         public void DeletarComanda(string ComandaId);
+        public void ObterTotal(string comandaId);
         public void Salvar();
     }
 }

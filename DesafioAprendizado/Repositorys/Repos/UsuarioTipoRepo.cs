@@ -1,6 +1,7 @@
 ﻿using Entities.Models;
 using Microsoft.EntityFrameworkCore;
 using Repositorys.Context;
+using Repositorys.DTO.UsuarioTipoDTO;
 using Repositorys.Interfaces;
 
 namespace Repositorys.Repos
@@ -30,7 +31,7 @@ namespace Repositorys.Repos
             UsuarioTipo? usuarioTipo = _context.UsuarioTipos.Find(usuarioTipoId);
             if (usuarioTipo != null)
             {
-                if(usuarioTipo.UsuarioTipoDeletado == false)
+                if (usuarioTipo.UsuarioTipoDeletado == false)
                 {
                     usuarioTipo.UsuarioTipoDeletado = true;
                     usuarioTipo.UsuarioTipoDataUltimaAtualizacao = DateTime.Now;
@@ -48,14 +49,30 @@ namespace Repositorys.Repos
             }
         }
 
-        public async Task<IEnumerable<UsuarioTipo>> ObterTodosUsuarioTipos()
+        public async Task<IEnumerable<ExibirUsuarioTipoDTO>> ObterTodosUsuarioTipos()
         {
-            return await _context.UsuarioTipos.Take(10).ToListAsync();
+            return await _context.UsuarioTipos
+                .Where(x => x.UsuarioTipoDeletado == false)
+                .Select(x => new ExibirUsuarioTipoDTO
+                {
+                    UsuarioTipoId = x.UsuarioTipoId,
+                    UsuarioTipoNome = x.UsuarioTipoNome,
+                    UsuarioTipoDataUltimaAtualizacao = x.UsuarioTipoDataUltimaAtualizacao
+                })
+                .ToListAsync();
         }
 
-        public UsuarioTipo? ObterUsuarioTipoPorId(int usuarioTipoId)
+        public ExibirUsuarioTipoDTO? ObterUsuarioTipoPorId(int usuarioTipoId)
         {
-            return _context.UsuarioTipos.Find(usuarioTipoId);
+            return _context.UsuarioTipos
+                .Where(x => x.UsuarioTipoDeletado == false)
+                .Select(x => new ExibirUsuarioTipoDTO
+                {
+                    UsuarioTipoId = x.UsuarioTipoId,
+                    UsuarioTipoNome = x.UsuarioTipoNome,
+                    UsuarioTipoDataUltimaAtualizacao = x.UsuarioTipoDataUltimaAtualizacao
+                })
+                .FirstOrDefault(x => x.UsuarioTipoId == usuarioTipoId);
         }
 
         public void Save()

@@ -30,11 +30,11 @@ namespace BusinessLayer.Services
             _comandaRepo.AtualizarComanda(comanda);
         }
 
-        public void CriarComanda(CriarComandaDTO criarComandaDTO)
+        public void CriarComanda(CriarComandaDTO criarComandaDTO, string matricula)
         {
             Comanda comanda = new()
             {
-                AtendenteMatricula = criarComandaDTO.AtendenteMatricula,
+                AtendenteMatricula = matricula,
                 MesaId = criarComandaDTO.MesaId
             };
             _comandaRepo.CriarComanda(comanda);
@@ -53,6 +53,11 @@ namespace BusinessLayer.Services
         public async Task<IEnumerable<ExibirComandaDTO>> ObterTodasComandas()
         {
             return await _comandaRepo.ObterTodasComandas();
+        }
+
+        public void ObterTotal(string comandaId)
+        {
+            _comandaRepo.ObterTotal(comandaId);
         }
     }
 }

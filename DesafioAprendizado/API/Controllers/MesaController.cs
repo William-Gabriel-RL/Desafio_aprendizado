@@ -1,13 +1,15 @@
 ﻿using BusinessLayer.DTO.MesaDTO;
 using BusinessLayer.Interfaces;
 using BusinessLayer.Services;
-using Entities.Models;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Repositorys.DTO.MesaDTO;
 
 namespace API.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
+    [Authorize(Roles = "1")]
     public class MesaController : ControllerBase
     {
         private readonly IMesaService _mesaService;
@@ -24,27 +26,27 @@ namespace API.Controllers
         }
 
         [HttpGet]
-        public ActionResult<ICollection<Mesa>> Get()
+        public ActionResult<ICollection<ExibirMesaDTO>> Get()
         {
             return Ok(_mesaService.ObterTodasMesas().Result);
         }
 
         [HttpGet("id")]
-        public ActionResult<Mesa> Get(int mesaId)
+        public ActionResult<ExibirMesaDTO> Get(int mesaId)
         {
             return Ok(_mesaService.ObterMesaPorId(mesaId));
         }
 
         [HttpPut]
-        public ActionResult Edit([Bind(include: "MesaId, MesaOcupada, MesaDeletada")]AtualizarMesaDTO atualizarMesaDTO)
+        public ActionResult Edit([Bind(include: "MesaId, MesaOcupada, MesaDeletada")] AtualizarMesaDTO atualizarMesaDTO)
         {
             _mesaService.AtualizarMesa(atualizarMesaDTO);
             return Ok("Mesa atualizada com sucesso");
         }
 
         [HttpDelete]
-        public ActionResult Delete(int MesaId) 
-        { 
+        public ActionResult Delete(int MesaId)
+        {
             _mesaService.DeletarMesa(MesaId);
             return Ok("Mesa deletada com sucesso");
         }

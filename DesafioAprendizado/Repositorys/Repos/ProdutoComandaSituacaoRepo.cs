@@ -52,12 +52,12 @@ namespace Repositorys.Repos
         public ExibirProdutoComandaSituacaoDTO? ObterProdutoComandaSituacaoPorId(int produtoComandaSituacaoId)
         {
             return _context.ProdutosComandasSituacoes
+                .Where(x => x.ProdutoComandaSituacaoDeletado == false)
                 .Select(x => new ExibirProdutoComandaSituacaoDTO
                 {
                     ProdutoComandaSituacaoId = x.ProdutoComandaSituacaoId,
                     ProdutoComandaSituacaoDataHora = x.ProdutoComandaSituacaoDataHora,
                     ProdutoComandaSituacaoMotivo = x.ProdutoComandaSituacaoMotivo,
-                    ProdutoComandaSituacaoDeletado = x.ProdutoComandaSituacaoDeletado,
                     ProdutoComandaSituacaoDataUltimaAtualizacao = x.ProdutoComandaSituacaoDataUltimaAtualizacao,
                     UsuarioMatricula = x.UsuarioMatricula,
                     UsuarioNome = x.Usuario.UsuarioNome,
@@ -72,12 +72,12 @@ namespace Repositorys.Repos
         public async Task<IEnumerable<ExibirProdutoComandaSituacaoDTO>> ObterTodosProdutosComandaSituacao()
         {
             return await _context.ProdutosComandasSituacoes
+                .Where(x => x.ProdutoComandaSituacaoDeletado == false)
                 .Select(x => new ExibirProdutoComandaSituacaoDTO
                 {
                     ProdutoComandaSituacaoId = x.ProdutoComandaSituacaoId,
                     ProdutoComandaSituacaoDataHora = x.ProdutoComandaSituacaoDataHora,
                     ProdutoComandaSituacaoMotivo = x.ProdutoComandaSituacaoMotivo,
-                    ProdutoComandaSituacaoDeletado = x.ProdutoComandaSituacaoDeletado,
                     ProdutoComandaSituacaoDataUltimaAtualizacao = x.ProdutoComandaSituacaoDataUltimaAtualizacao,
                     UsuarioMatricula = x.UsuarioMatricula,
                     UsuarioNome = x.Usuario.UsuarioNome,

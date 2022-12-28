@@ -2,12 +2,16 @@
 using BusinessLayer.Interfaces;
 using BusinessLayer.Services;
 using Entities.Models;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Repositorys.DTO.CategoriaDTO;
+using System.Data;
 
 namespace API.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
+    [Authorize(Roles = "1")]
     public class CategoriaController : ControllerBase
     {
         private readonly ICategoriaService _categoriaService;
@@ -24,13 +28,13 @@ namespace API.Controllers
         }
 
         [HttpGet]
-        public ActionResult<ICollection<Categoria>> Get()
+        public ActionResult<ICollection<ExibirCategoriaDTO>> Get()
         {
             return Ok(_categoriaService.ObterTodasCategorias().Result);
         }
 
         [HttpGet("id")]
-        public Categoria? Get([FromQuery]int categoriaId)
+        public ExibirCategoriaDTO? Get([FromQuery]int categoriaId)
         {
             return _categoriaService.ObterCategoriaPorId(categoriaId);
         }

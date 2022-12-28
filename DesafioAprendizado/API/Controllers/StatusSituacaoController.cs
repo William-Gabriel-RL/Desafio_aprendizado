@@ -2,12 +2,15 @@
 using BusinessLayer.Interfaces;
 using BusinessLayer.Services;
 using Entities.Models;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Repositorys.DTO.StatusSituacaoDTO;
 
 namespace API.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
+    [Authorize(Roles = "1")]
     public class StatusSituacaoController : ControllerBase
     {
         private readonly IStatusSituacaoService _statusSituacaoService;
@@ -24,13 +27,13 @@ namespace API.Controllers
         }
 
         [HttpGet]
-        public ActionResult<ICollection<StatusSituacao>> Get()
+        public ActionResult<ICollection<ExibirStatusSituacaoDTO>> Get()
         {
             return Ok(_statusSituacaoService.ObterTodosStatusSituacao().Result);
         }
 
         [HttpGet("id")]
-        public ActionResult<StatusSituacao> Get([FromQuery] int statusSituacaoId)
+        public ActionResult<ExibirStatusSituacaoDTO> Get([FromQuery] int statusSituacaoId)
         {
             return Ok(_statusSituacaoService.ObterStatusSituacaoPorId(statusSituacaoId));
         }

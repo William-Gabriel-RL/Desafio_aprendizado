@@ -51,11 +51,11 @@ namespace Repositorys.Repos
         public async Task<IEnumerable<ExibirUsuarioDTO>> ObterTodosUsuarios()
         {
             return await _context.Usuarios
+                .Where(x => x.UsuarioDeletado == false)
                 .Select(x => new ExibirUsuarioDTO
                 {
                     UsuarioMatricula = x.UsuarioMatricula,
                     UsuarioNome = x.UsuarioNome,
-                    UsuarioDeletado = x.UsuarioDeletado,
                     UsuarioTipo = x.Tipo.UsuarioTipoNome,
                     UsuarioDataUltimaAtualizacao = x.UsuarioDataUltimaAtualizacao
                 })
@@ -65,11 +65,11 @@ namespace Repositorys.Repos
         public ExibirUsuarioDTO? ObterUsuarioPorMatricula(string UsuarioMatricula)
         {
             return _context.Usuarios
+                .Where(x => x.UsuarioDeletado == false)
                 .Select(x => new ExibirUsuarioDTO
                 {
                     UsuarioMatricula = x.UsuarioMatricula,
                     UsuarioNome = x.UsuarioNome,
-                    UsuarioDeletado = x.UsuarioDeletado,
                     UsuarioTipo = x.Tipo.UsuarioTipoNome,
                     UsuarioDataUltimaAtualizacao = x.UsuarioDataUltimaAtualizacao
                 })
@@ -78,7 +78,7 @@ namespace Repositorys.Repos
 
         public Usuario? RecuperarUsuario(string UsuarioMatricula, string UsuarioSenha)
         {
-            return _context.Usuarios.Where(x => x.UsuarioMatricula == UsuarioMatricula && x.UsuarioSenha == UsuarioSenha).FirstOrDefault();
+            return _context.Usuarios.Where(x => x.UsuarioMatricula == UsuarioMatricula && x.UsuarioSenha == UsuarioSenha && x.UsuarioDeletado == false).FirstOrDefault();
         }
 
         public void Save()

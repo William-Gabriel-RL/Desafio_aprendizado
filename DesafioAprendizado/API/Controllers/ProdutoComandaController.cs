@@ -1,7 +1,7 @@
 ﻿using BusinessLayer.DTO.ProdutoComandaDTO;
 using BusinessLayer.Interfaces;
 using BusinessLayer.Services;
-using Entities.Models;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Repositorys.DTO.ProdutoComandaDTO;
 
@@ -9,6 +9,7 @@ namespace API.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
+    [Authorize(Roles = "1, 2")]
     public class ProdutoComandaController : ControllerBase
     {
         private readonly IProdutoComandaService _produtoComandaService;

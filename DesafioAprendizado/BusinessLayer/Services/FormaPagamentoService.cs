@@ -4,6 +4,7 @@ using Repositorys.Context;
 using BusinessLayer.Interfaces;
 using BusinessLayer.DTO.FormaPagamentoDTO;
 using Entities.Models;
+using Repositorys.DTO.FormaPagamentoDTO;
 
 namespace BusinessLayer.Services
 {
@@ -41,12 +42,12 @@ namespace BusinessLayer.Services
             _formaPagamentoRepo.DeletarFormaPagamento(formaPagamentoId);
         }
 
-        public FormaPagamento? ObterFormaPagamentoPorId(int formaPagamentoId)
+        public ExibirFormaPagamentoDTO? ObterFormaPagamentoPorId(int formaPagamentoId)
         {
             return _formaPagamentoRepo.ObterFormaPagamentoPorId(formaPagamentoId);
         }
 
-        public Task<IEnumerable<FormaPagamento>> ObterTodasFormasPagamento()
+        public Task<IEnumerable<ExibirFormaPagamentoDTO>> ObterTodasFormasPagamento()
         {
             return _formaPagamentoRepo.ObterTodasFormasPagamento();
         }

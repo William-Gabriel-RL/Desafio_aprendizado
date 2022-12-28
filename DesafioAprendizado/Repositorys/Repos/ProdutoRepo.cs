@@ -52,40 +52,42 @@ namespace Repositorys.Repos
         public ExibirProdutoDTO? ObterProdutoPorId(int produtoId)
         {
             return _context.Produtos
-                .Where(x => x.ProdutoId == produtoId)
+                .Where(x => x.ProdutoDeletado == false)
                 .Select(x => new ExibirProdutoDTO
                 {
                     ProdutoId = x.ProdutoId,
                     ProdutoNome = x.ProdutoNome,
                     ProdutoDescricao = x.ProdutoDescricao,
                     Preco = x.Preco,
-                    ProdutoDeletado = x.ProdutoDeletado,
                     ProdutoFotoId = x.ProdutoFotoId,
                     ProdutoDataUltimaAtualizacao = x.ProdutoDataUltimaAtualizacao,
                     UsuarioId = x.UsuarioId,
                     Categorias = x.Categorias
+                    .Where(x => x.ProdutoCategoriaDeletado == false)
                     .Select(x => new ProdutoExibirCategoriaDTO
                     {
                         CategoriaNome = x.Categoria.CategoriaNome
                     })
                 })
-                .FirstOrDefault();
+                .FirstOrDefault(x => x.ProdutoId == produtoId);
         }
 
         public async Task<IEnumerable<ExibirProdutoDTO>> ObterTodosProdutos()
         {
             return await _context.Produtos
+                .Where(x => x.ProdutoDeletado == false)
                 .Select(x => new ExibirProdutoDTO
                 {
                     ProdutoId = x.ProdutoId,
                     ProdutoNome = x.ProdutoNome,
                     ProdutoDescricao = x.ProdutoDescricao,
                     Preco = x.Preco,
-                    ProdutoDeletado = x.ProdutoDeletado,
                     ProdutoFotoId = x.ProdutoFotoId,
                     ProdutoDataUltimaAtualizacao = x.ProdutoDataUltimaAtualizacao,
                     UsuarioId = x.UsuarioId,
-                    Categorias = (ICollection<ProdutoExibirCategoriaDTO>)x.Categorias.Select(x => new ProdutoExibirCategoriaDTO
+                    Categorias = x.Categorias
+                    .Where(x => x.ProdutoCategoriaDeletado == false)
+                    .Select(x => new ProdutoExibirCategoriaDTO
                     {
                         CategoriaNome = x.Categoria.CategoriaNome
                     })
