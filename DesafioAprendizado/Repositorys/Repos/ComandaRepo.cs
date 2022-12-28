@@ -49,48 +49,48 @@ namespace Repositorys.Repos
             }
         }
 
-        public ExibirComandaDTO? ObterComandaPorId(string comandaId)
+        public async Task<IEnumerable<ExibirComandaDTO>> ObterComandas(string? comandaId, bool? finalizada, string? usuarioMatricula, int? mesaId)
         {
-            return _context.Comandas
-                .Where(x => x.ComandaDeletado == false)
-                .Select(x => new ExibirComandaDTO
-                {
-                    ComandaId = x.ComandaId,
-                    ComandaHoraAbertura = x.ComandaHoraAbertura,
-                    ComandaTotal = x.ComandaTotal,
-                    ComandaFinalizada = x.ComandaFinalizada,
-                    ComandaDataUltimaAtualizacao = x.ComandaDataUltimaAtualizacao,
-                    AtendenteMatricula = x.AtendenteMatricula,
-                    Atendente = x.Atendente.UsuarioNome,
-                    MesaId = x.MesaId,
-                    ProdutosComanda = x.ProdutosComanda
-                    .Where(x => x.ProdutoComandaDeletado == false)
-                    .Select(x => new ComandaExibirProdutoComanda
+            if(comandaId != null || finalizada != null || usuarioMatricula != null || mesaId != null)
+            {
+                return await _context.Comandas
+                    .Where(x => x.ComandaId.ToString() == comandaId || x.ComandaFinalizada == finalizada || x.AtendenteMatricula == usuarioMatricula || x.MesaId == mesaId)
+                    .Where(x => x.ComandaDeletado == false)
+                    .Select(x => new ExibirComandaDTO
                     {
-                        ProdutoComandaQuantidadeProdutos = x.ProdutoComandaQuantidadeProdutos,
-                        ProdutoComandaNome = x.Produto.ProdutoNome,
-                        ProdutoComandaPreco = x.ProdutoComandaPreco,
-                        ProdutoComandaObservacao = x.ProdutoComandaObservacao
-                    }),
-                    Pagamento = x.Pagamento
-                    .Where(x => x.PagamentoDeletado == false)
-                    .Select(x => new ComandaExibirPagamento
-                    {
-                        PagamentoId = x.PagamentoId,
-                        PagamentoDataHora = x.PagamentoDataHora,
-                        Valor = x.Valor,
-                        FormaPagamentoId = x.FormaPagamentoId,
-                        FormaPagamento = x.FormaPagamento.FormaPagamentoNome,
-                        UsuarioMatricula = x.UsuarioMatricula,
-                        UsuarioNome = x.Usuario.UsuarioNome,
-                        PagamentoDataUltimaAtualizacao = x.PagamentoDataUltimaAtualizacao
+                        ComandaId = x.ComandaId,
+                        ComandaHoraAbertura = x.ComandaHoraAbertura,
+                        ComandaTotal = x.ComandaTotal,
+                        ComandaFinalizada = x.ComandaFinalizada,
+                        ComandaDataUltimaAtualizacao = x.ComandaDataUltimaAtualizacao,
+                        AtendenteMatricula = x.AtendenteMatricula,
+                        Atendente = x.Atendente.UsuarioNome,
+                        MesaId = x.MesaId,
+                        ProdutosComanda = x.ProdutosComanda
+                        .Where(x => x.ProdutoComandaDeletado == false)
+                        .Select(x => new ComandaExibirProdutoComanda
+                        {
+                            ProdutoComandaQuantidadeProdutos = x.ProdutoComandaQuantidadeProdutos,
+                            ProdutoComandaNome = x.Produto.ProdutoNome,
+                            ProdutoComandaPreco = x.ProdutoComandaPreco,
+                            ProdutoComandaObservacao = x.ProdutoComandaObservacao
+                        }),
+                        Pagamento = x.Pagamento
+                        .Where(x => x.PagamentoDeletado == false)
+                        .Select(x => new ComandaExibirPagamento
+                        {
+                            PagamentoId = x.PagamentoId,
+                            PagamentoDataHora = x.PagamentoDataHora,
+                            Valor = x.Valor,
+                            FormaPagamentoId = x.FormaPagamentoId,
+                            FormaPagamento = x.FormaPagamento.FormaPagamentoNome,
+                            UsuarioMatricula = x.UsuarioMatricula,
+                            UsuarioNome = x.Usuario.UsuarioNome,
+                            PagamentoDataUltimaAtualizacao = x.PagamentoDataUltimaAtualizacao
+                        })
                     })
-                })
-                .FirstOrDefault(x => x.ComandaId.ToString() == comandaId);
-        }
-
-        public async Task<IEnumerable<ExibirComandaDTO>> ObterTodasComandas()
-        {
+                    .ToListAsync();
+            }
             return await _context.Comandas
                 .Where(x => x.ComandaDeletado == false)
                 .Select(x => new ExibirComandaDTO

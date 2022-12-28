@@ -45,14 +45,9 @@ namespace BusinessLayer.Services
             _comandaRepo.DeletarComanda(ComandaId);
         }
 
-        public ExibirComandaDTO? ObterComandaPorId(string ComandaId)
+        public async Task<IEnumerable<ExibirComandaDTO>> ObterComandas(string? comandaId, bool? finalizada, string? usuarioMatricula, int? mesaId)
         {
-            return _comandaRepo.ObterComandaPorId(ComandaId);
-        }
-
-        public async Task<IEnumerable<ExibirComandaDTO>> ObterTodasComandas()
-        {
-            return await _comandaRepo.ObterTodasComandas();
+            return await _comandaRepo.ObterComandas(comandaId, finalizada, usuarioMatricula, mesaId);
         }
 
         public void ObterTotal(string comandaId)

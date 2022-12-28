@@ -48,14 +48,9 @@ namespace BusinessLayer.Services
             _produtoComandaSituacaoRepo.DeletarProdutoComandaSituacao(produtoComandaSituacaoId);
         }
 
-        public ExibirProdutoComandaSituacaoDTO? ObterProdutoComandaSituacaoPorId(int produtoComandaSituacaoId)
+        public async Task<IEnumerable<ExibirProdutoComandaSituacaoDTO>> ObterProdutosComandaSituacao(int? produtoComandaSituacaoId, string? usuarioMatricula, int? statusSituacaoId)
         {
-            return _produtoComandaSituacaoRepo.ObterProdutoComandaSituacaoPorId(produtoComandaSituacaoId);
-        }
-
-        public async Task<IEnumerable<ExibirProdutoComandaSituacaoDTO>> ObterTodosProdutosComandaSituacao()
-        {
-            return await _produtoComandaSituacaoRepo.ObterTodosProdutosComandaSituacao();
+            return await _produtoComandaSituacaoRepo.ObterProdutosComandaSituacao(produtoComandaSituacaoId, usuarioMatricula, statusSituacaoId);
         }
     }
 }

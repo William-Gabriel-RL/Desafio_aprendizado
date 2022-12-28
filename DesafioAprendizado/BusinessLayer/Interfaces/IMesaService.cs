@@ -7,8 +7,7 @@ namespace BusinessLayer.Interfaces
     public interface IMesaService
     {
         public void CriarMesa(CriarMesaDTO mesa);
-        public ExibirMesaDTO? ObterMesaPorId(int mesaId);
-        public Task<IEnumerable<ExibirMesaDTO>> ObterTodasMesas();
+        public Task<IEnumerable<ExibirMesaDTO>> ObterMesas(int? mesaId);
         public void AtualizarMesa(AtualizarMesaDTO mesa);
         public void DeletarMesa(int mesaId);
     }

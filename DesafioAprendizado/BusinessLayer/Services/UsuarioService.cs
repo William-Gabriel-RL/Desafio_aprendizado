@@ -48,14 +48,9 @@ namespace BusinessLayer.Services
             _usuarioRepository.DeletarUsuario(usuarioMatricula);
         }
 
-        public async Task<IEnumerable<ExibirUsuarioDTO>> ObterTodosUsuarios()
+        public async Task<IEnumerable<ExibirUsuarioDTO>> ObterUsuarios(string? usuarioMatricula, int? usuarioTipo)
         {
-            return await _usuarioRepository.ObterTodosUsuarios();
-        }
-
-        public ExibirUsuarioDTO? ObterUsuarioPorMatricula(string UsuarioMatricula)
-        {
-            return _usuarioRepository.ObterUsuarioPorMatricula(UsuarioMatricula);
+            return await _usuarioRepository.ObterUsuarios(usuarioMatricula, usuarioTipo);
         }
 
         public Usuario? Login(string usuarioMatricula, string usuarioSenha)

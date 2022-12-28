@@ -28,15 +28,9 @@ namespace API.Controllers
         }
 
         [HttpGet]
-        public ActionResult<ICollection<ExibirComandaDTO>> Get()
+        public ActionResult<ICollection<ExibirComandaDTO>> Get(string? comandaId, bool? finalizada, string? usuarioMatricula, int? mesaId)
         {
-            return Ok(_comandaService.ObterTodasComandas().Result);
-        }
-
-        [HttpGet("id")]
-        public ActionResult<ExibirComandaDTO>? Get(string comandaId)
-        {
-            return Ok(_comandaService.ObterComandaPorId(comandaId));
+            return Ok(_comandaService.ObterComandas(comandaId, finalizada, usuarioMatricula, mesaId).Result);
         }
 
         [HttpPut]

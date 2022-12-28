@@ -49,31 +49,31 @@ namespace Repositorys.Repos
             }
         }
 
-        public ExibirProdutoDTO? ObterProdutoPorId(int produtoId)
+        public async Task<IEnumerable<ExibirProdutoDTO>> ObterProdutos(int? produtoId, string? usuarioId)
         {
-            return _context.Produtos
-                .Where(x => x.ProdutoDeletado == false)
-                .Select(x => new ExibirProdutoDTO
-                {
-                    ProdutoId = x.ProdutoId,
-                    ProdutoNome = x.ProdutoNome,
-                    ProdutoDescricao = x.ProdutoDescricao,
-                    Preco = x.Preco,
-                    ProdutoFotoId = x.ProdutoFotoId,
-                    ProdutoDataUltimaAtualizacao = x.ProdutoDataUltimaAtualizacao,
-                    UsuarioId = x.UsuarioId,
-                    Categorias = x.Categorias
-                    .Where(x => x.ProdutoCategoriaDeletado == false)
-                    .Select(x => new ProdutoExibirCategoriaDTO
+            if( produtoId != null || usuarioId != null)
+            {
+                return await _context.Produtos
+                    .Where(x => x.ProdutoId == produtoId || x.UsuarioId == usuarioId)
+                    .Where(x => x.ProdutoDeletado == false)
+                    .Select(x => new ExibirProdutoDTO
                     {
-                        CategoriaNome = x.Categoria.CategoriaNome
+                        ProdutoId = x.ProdutoId,
+                        ProdutoNome = x.ProdutoNome,
+                        ProdutoDescricao = x.ProdutoDescricao,
+                        Preco = x.Preco,
+                        ProdutoFotoId = x.ProdutoFotoId,
+                        ProdutoDataUltimaAtualizacao = x.ProdutoDataUltimaAtualizacao,
+                        UsuarioId = x.UsuarioId,
+                        Categorias = x.Categorias
+                        .Where(x => x.ProdutoCategoriaDeletado == false)
+                        .Select(x => new ProdutoExibirCategoriaDTO
+                        {
+                            CategoriaNome = x.Categoria.CategoriaNome
+                        })
                     })
-                })
-                .FirstOrDefault(x => x.ProdutoId == produtoId);
-        }
-
-        public async Task<IEnumerable<ExibirProdutoDTO>> ObterTodosProdutos()
-        {
+                    .ToListAsync();
+            }
             return await _context.Produtos
                 .Where(x => x.ProdutoDeletado == false)
                 .Select(x => new ExibirProdutoDTO

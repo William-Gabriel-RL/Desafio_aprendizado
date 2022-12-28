@@ -5,7 +5,6 @@ using BusinessLayer.Services;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Repositorys.DTO.UsuarioDTO;
-using System.Data;
 
 namespace API.Controllers
 {
@@ -20,8 +19,6 @@ namespace API.Controllers
             _usuarioService = new UsuarioService();
         }
 
-        /// <summary>Cria um novo usuário</summary>
-        /// <response code="200">Retorna que o novo usuário foi criado com sucesso</response>
         [HttpPost]
         public ActionResult Create([Bind(include: "UsuarioMatricula, UsuarioNome, UsuarioSenha, UsuarioTipoId")] CriarUsuarioDTO criarUsuarioDTO)
         {
@@ -29,17 +26,10 @@ namespace API.Controllers
             return Ok("Usuário criado com sucesso");
         }
 
-        [HttpGet("UsuarioId")]
-        public ExibirUsuarioDTO? Get([FromQuery] string UsuarioId)
-        {
-            ExibirUsuarioDTO? usuario = _usuarioService.ObterUsuarioPorMatricula(UsuarioId);
-            return usuario;
-        }
-
         [HttpGet]
-        public ActionResult<List<ExibirUsuarioDTO>> GetAll()
+        public ActionResult<List<ExibirUsuarioDTO>> GetAll(string? usuarioMatricula, int? usuarioTipo)
         {
-            return Ok(_usuarioService.ObterTodosUsuarios().Result);
+            return Ok(_usuarioService.ObterUsuarios(usuarioMatricula, usuarioTipo).Result);
         }
 
         [HttpPut]

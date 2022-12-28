@@ -50,40 +50,39 @@ namespace Repositorys.Repos
             }
         }
 
-        public ExibirProdutoComandaDTO? ObterProdutoComandaPorId(int produtoComandaId)
+        public async Task<IEnumerable<ExibirProdutoComandaDTO>> ObterProdutoComanda(int? produtoComandaId, int? produtoId, string? comandaId)
         {
-            return _context.ProdutosComandas
-                .Where(x => x.ProdutoComandaId == produtoComandaId)
-                .Select(x => new ExibirProdutoComandaDTO
-                {
-                    ProdutoComandaId = x.ProdutoComandaId,
-                    ProdutoComandaQuantidadeProdutos = x.ProdutoComandaQuantidadeProdutos,
-                    ProdutoComandaPreco = x.ProdutoComandaPreco,
-                    ProdutoComandaObservacao = x.ProdutoComandaObservacao,
-                    ProdutoId = x.ProdutoId,
-                    ProdutoNome = x.Produto.ProdutoNome,
-                    ComandaId = x.ComandaId,
-                    Situacoes = x.Situacoes
-                    .Where(x => x.ProdutoComandaSituacaoDeletado == false)
-                    .Select(x => new ExibirProdutoComandaSituacaoStatus
+            if (produtoComandaId != null || produtoId != null || comandaId != null)
+            {
+                return await _context.ProdutosComandas
+                    .Where(x => x.ProdutoComandaId == produtoComandaId || x.ProdutoId == produtoId || x.ComandaId.ToString() == comandaId)
+                    .Select(x => new ExibirProdutoComandaDTO
                     {
-                        ProdutoComandaSituacaoId = x.ProdutoComandaSituacaoId,
-                        StatusSituacaoId = x.StatusSituacaoId,
-                        StatusSituacaoNome = x.StatusSituacao.StatusSituacaoNome,
-                        ProdutoComandaSituacaoDataHora = x.ProdutoComandaSituacaoDataHora,
-                        ProdutoComandaSituacaoMotivo = x.ProdutoComandaSituacaoMotivo,
-                        UsuarioMatricula = x.UsuarioMatricula,
-                        UsuarioNome = x.Usuario.UsuarioNome,
-                        UsuarioTipo = x.Usuario.Tipo.UsuarioTipoNome,
-                        ProdutoComandaSituacaoDataUltimaAtualizacao = x.ProdutoComandaSituacaoDataHora,
-                    }),
-                    ProdutoComandaDataUltimaAtualizacao = x.ProdutoComandaDataUltimaAtualizacao
-                })
-                .FirstOrDefault();
-        }
-
-        public async Task<IEnumerable<ExibirProdutoComandaDTO>> ObterTodosProdutosPorComanda()
-        {
+                        ProdutoComandaId = x.ProdutoComandaId,
+                        ProdutoComandaQuantidadeProdutos = x.ProdutoComandaQuantidadeProdutos,
+                        ProdutoComandaPreco = x.ProdutoComandaPreco,
+                        ProdutoComandaObservacao = x.ProdutoComandaObservacao,
+                        ProdutoId = x.ProdutoId,
+                        ProdutoNome = x.Produto.ProdutoNome,
+                        ComandaId = x.ComandaId,
+                        Situacoes = x.Situacoes
+                        .Where(x => x.ProdutoComandaSituacaoDeletado == false)
+                        .Select(x => new ExibirProdutoComandaSituacaoStatus
+                        {
+                            ProdutoComandaSituacaoId = x.ProdutoComandaSituacaoId,
+                            ProdutoComandaSituacaoDataHora = x.ProdutoComandaSituacaoDataHora,
+                            ProdutoComandaSituacaoMotivo = x.ProdutoComandaSituacaoMotivo,
+                            UsuarioMatricula = x.UsuarioMatricula,
+                            UsuarioNome = x.Usuario.UsuarioNome,
+                            UsuarioTipo = x.Usuario.Tipo.UsuarioTipoNome,
+                            StatusSituacaoId = x.StatusSituacaoId,
+                            StatusSituacaoNome = x.StatusSituacao.StatusSituacaoNome,
+                            ProdutoComandaSituacaoDataUltimaAtualizacao = x.ProdutoComandaSituacaoDataHora
+                        }),
+                        ProdutoComandaDataUltimaAtualizacao = x.ProdutoComandaDataUltimaAtualizacao
+                    })
+                    .ToListAsync();
+            }
             return await _context.ProdutosComandas
                 .Select(x => new ExibirProdutoComandaDTO
                 {

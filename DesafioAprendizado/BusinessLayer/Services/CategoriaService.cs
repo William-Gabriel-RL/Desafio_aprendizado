@@ -43,14 +43,9 @@ namespace BusinessLayer.Services
             _categoriaRepo.DeletarCategoria(CategoriaId);
         }
 
-        public ExibirCategoriaDTO? ObterCategoriaPorId(int CategoriaId)
+        public Task<IEnumerable<ExibirCategoriaDTO>> ObterCategorias(int? cateogriaId)
         {
-            return _categoriaRepo.ObterCategoriaPorId(CategoriaId);
-        }
-
-        public Task<IEnumerable<ExibirCategoriaDTO>> ObterTodasCategorias()
-        {
-            return _categoriaRepo.ObterTodasCategorias();
+            return _categoriaRepo.ObterCategorias(cateogriaId);
         }
     }
 }

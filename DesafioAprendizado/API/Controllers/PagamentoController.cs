@@ -28,15 +28,9 @@ namespace API.Controllers
         }
 
         [HttpGet]
-        public ActionResult<ICollection<ExibirPagamentoDTO>> Get()
+        public ActionResult<ICollection<ExibirPagamentoDTO>> Get(int? pagamentoId, int? formaPagamentoId, string? comandaId, string? usuarioMatricula)
         {
-            return Ok(_pagamentoService.ObterTodosPagamentos().Result);
-        }
-
-        [HttpGet("id")]
-        public ActionResult<ExibirPagamentoDTO> Get(int pagamentoId)
-        {
-            return Ok(_pagamentoService.ObterPagamentoPorId(pagamentoId));
+            return Ok(_pagamentoService.ObterPagamentos(pagamentoId, formaPagamentoId, comandaId, usuarioMatricula).Result);
         }
 
         [HttpPut]

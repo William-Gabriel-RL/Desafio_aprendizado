@@ -49,21 +49,20 @@ namespace Repositorys.Repos
             }
         }
 
-        public ExibirCategoriaDTO? ObterCategoriaPorId(int categoriaId)
+        public async Task<IEnumerable<ExibirCategoriaDTO>> ObterCategorias(int? categoriaId)
         {
-            return _context.Categorias
-                .Where(x => x.CategoriaDeletado == false)
-                .Select(x => new ExibirCategoriaDTO
-                {
-                    CategoriaId = x.CategoriaId,
-                    CategoriaNome = x.CategoriaNome,
-                    CategoriaDataUltimaAtualizacao = x.CategoriaDataUltimaAtualizacao
-                })
-                .FirstOrDefault(x => x.CategoriaId == categoriaId);
-        }
-
-        public async Task<IEnumerable<ExibirCategoriaDTO>> ObterTodasCategorias()
-        {
+            if (categoriaId != null)
+            {
+                return await _context.Categorias
+                    .Where(x => x.CategoriaDeletado == false && x.CategoriaId == categoriaId)
+                    .Select(x => new ExibirCategoriaDTO
+                    {
+                        CategoriaId = x.CategoriaId,
+                        CategoriaNome = x.CategoriaNome,
+                        CategoriaDataUltimaAtualizacao = x.CategoriaDataUltimaAtualizacao
+                    })
+                    .ToListAsync();
+            }
             return await _context.Categorias
                 .Where(x => x.CategoriaDeletado == false)
                 .Select(x => new ExibirCategoriaDTO

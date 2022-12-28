@@ -6,8 +6,7 @@ namespace BusinessLayer.Interfaces
     public interface IComandaService
     {
         public void CriarComanda(CriarComandaDTO Comanda, string matricula);
-        public ExibirComandaDTO? ObterComandaPorId(string ComandaId);
-        public Task<IEnumerable<ExibirComandaDTO>> ObterTodasComandas();
+        public Task<IEnumerable<ExibirComandaDTO>> ObterComandas(string? comandaId, bool? finalizada, string? usuarioMatricula, int? mesaId);
         public void AtualizarComanda(AtualizarComandaDTO Comanda);
         public void ObterTotal(string comandaId);
         public void DeletarComanda(string ComandaId);

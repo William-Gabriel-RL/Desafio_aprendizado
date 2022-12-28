@@ -26,15 +26,9 @@ namespace API.Controllers
         }
 
         [HttpGet]
-        public ActionResult<ICollection<ExibirMesaDTO>> Get()
+        public ActionResult<ICollection<ExibirMesaDTO>> Get(int? mesaId)
         {
-            return Ok(_mesaService.ObterTodasMesas().Result);
-        }
-
-        [HttpGet("id")]
-        public ActionResult<ExibirMesaDTO> Get(int mesaId)
-        {
-            return Ok(_mesaService.ObterMesaPorId(mesaId));
+            return Ok(_mesaService.ObterMesas(mesaId).Result);
         }
 
         [HttpPut]

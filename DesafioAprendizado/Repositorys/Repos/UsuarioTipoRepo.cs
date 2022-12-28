@@ -49,8 +49,20 @@ namespace Repositorys.Repos
             }
         }
 
-        public async Task<IEnumerable<ExibirUsuarioTipoDTO>> ObterTodosUsuarioTipos()
+        public async Task<IEnumerable<ExibirUsuarioTipoDTO>> ObterUsuarioTipos(int? usuarioTipoId)
         {
+            if (usuarioTipoId != null)
+            {
+                return await _context.UsuarioTipos
+                    .Where(x => x.UsuarioTipoDeletado == false && x.UsuarioTipoId == usuarioTipoId)
+                    .Select(x => new ExibirUsuarioTipoDTO
+                    {
+                        UsuarioTipoId = x.UsuarioTipoId,
+                        UsuarioTipoNome = x.UsuarioTipoNome,
+                        UsuarioTipoDataUltimaAtualizacao = x.UsuarioTipoDataUltimaAtualizacao
+                    })
+                    .ToListAsync();
+            }
             return await _context.UsuarioTipos
                 .Where(x => x.UsuarioTipoDeletado == false)
                 .Select(x => new ExibirUsuarioTipoDTO
@@ -60,19 +72,6 @@ namespace Repositorys.Repos
                     UsuarioTipoDataUltimaAtualizacao = x.UsuarioTipoDataUltimaAtualizacao
                 })
                 .ToListAsync();
-        }
-
-        public ExibirUsuarioTipoDTO? ObterUsuarioTipoPorId(int usuarioTipoId)
-        {
-            return _context.UsuarioTipos
-                .Where(x => x.UsuarioTipoDeletado == false)
-                .Select(x => new ExibirUsuarioTipoDTO
-                {
-                    UsuarioTipoId = x.UsuarioTipoId,
-                    UsuarioTipoNome = x.UsuarioTipoNome,
-                    UsuarioTipoDataUltimaAtualizacao = x.UsuarioTipoDataUltimaAtualizacao
-                })
-                .FirstOrDefault(x => x.UsuarioTipoId == usuarioTipoId);
         }
 
         public void Save()

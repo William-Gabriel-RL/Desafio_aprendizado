@@ -28,15 +28,9 @@ namespace API.Controllers
         }
 
         [HttpGet]
-        public ActionResult<ICollection<ExibirCategoriaDTO>> Get()
+        public ActionResult<ICollection<ExibirCategoriaDTO>> Get([FromQuery] int? categoriaId)
         {
-            return Ok(_categoriaService.ObterTodasCategorias().Result);
-        }
-
-        [HttpGet("id")]
-        public ExibirCategoriaDTO? Get([FromQuery]int categoriaId)
-        {
-            return _categoriaService.ObterCategoriaPorId(categoriaId);
+            return Ok(_categoriaService.ObterCategorias(categoriaId).Result);
         }
 
         [HttpPut]

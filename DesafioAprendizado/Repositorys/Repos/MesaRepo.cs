@@ -49,21 +49,19 @@ namespace Repositorys.Repos
             }
         }
 
-        public ExibirMesaDTO? ObterMesaPorId(int mesaId)
+        public async Task<IEnumerable<ExibirMesaDTO>> ObterMesas(int? mesaId)
         {
-            return _context.Mesas
-                .Where(x => x.MesaDeletada == false)
-                .Select(x => new ExibirMesaDTO
-                {
-                    MesaId = x.MesaId,
-                    MesaOcupada = x.MesaOcupada,
-                    MesaDataUltimaAtualizacao = x.MesaDataUltimaAtualizacao
-                })
-                .FirstOrDefault();
-        }
-
-        public async Task<IEnumerable<ExibirMesaDTO>> ObterTodasMesas()
-        {
+            if(mesaId != null)
+            {
+                return await _context.Mesas
+                    .Where(x => x.MesaDeletada == false && x.MesaId == mesaId)
+                    .Select(x => new ExibirMesaDTO
+                    {
+                        MesaId = x.MesaId,
+                        MesaOcupada = x.MesaOcupada,
+                        MesaDataUltimaAtualizacao = x.MesaDataUltimaAtualizacao
+                    }).ToListAsync();
+            }
             return await _context.Mesas
                 .Where(x => x.MesaDeletada == false)
                 .Select(x => new ExibirMesaDTO

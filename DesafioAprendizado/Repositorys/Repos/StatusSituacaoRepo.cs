@@ -49,21 +49,20 @@ namespace Repositorys.Repos
             }
         }
 
-        public ExibirStatusSituacaoDTO? ObterStatusSituacaoPorId(int statusSituacaoId)
+        public async Task<IEnumerable<ExibirStatusSituacaoDTO>> ObterStatusSituacao(int? statusSituacaoId)
         {
-            return _context.StatusSituacao
-                .Where(x => x.StatusSituacaoDeletado == false)
-                .Select(x => new ExibirStatusSituacaoDTO
-                {
-                    StatusSituacaoId = x.StatusSituacaoId,
-                    StatusSituacaoNome = x.StatusSituacaoNome,
-                    StatusSituacaoDataUltimaAtualizacao = x.StatusSituacaoDataUltimaAtualizacao
-                })
-                .FirstOrDefault(x => x.StatusSituacaoId == statusSituacaoId);
-        }
-
-        public async Task<IEnumerable<ExibirStatusSituacaoDTO>> ObterTodosStatusSituacao()
-        {
+            if (statusSituacaoId != null)
+            {
+                return await _context.StatusSituacao
+                    .Where(x => x.StatusSituacaoDeletado == false && x.StatusSituacaoId == statusSituacaoId)
+                    .Select(x => new ExibirStatusSituacaoDTO
+                    {
+                        StatusSituacaoId = x.StatusSituacaoId,
+                        StatusSituacaoNome = x.StatusSituacaoNome,
+                        StatusSituacaoDataUltimaAtualizacao = x.StatusSituacaoDataUltimaAtualizacao
+                    })
+                    .ToListAsync();
+            }
             return await _context.StatusSituacao
                 .Where(x => x.StatusSituacaoDeletado == false)
                 .Select(x => new ExibirStatusSituacaoDTO

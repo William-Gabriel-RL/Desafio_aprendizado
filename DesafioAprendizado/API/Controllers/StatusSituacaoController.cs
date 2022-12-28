@@ -1,7 +1,6 @@
 ﻿using BusinessLayer.DTO.StatusSituacaoDTO;
 using BusinessLayer.Interfaces;
 using BusinessLayer.Services;
-using Entities.Models;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Repositorys.DTO.StatusSituacaoDTO;
@@ -27,15 +26,9 @@ namespace API.Controllers
         }
 
         [HttpGet]
-        public ActionResult<ICollection<ExibirStatusSituacaoDTO>> Get()
+        public ActionResult<ICollection<ExibirStatusSituacaoDTO>> Get([FromQuery] int? statusSituacaoId)
         {
-            return Ok(_statusSituacaoService.ObterTodosStatusSituacao().Result);
-        }
-
-        [HttpGet("id")]
-        public ActionResult<ExibirStatusSituacaoDTO> Get([FromQuery] int statusSituacaoId)
-        {
-            return Ok(_statusSituacaoService.ObterStatusSituacaoPorId(statusSituacaoId));
+            return Ok(_statusSituacaoService.ObterStatusSituacao(statusSituacaoId).Result);
         }
 
         [HttpPut]

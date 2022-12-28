@@ -7,8 +7,7 @@ namespace BusinessLayer.Interfaces
     public interface IProdutoComandaService
     {
         public void CriarProdutoComanda(CriarProdutoComandaDTO produtoComanda);
-        public ExibirProdutoComandaDTO? ObterProdutoComandaPorId(int produtoComandaId);
-        public Task<IEnumerable<ExibirProdutoComandaDTO>> ObterTodosProdutosPorComanda();
+        public Task<IEnumerable<ExibirProdutoComandaDTO>> ObterProdutoComanda(int? produtoComandaId, int? produtoId, string? comandaId);
         public void AtualizarProdutoComanda(AtualizarProdutoComandaDTO produtoComanda);
         public void DeletarProdutoComanda(int produtoComandaId);
     }

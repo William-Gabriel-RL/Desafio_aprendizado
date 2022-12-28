@@ -47,14 +47,9 @@ namespace BusinessLayer.Services
             _pagamentoRepo.DeletarPagamento(pagamentoId);
         }
 
-        public ExibirPagamentoDTO? ObterPagamentoPorId(int pagamentoId)
+        public async Task<IEnumerable<ExibirPagamentoDTO>> ObterPagamentos(int? pagamentoId, int? formaPagamentoId, string? comandaId, string? usuarioMatricula)
         {
-            return _pagamentoRepo.ObterPagamentoPorId(pagamentoId);
-        }
-
-        public async Task<IEnumerable<ExibirPagamentoDTO>> ObterTodosPagamentos()
-        {
-            return await _pagamentoRepo.ObterTodosPagamentos();
+            return await _pagamentoRepo.ObterPagamentos(pagamentoId, formaPagamentoId, comandaId, usuarioMatricula);
         }
     }
 }

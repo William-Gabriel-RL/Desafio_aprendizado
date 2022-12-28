@@ -49,21 +49,19 @@ namespace Repositorys.Repos
             }
         }
 
-        public ExibirFormaPagamentoDTO? ObterFormaPagamentoPorId(int formaPagamentoId)
+        public async Task<IEnumerable<ExibirFormaPagamentoDTO>> ObterFormasPagamento(int? formaPagamentoId)
         {
-            return _context.FormasPagamento
-                .Where(x => x.FormaPagamentoDeletado == false)
-                .Select(x => new ExibirFormaPagamentoDTO
-                {
-                    FormaPagamentoId = x.FormaPagamentoId,
-                    FormaPagamentoNome = x.FormaPagamentoNome,
-                    FormaPagamentoDataUltimaAtualizacao = x.FormaPagamentoDataUltimaAtualizacao
-                })
-                .FirstOrDefault(x => x.FormaPagamentoId == formaPagamentoId);
-        }
-
-        public async Task<IEnumerable<ExibirFormaPagamentoDTO>> ObterTodasFormasPagamento()
-        {
+            if (formaPagamentoId != null)
+            {
+                return await _context.FormasPagamento
+                    .Where(x => x.FormaPagamentoDeletado == false && x.FormaPagamentoId == formaPagamentoId)
+                    .Select(x => new ExibirFormaPagamentoDTO
+                    {
+                        FormaPagamentoId = x.FormaPagamentoId,
+                        FormaPagamentoNome = x.FormaPagamentoNome,
+                        FormaPagamentoDataUltimaAtualizacao = x.FormaPagamentoDataUltimaAtualizacao
+                    }).ToListAsync();
+            }
             return await _context.FormasPagamento
                 .Where(x => x.FormaPagamentoDeletado == false)
                 .Select(x => new ExibirFormaPagamentoDTO

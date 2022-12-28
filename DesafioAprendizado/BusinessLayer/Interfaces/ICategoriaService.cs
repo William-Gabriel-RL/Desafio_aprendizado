@@ -7,8 +7,7 @@ namespace BusinessLayer.Interfaces
     public interface ICategoriaService
     {
         public void CriarCategoria(CriarCategoriaDTO criarCategoriaDTO);
-        public ExibirCategoriaDTO? ObterCategoriaPorId(int CategoriaId);
-        public Task<IEnumerable<ExibirCategoriaDTO>> ObterTodasCategorias();
+        public Task<IEnumerable<ExibirCategoriaDTO>> ObterCategorias(int? categoriaId);
         public void AtualizarCategoria(AtualizarCategoriaDTO Categoria);
         public void DeletarCategoria(int CategoriaId);
     }

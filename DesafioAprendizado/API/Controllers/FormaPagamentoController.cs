@@ -26,15 +26,9 @@ namespace API.Controllers
         }
 
         [HttpGet]
-        public ActionResult<ICollection<ExibirFormaPagamentoDTO>> Get()
+        public ActionResult<ICollection<ExibirFormaPagamentoDTO>> Get(int? formaPagamentoId)
         {
-            return Ok(_formaPagamentoService.ObterTodasFormasPagamento().Result);
-        }
-
-        [HttpGet("id")]
-        public ExibirFormaPagamentoDTO? Get([FromQuery] int formaPagamentoId)
-        {
-            return _formaPagamentoService.ObterFormaPagamentoPorId(formaPagamentoId);
+            return Ok(_formaPagamentoService.ObterFormasPagamento(formaPagamentoId).Result);
         }
 
         [HttpPut]

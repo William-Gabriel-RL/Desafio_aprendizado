@@ -42,14 +42,9 @@ namespace BusinessLayer.Services
             _formaPagamentoRepo.DeletarFormaPagamento(formaPagamentoId);
         }
 
-        public ExibirFormaPagamentoDTO? ObterFormaPagamentoPorId(int formaPagamentoId)
+        public Task<IEnumerable<ExibirFormaPagamentoDTO>> ObterFormasPagamento(int? formaPagamentoId)
         {
-            return _formaPagamentoRepo.ObterFormaPagamentoPorId(formaPagamentoId);
-        }
-
-        public Task<IEnumerable<ExibirFormaPagamentoDTO>> ObterTodasFormasPagamento()
-        {
-            return _formaPagamentoRepo.ObterTodasFormasPagamento();
+            return _formaPagamentoRepo.ObterFormasPagamento(formaPagamentoId);
         }
     }
 }

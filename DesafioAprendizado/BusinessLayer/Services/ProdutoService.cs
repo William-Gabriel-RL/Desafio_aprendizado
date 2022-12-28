@@ -51,14 +51,9 @@ namespace BusinessLayer.Services
             _produtoRepo.DeletarProduto(produtoId);
         }
 
-        public ExibirProdutoDTO? ObterProdutoPorId(int produtoId)
+        public async Task<IEnumerable<ExibirProdutoDTO>> ObterProdutos(int? produtoId, string? usuarioId)
         {
-            return _produtoRepo.ObterProdutoPorId(produtoId);
-        }
-
-        public async Task<IEnumerable<ExibirProdutoDTO>> ObterTodosProdutos()
-        {
-            return await _produtoRepo.ObterTodosProdutos();
+            return await _produtoRepo.ObterProdutos(produtoId, usuarioId);
         }
     }
 }

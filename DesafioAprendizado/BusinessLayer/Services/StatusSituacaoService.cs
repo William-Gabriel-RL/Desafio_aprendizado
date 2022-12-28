@@ -42,14 +42,9 @@ namespace BusinessLayer.Services
             _statusSituacaoRepo.DeletarStatusSituacao(statusSituacaoId);
         }
 
-        public ExibirStatusSituacaoDTO? ObterStatusSituacaoPorId(int statusSituacaoId)
+        public async Task<IEnumerable<ExibirStatusSituacaoDTO>> ObterStatusSituacao(int? statusSituacaoId)
         {
-            return _statusSituacaoRepo.ObterStatusSituacaoPorId(statusSituacaoId);
-        }
-
-        public async Task<IEnumerable<ExibirStatusSituacaoDTO>> ObterTodosStatusSituacao()
-        {
-            return await _statusSituacaoRepo.ObterTodosStatusSituacao();
+            return await _statusSituacaoRepo.ObterStatusSituacao(statusSituacaoId);
         }
     }
 }

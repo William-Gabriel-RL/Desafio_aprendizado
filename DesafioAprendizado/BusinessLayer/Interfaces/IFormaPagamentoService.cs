@@ -7,8 +7,7 @@ namespace BusinessLayer.Interfaces
     public interface IFormaPagamentoService
     {
         public void CriarFormaPagamento(CriarFormaPagamentoDTO criarFormaPagamentoDTO);
-        public ExibirFormaPagamentoDTO? ObterFormaPagamentoPorId(int formaPagamentoId);
-        public Task<IEnumerable<ExibirFormaPagamentoDTO>> ObterTodasFormasPagamento();
+        public Task<IEnumerable<ExibirFormaPagamentoDTO>> ObterFormasPagamento(int? formaPagamentoId);
         public void AtualizarFormaPagamento(AtualizarFormaPagamentoDTO atualizarFormaPagamentoDTO);
         public void DeletarFormaPagamento(int formaPagamentoId);
     }

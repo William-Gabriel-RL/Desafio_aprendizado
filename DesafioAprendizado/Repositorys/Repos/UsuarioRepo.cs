@@ -16,7 +16,7 @@ namespace Repositorys.Repos
 
         public void AtualizarUsuario(Usuario usuario)
         {
-            _context.Entry(usuario).State= EntityState.Modified;
+            _context.Entry(usuario).State = EntityState.Modified;
             _context.SaveChanges();
         }
 
@@ -31,7 +31,7 @@ namespace Repositorys.Repos
             Usuario? usuario = _context.Usuarios.FirstOrDefault(x => x.UsuarioMatricula == usuarioMatricula);
             if (usuario != null)
             {
-                if(usuario.UsuarioDeletado == false)
+                if (usuario.UsuarioDeletado == false)
                 {
                     usuario.UsuarioDeletado = true;
                     usuario.UsuarioDataUltimaAtualizacao = DateTime.Now;
@@ -42,14 +42,29 @@ namespace Repositorys.Repos
                 {
                     throw new Exception("Usuário já deletado");
                 }
-            } else
+            }
+            else
             {
                 throw new Exception("Usuário não encontrado");
             }
         }
 
-        public async Task<IEnumerable<ExibirUsuarioDTO>> ObterTodosUsuarios()
+        public async Task<IEnumerable<ExibirUsuarioDTO>> ObterUsuarios(string? usuarioMatricula, int? usuarioTipo)
         {
+            if (usuarioMatricula != null || usuarioTipo != null)
+            {
+                return _context.Usuarios
+                .Where(x => x.UsuarioMatricula == usuarioMatricula || x.UsuarioTipoId == usuarioTipo)
+                .Where(x => x.UsuarioDeletado == false)
+                .Select(x => new ExibirUsuarioDTO
+                {
+                    UsuarioMatricula = x.UsuarioMatricula,
+                    UsuarioNome = x.UsuarioNome,
+                    UsuarioTipo = x.Tipo.UsuarioTipoNome,
+                    UsuarioDataUltimaAtualizacao = x.UsuarioDataUltimaAtualizacao
+                })
+                .ToList();
+            }
             return await _context.Usuarios
                 .Where(x => x.UsuarioDeletado == false)
                 .Select(x => new ExibirUsuarioDTO
@@ -60,20 +75,6 @@ namespace Repositorys.Repos
                     UsuarioDataUltimaAtualizacao = x.UsuarioDataUltimaAtualizacao
                 })
                 .ToListAsync();
-        }
-
-        public ExibirUsuarioDTO? ObterUsuarioPorMatricula(string UsuarioMatricula)
-        {
-            return _context.Usuarios
-                .Where(x => x.UsuarioDeletado == false)
-                .Select(x => new ExibirUsuarioDTO
-                {
-                    UsuarioMatricula = x.UsuarioMatricula,
-                    UsuarioNome = x.UsuarioNome,
-                    UsuarioTipo = x.Tipo.UsuarioTipoNome,
-                    UsuarioDataUltimaAtualizacao = x.UsuarioDataUltimaAtualizacao
-                })
-                .FirstOrDefault(x => x.UsuarioMatricula == UsuarioMatricula);
         }
 
         public Usuario? RecuperarUsuario(string UsuarioMatricula, string UsuarioSenha)

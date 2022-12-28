@@ -39,14 +39,9 @@ namespace BusinessLayer.Services
             _mesaRepo.DeletarMesa(mesaId);
         }
 
-        public ExibirMesaDTO? ObterMesaPorId(int mesaId)
+        public async Task<IEnumerable<ExibirMesaDTO>> ObterMesas(int? mesaId)
         {
-            return _mesaRepo.ObterMesaPorId(mesaId);
-        }
-
-        public async Task<IEnumerable<ExibirMesaDTO>> ObterTodasMesas()
-        {
-            return await _mesaRepo.ObterTodasMesas();
+            return await _mesaRepo.ObterMesas(mesaId);
         }
     }
 }

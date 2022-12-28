@@ -49,27 +49,27 @@ namespace Repositorys.Repos
             }
         }
 
-        public ExibirPagamentoDTO? ObterPagamentoPorId(int pagamentoId)
+        public async Task<IEnumerable<ExibirPagamentoDTO>> ObterPagamentos(int? pagamentoId, int? formaPagamentoId, string? comandaId, string? usuarioMatricula)
         {
-            return _context.Pagamentos
-                .Where(x => x.PagamentoDeletado == false)
-                .Select(x => new ExibirPagamentoDTO
-                {
-                    PagamentoId = x.PagamentoId,
-                    PagamentoDataHora = x.PagamentoDataHora,
-                    Valor = x.Valor,
-                    FormaPagamentoId = x.FormaPagamentoId,
-                    FormaPagamento = x.FormaPagamento.FormaPagamentoNome,
-                    ComandaId = x.ComandaId,
-                    UsuarioMatricula = x.UsuarioMatricula,
-                    UsuarioNome = x.Usuario.UsuarioNome,
-                    PagamentoDataUltimaAtualizacao = x.PagamentoDataUltimaAtualizacao
-                })
-                .FirstOrDefault(x => x.PagamentoId == pagamentoId);
-        }
-
-        public async Task<IEnumerable<ExibirPagamentoDTO>> ObterTodosPagamentos()
-        {
+            if (pagamentoId != null || formaPagamentoId != null || comandaId != null || usuarioMatricula != null)
+            {
+                return await _context.Pagamentos
+                    .Where(x => x.PagamentoId == pagamentoId || x.FormaPagamentoId == formaPagamentoId || x.ComandaId.ToString() == comandaId || x.UsuarioMatricula == usuarioMatricula)
+                    .Where(x => x.PagamentoDeletado == false)
+                    .Select(x => new ExibirPagamentoDTO
+                    {
+                        PagamentoId = x.PagamentoId,
+                        PagamentoDataHora = x.PagamentoDataHora,
+                        Valor = x.Valor,
+                        FormaPagamentoId = x.FormaPagamentoId,
+                        FormaPagamento = x.FormaPagamento.FormaPagamentoNome,
+                        ComandaId = x.ComandaId,
+                        UsuarioMatricula = x.UsuarioMatricula,
+                        UsuarioNome = x.Usuario.UsuarioNome,
+                        PagamentoDataUltimaAtualizacao = x.PagamentoDataUltimaAtualizacao
+                    })
+                    .ToListAsync();
+            }
             return await _context.Pagamentos
                 .Where(x => x.PagamentoDeletado == false)
                 .Select(x => new ExibirPagamentoDTO

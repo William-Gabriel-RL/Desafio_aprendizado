@@ -43,14 +43,9 @@ namespace BusinessLayer.Services
             _produtoCategoriaRepo.DeletarProdutoCategoria(produtoCategoriaId);
         }
 
-        public ExibirProdutoCategoriaDTO? ObterProdutoCategoriaPorCategoria(int categoriaId)
+        public async Task<IEnumerable<ExibirProdutoCategoriaDTO>> ObterProdutosCategorias(int? produtoId, int? categoriaId)
         {
-            return _produtoCategoriaRepo.ObterProdutoCategoriaPorCategoria(categoriaId);
-        }
-
-        public async Task<IEnumerable<ExibirProdutoCategoriaDTO>> ObterTodosProdutosCategorias()
-        {
-            return await _produtoCategoriaRepo.ObterTodosProdutosCategorias();
+            return await _produtoCategoriaRepo.ObterProdutosCategorias(produtoId, categoriaId);
         }
     }
 }

@@ -7,8 +7,7 @@ namespace BusinessLayer.Interfaces
     public interface IUsuarioTipoService
     {
         public void CriarUsuarioTipo(CriarUsuarioTipoDTO usuarioTipo);
-        public ExibirUsuarioTipoDTO? ObterUsuarioTipoPorId(int usuarioTipoId);
-        public Task<IEnumerable<ExibirUsuarioTipoDTO>> ObterTodosUsuarioTipos();
+        public Task<IEnumerable<ExibirUsuarioTipoDTO>> ObterUsuarioTipos(int? usuarioTipoId);
         public void AtualizarUsuarioTipo(AtualizarUsuarioTipoDTO usuarioTipo);
         public void DeletarUsuarioTipo(int usuarioTipoId);
     }

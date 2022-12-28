@@ -6,8 +6,7 @@ namespace Repositorys.Interfaces
     public interface IProdutoComandaRepo
     {
         public void CriarProdutoComanda(ProdutoComanda produtoComanda);
-        public ExibirProdutoComandaDTO? ObterProdutoComandaPorId(int produtoComandaId);
-        public Task<IEnumerable<ExibirProdutoComandaDTO>> ObterTodosProdutosPorComanda();
+        public Task<IEnumerable<ExibirProdutoComandaDTO>> ObterProdutoComanda(int? produtoComandaId, int? produtoId, string? comandaId);
         public void AtualizarProdutoComanda(ProdutoComanda produtoComanda);
         public void DeletarProdutoComanda(int produtoComandaId);
         public void Salvar();

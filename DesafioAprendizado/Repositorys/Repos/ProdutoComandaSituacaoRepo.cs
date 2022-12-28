@@ -49,28 +49,28 @@ namespace Repositorys.Repos
             }
         }
 
-        public ExibirProdutoComandaSituacaoDTO? ObterProdutoComandaSituacaoPorId(int produtoComandaSituacaoId)
+        public async Task<IEnumerable<ExibirProdutoComandaSituacaoDTO>> ObterProdutosComandaSituacao(int? produtoComandaSituacaoId, string? usuarioMatricula, int? statusSituacaoId)
         {
-            return _context.ProdutosComandasSituacoes
-                .Where(x => x.ProdutoComandaSituacaoDeletado == false)
-                .Select(x => new ExibirProdutoComandaSituacaoDTO
-                {
-                    ProdutoComandaSituacaoId = x.ProdutoComandaSituacaoId,
-                    ProdutoComandaSituacaoDataHora = x.ProdutoComandaSituacaoDataHora,
-                    ProdutoComandaSituacaoMotivo = x.ProdutoComandaSituacaoMotivo,
-                    ProdutoComandaSituacaoDataUltimaAtualizacao = x.ProdutoComandaSituacaoDataUltimaAtualizacao,
-                    UsuarioMatricula = x.UsuarioMatricula,
-                    UsuarioNome = x.Usuario.UsuarioNome,
-                    UsuarioTipo = x.Usuario.Tipo.UsuarioTipoNome,
-                    StatusSituacaoId = x.StatusSituacaoId,
-                    StatusSituacaoNome = x.StatusSituacao.StatusSituacaoNome,
-                    ProdutoComandaId = x.ProdutoComandaId
-                })
-                .FirstOrDefault(x => x.ProdutoComandaSituacaoId == produtoComandaSituacaoId);
-        }
-
-        public async Task<IEnumerable<ExibirProdutoComandaSituacaoDTO>> ObterTodosProdutosComandaSituacao()
-        {
+            if (produtoComandaSituacaoId != null || usuarioMatricula != null || statusSituacaoId != null)
+            {
+                return await _context.ProdutosComandasSituacoes
+                    .Where(x => x.ProdutoComandaSituacaoId == produtoComandaSituacaoId || x.UsuarioMatricula == usuarioMatricula || x.StatusSituacaoId == statusSituacaoId)
+                    .Where(x => x.ProdutoComandaSituacaoDeletado == false)
+                    .Select(x => new ExibirProdutoComandaSituacaoDTO
+                    {
+                        ProdutoComandaSituacaoId = x.ProdutoComandaSituacaoId,
+                        ProdutoComandaSituacaoDataHora = x.ProdutoComandaSituacaoDataHora,
+                        ProdutoComandaSituacaoMotivo = x.ProdutoComandaSituacaoMotivo,
+                        ProdutoComandaSituacaoDataUltimaAtualizacao = x.ProdutoComandaSituacaoDataUltimaAtualizacao,
+                        UsuarioMatricula = x.UsuarioMatricula,
+                        UsuarioNome = x.Usuario.UsuarioNome,
+                        UsuarioTipo = x.Usuario.Tipo.UsuarioTipoNome,
+                        StatusSituacaoId = x.StatusSituacaoId,
+                        StatusSituacaoNome = x.StatusSituacao.StatusSituacaoNome,
+                        ProdutoComandaId = x.ProdutoComandaId
+                    })
+                    .ToListAsync();
+            }
             return await _context.ProdutosComandasSituacoes
                 .Where(x => x.ProdutoComandaSituacaoDeletado == false)
                 .Select(x => new ExibirProdutoComandaSituacaoDTO

@@ -7,8 +7,7 @@ namespace BusinessLayer.Interfaces
     public interface IStatusSituacaoService
     {
         public void CriarStatusSituacao(CriarStatusSituacaoDTO statusSituacao);
-        public ExibirStatusSituacaoDTO? ObterStatusSituacaoPorId(int statusSituacaoId);
-        public Task<IEnumerable<ExibirStatusSituacaoDTO>> ObterTodosStatusSituacao();
+        public Task<IEnumerable<ExibirStatusSituacaoDTO>> ObterStatusSituacao(int? statusSituacaoId);
         public void AtualizarStatusSituacao(AtualizarStatusSituacaoDTO statusSituacao);
         public void DeletarStatusSituacao(int statusSituacaoId);
     }

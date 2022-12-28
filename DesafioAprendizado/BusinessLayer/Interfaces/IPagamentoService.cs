@@ -7,8 +7,7 @@ namespace BusinessLayer.Interfaces
     public interface IPagamentoService
     {
         public void CriarPagamento(CriarPagamentoDTO pagamento, string matricula);
-        public ExibirPagamentoDTO? ObterPagamentoPorId(int pagamentoId);
-        public Task<IEnumerable<ExibirPagamentoDTO>> ObterTodosPagamentos();
+        public Task<IEnumerable<ExibirPagamentoDTO>> ObterPagamentos(int? pagamentoId, int? formaPagamentoId, string? comandaId, string? usuarioMatricula);
         public void AtualizarPagamento(AtualizarPagamentoDTO pagamento);
         public void DeletarPagamento(int pagamentoId);
     }
