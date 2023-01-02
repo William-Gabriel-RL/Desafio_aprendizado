@@ -28,9 +28,9 @@ namespace API.Controllers
         }
 
         [HttpGet]
-        public ActionResult<ICollection<ExibirProdutoComandaSituacaoDTO>> Get(int? produtoComandaSituacaoId, string? usuarioMatricula, int? statusSituacaoId)
+        public ActionResult<ICollection<ExibirProdutoComandaSituacaoDTO>> Get(int? produtoComandaSituacaoId, string? usuarioMatricula, int? statusSituacaoId, int? ano, int? mes, int? dia)
         {
-            return Ok(_produtoComandaSituacaoService.ObterProdutosComandaSituacao(produtoComandaSituacaoId, usuarioMatricula, statusSituacaoId).Result);
+            return Ok(_produtoComandaSituacaoService.ObterProdutosComandaSituacao(produtoComandaSituacaoId, usuarioMatricula, statusSituacaoId, ano, mes, dia).Result);
         }
 
         [HttpPut]

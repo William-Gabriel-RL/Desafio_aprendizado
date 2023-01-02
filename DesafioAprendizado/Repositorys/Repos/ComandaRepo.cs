@@ -1,5 +1,6 @@
 ﻿using Entities.Models;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Query;
 using Repositorys.Context;
 using Repositorys.DTO.ComandaDTO;
 using Repositorys.Interfaces;
@@ -49,12 +50,12 @@ namespace Repositorys.Repos
             }
         }
 
-        public async Task<IEnumerable<ExibirComandaDTO>> ObterComandas(string? comandaId, bool? finalizada, string? usuarioMatricula, int? mesaId)
+        public async Task<IEnumerable<ExibirComandaDTO>> ObterComandas(string? comandaId, bool? finalizada, string? usuarioMatricula, int? mesaId, int? ano, int? mes, int? dia)
         {
-            if(comandaId != null || finalizada != null || usuarioMatricula != null || mesaId != null)
+            if(comandaId != null || finalizada != null || usuarioMatricula != null || mesaId != null || ano != null || mes != null || dia != null)
             {
                 return await _context.Comandas
-                    .Where(x => x.ComandaId.ToString() == comandaId || x.ComandaFinalizada == finalizada || x.AtendenteMatricula == usuarioMatricula || x.MesaId == mesaId)
+                    .Where(x => x.ComandaId.ToString() == comandaId || x.ComandaFinalizada == finalizada || x.AtendenteMatricula == usuarioMatricula || x.MesaId == mesaId || x.ComandaHoraAbertura.Year == ano || x.ComandaHoraAbertura.Month == mes || x.ComandaHoraAbertura.Day == dia)
                     .Where(x => x.ComandaDeletado == false)
                     .Select(x => new ExibirComandaDTO
                     {

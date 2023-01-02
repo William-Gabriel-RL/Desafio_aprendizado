@@ -49,13 +49,17 @@ namespace Repositorys.Repos
             }
         }
 
-        public async Task<IEnumerable<ExibirProdutoComandaSituacaoDTO>> ObterProdutosComandaSituacao(int? produtoComandaSituacaoId, string? usuarioMatricula, int? statusSituacaoId)
+        public async Task<IEnumerable<ExibirProdutoComandaSituacaoDTO>> ObterProdutosComandaSituacao(int? produtoComandaSituacaoId, string? usuarioMatricula, int? statusSituacaoId, int? ano, int? mes, int? dia)
         {
-            if (produtoComandaSituacaoId != null || usuarioMatricula != null || statusSituacaoId != null)
+            if (produtoComandaSituacaoId != null || usuarioMatricula != null || statusSituacaoId != null || ano != null || mes != null || dia != null)
             {
                 return await _context.ProdutosComandasSituacoes
-                    .Where(x => x.ProdutoComandaSituacaoId == produtoComandaSituacaoId || x.UsuarioMatricula == usuarioMatricula || x.StatusSituacaoId == statusSituacaoId)
-                    .Where(x => x.ProdutoComandaSituacaoDeletado == false)
+                    .Where(x => (x.ProdutoComandaSituacaoId == produtoComandaSituacaoId ||
+                    x.UsuarioMatricula == usuarioMatricula ||
+                    x.StatusSituacaoId == statusSituacaoId ||
+                    x.ProdutoComandaSituacaoDataHora.Year == ano ||
+                    x.ProdutoComandaSituacaoDataHora.Month == mes ||
+                    x.ProdutoComandaSituacaoDataHora.Day == dia) && x.ProdutoComandaSituacaoDeletado == false)
                     .Select(x => new ExibirProdutoComandaSituacaoDTO
                     {
                         ProdutoComandaSituacaoId = x.ProdutoComandaSituacaoId,

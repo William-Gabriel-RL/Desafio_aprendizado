@@ -49,12 +49,12 @@ namespace Repositorys.Repos
             }
         }
 
-        public async Task<IEnumerable<ExibirPagamentoDTO>> ObterPagamentos(int? pagamentoId, int? formaPagamentoId, string? comandaId, string? usuarioMatricula)
+        public async Task<IEnumerable<ExibirPagamentoDTO>> ObterPagamentos(int? pagamentoId, int? formaPagamentoId, string? comandaId, string? usuarioMatricula, int? ano, int? mes, int? dia)
         {
-            if (pagamentoId != null || formaPagamentoId != null || comandaId != null || usuarioMatricula != null)
+            if (pagamentoId != null || formaPagamentoId != null || comandaId != null || usuarioMatricula != null || ano != null || mes != null || dia != null)
             {
                 return await _context.Pagamentos
-                    .Where(x => x.PagamentoId == pagamentoId || x.FormaPagamentoId == formaPagamentoId || x.ComandaId.ToString() == comandaId || x.UsuarioMatricula == usuarioMatricula)
+                    .Where(x => x.PagamentoId == pagamentoId || x.FormaPagamentoId == formaPagamentoId || x.ComandaId.ToString() == comandaId || x.UsuarioMatricula == usuarioMatricula  || x.PagamentoDataHora.Year == ano || x.PagamentoDataHora.Month == mes || x.PagamentoDataHora.Day == dia)
                     .Where(x => x.PagamentoDeletado == false)
                     .Select(x => new ExibirPagamentoDTO
                     {
