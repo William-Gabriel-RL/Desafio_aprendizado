@@ -51,26 +51,16 @@ namespace Repositorys.Repos
 
         public async Task<IEnumerable<ExibirStatusSituacaoDTO>> ObterStatusSituacao(int? statusSituacaoId)
         {
+            var statusSituacoes = _context.StatusSituacao.Where(x => x.StatusSituacaoDeletado == false);
             if (statusSituacaoId != null)
+                statusSituacoes = statusSituacoes.Where(x => x.StatusSituacaoId == statusSituacaoId);
+
+            return await statusSituacoes.Select(x => new ExibirStatusSituacaoDTO
             {
-                return await _context.StatusSituacao
-                    .Where(x => x.StatusSituacaoDeletado == false && x.StatusSituacaoId == statusSituacaoId)
-                    .Select(x => new ExibirStatusSituacaoDTO
-                    {
-                        StatusSituacaoId = x.StatusSituacaoId,
-                        StatusSituacaoNome = x.StatusSituacaoNome,
-                        StatusSituacaoDataUltimaAtualizacao = x.StatusSituacaoDataUltimaAtualizacao
-                    })
-                    .ToListAsync();
-            }
-            return await _context.StatusSituacao
-                .Where(x => x.StatusSituacaoDeletado == false)
-                .Select(x => new ExibirStatusSituacaoDTO
-                {
-                    StatusSituacaoId = x.StatusSituacaoId,
-                    StatusSituacaoNome = x.StatusSituacaoNome,
-                    StatusSituacaoDataUltimaAtualizacao = x.StatusSituacaoDataUltimaAtualizacao
-                })
+                StatusSituacaoId = x.StatusSituacaoId,
+                StatusSituacaoNome = x.StatusSituacaoNome,
+                StatusSituacaoDataUltimaAtualizacao = x.StatusSituacaoDataUltimaAtualizacao
+            })
                 .ToListAsync();
         }
 

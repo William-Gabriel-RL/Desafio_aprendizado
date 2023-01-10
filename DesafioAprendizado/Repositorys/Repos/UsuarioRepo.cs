@@ -51,29 +51,19 @@ namespace Repositorys.Repos
 
         public async Task<IEnumerable<ExibirUsuarioDTO>> ObterUsuarios(string? usuarioMatricula, int? usuarioTipo)
         {
-            if (usuarioMatricula != null || usuarioTipo != null)
+            var usuarios = _context.Usuarios.Where(x => x.UsuarioDeletado == false);
+            if (usuarioMatricula != null)
+                usuarios = usuarios.Where(x => x.UsuarioMatricula == usuarioMatricula);
+            if (usuarioTipo != null)
+                usuarios = usuarios.Where(x => x.UsuarioTipoId== usuarioTipo);
+
+            return await usuarios.Select(x => new ExibirUsuarioDTO
             {
-                return _context.Usuarios
-                .Where(x => x.UsuarioMatricula == usuarioMatricula || x.UsuarioTipoId == usuarioTipo)
-                .Where(x => x.UsuarioDeletado == false)
-                .Select(x => new ExibirUsuarioDTO
-                {
-                    UsuarioMatricula = x.UsuarioMatricula,
-                    UsuarioNome = x.UsuarioNome,
-                    UsuarioTipo = x.Tipo.UsuarioTipoNome,
-                    UsuarioDataUltimaAtualizacao = x.UsuarioDataUltimaAtualizacao
-                })
-                .ToList();
-            }
-            return await _context.Usuarios
-                .Where(x => x.UsuarioDeletado == false)
-                .Select(x => new ExibirUsuarioDTO
-                {
-                    UsuarioMatricula = x.UsuarioMatricula,
-                    UsuarioNome = x.UsuarioNome,
-                    UsuarioTipo = x.Tipo.UsuarioTipoNome,
-                    UsuarioDataUltimaAtualizacao = x.UsuarioDataUltimaAtualizacao
-                })
+                UsuarioMatricula = x.UsuarioMatricula,
+                UsuarioNome = x.UsuarioNome,
+                UsuarioTipo = x.Tipo.UsuarioTipoNome,
+                UsuarioDataUltimaAtualizacao = x.UsuarioDataUltimaAtualizacao
+            })
                 .ToListAsync();
         }
 

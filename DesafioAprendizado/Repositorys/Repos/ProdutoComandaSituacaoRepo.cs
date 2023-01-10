@@ -51,46 +51,33 @@ namespace Repositorys.Repos
 
         public async Task<IEnumerable<ExibirProdutoComandaSituacaoDTO>> ObterProdutosComandaSituacao(int? produtoComandaSituacaoId, string? usuarioMatricula, int? statusSituacaoId, int? ano, int? mes, int? dia)
         {
-            if (produtoComandaSituacaoId != null || usuarioMatricula != null || statusSituacaoId != null || ano != null || mes != null || dia != null)
+            var produtoComandasSituacoes = _context.ProdutosComandasSituacoes.Where(x => x.ProdutoComandaSituacaoDeletado == false);
+            if (produtoComandaSituacaoId != null)
+                produtoComandasSituacoes = produtoComandasSituacoes.Where(x => x.ProdutoComandaSituacaoId == produtoComandaSituacaoId);
+            if (usuarioMatricula != null)
+                produtoComandasSituacoes = produtoComandasSituacoes.Where(x => x.UsuarioMatricula == usuarioMatricula);
+            if (statusSituacaoId != null)
+                produtoComandasSituacoes = produtoComandasSituacoes.Where(x => x.StatusSituacaoId == statusSituacaoId);
+            if (ano != null)
+                produtoComandasSituacoes = produtoComandasSituacoes.Where(x => x.ProdutoComandaSituacaoDataHora.Year == ano);
+            if (mes != null)
+                produtoComandasSituacoes = produtoComandasSituacoes.Where(x => x.ProdutoComandaSituacaoDataHora.Month == mes);
+            if (dia != null)
+                produtoComandasSituacoes = produtoComandasSituacoes.Where(x => x.ProdutoComandaSituacaoDataHora.Day == dia);
+
+            return await produtoComandasSituacoes.Select(x => new ExibirProdutoComandaSituacaoDTO
             {
-                return await _context.ProdutosComandasSituacoes
-                    .Where(x => (x.ProdutoComandaSituacaoId == produtoComandaSituacaoId ||
-                    x.UsuarioMatricula == usuarioMatricula ||
-                    x.StatusSituacaoId == statusSituacaoId ||
-                    x.ProdutoComandaSituacaoDataHora.Year == ano ||
-                    x.ProdutoComandaSituacaoDataHora.Month == mes ||
-                    x.ProdutoComandaSituacaoDataHora.Day == dia) && x.ProdutoComandaSituacaoDeletado == false)
-                    .Select(x => new ExibirProdutoComandaSituacaoDTO
-                    {
-                        ProdutoComandaSituacaoId = x.ProdutoComandaSituacaoId,
-                        ProdutoComandaSituacaoDataHora = x.ProdutoComandaSituacaoDataHora,
-                        ProdutoComandaSituacaoMotivo = x.ProdutoComandaSituacaoMotivo,
-                        ProdutoComandaSituacaoDataUltimaAtualizacao = x.ProdutoComandaSituacaoDataUltimaAtualizacao,
-                        UsuarioMatricula = x.UsuarioMatricula,
-                        UsuarioNome = x.Usuario.UsuarioNome,
-                        UsuarioTipo = x.Usuario.Tipo.UsuarioTipoNome,
-                        StatusSituacaoId = x.StatusSituacaoId,
-                        StatusSituacaoNome = x.StatusSituacao.StatusSituacaoNome,
-                        ProdutoComandaId = x.ProdutoComandaId
-                    })
-                    .ToListAsync();
-            }
-            return await _context.ProdutosComandasSituacoes
-                .Where(x => x.ProdutoComandaSituacaoDeletado == false)
-                .Select(x => new ExibirProdutoComandaSituacaoDTO
-                {
-                    ProdutoComandaSituacaoId = x.ProdutoComandaSituacaoId,
-                    ProdutoComandaSituacaoDataHora = x.ProdutoComandaSituacaoDataHora,
-                    ProdutoComandaSituacaoMotivo = x.ProdutoComandaSituacaoMotivo,
-                    ProdutoComandaSituacaoDataUltimaAtualizacao = x.ProdutoComandaSituacaoDataUltimaAtualizacao,
-                    UsuarioMatricula = x.UsuarioMatricula,
-                    UsuarioNome = x.Usuario.UsuarioNome,
-                    UsuarioTipo = x.Usuario.Tipo.UsuarioTipoNome,
-                    StatusSituacaoId = x.StatusSituacaoId,
-                    StatusSituacaoNome = x.StatusSituacao.StatusSituacaoNome,
-                    ProdutoComandaId = x.ProdutoComandaId
-                })
-                .ToListAsync();
+                ProdutoComandaSituacaoId = x.ProdutoComandaSituacaoId,
+                ProdutoComandaSituacaoDataHora = x.ProdutoComandaSituacaoDataHora,
+                ProdutoComandaSituacaoMotivo = x.ProdutoComandaSituacaoMotivo,
+                ProdutoComandaSituacaoDataUltimaAtualizacao = x.ProdutoComandaSituacaoDataUltimaAtualizacao,
+                UsuarioMatricula = x.UsuarioMatricula,
+                UsuarioNome = x.Usuario.UsuarioNome,
+                UsuarioTipo = x.Usuario.Tipo.UsuarioTipoNome,
+                StatusSituacaoId = x.StatusSituacaoId,
+                StatusSituacaoNome = x.StatusSituacao.StatusSituacaoNome,
+                ProdutoComandaId = x.ProdutoComandaId
+            }).ToListAsync();
         }
 
         public void Salvar()

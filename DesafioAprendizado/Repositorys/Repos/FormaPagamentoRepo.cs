@@ -51,25 +51,16 @@ namespace Repositorys.Repos
 
         public async Task<IEnumerable<ExibirFormaPagamentoDTO>> ObterFormasPagamento(int? formaPagamentoId)
         {
+            var formasPagamento = _context.FormasPagamento.Where(x => x.FormaPagamentoDeletado == false);
             if (formaPagamentoId != null)
+                formasPagamento = formasPagamento.Where(x => x.FormaPagamentoId == formaPagamentoId);
+
+            return await formasPagamento.Select(x => new ExibirFormaPagamentoDTO
             {
-                return await _context.FormasPagamento
-                    .Where(x => x.FormaPagamentoDeletado == false && x.FormaPagamentoId == formaPagamentoId)
-                    .Select(x => new ExibirFormaPagamentoDTO
-                    {
-                        FormaPagamentoId = x.FormaPagamentoId,
-                        FormaPagamentoNome = x.FormaPagamentoNome,
-                        FormaPagamentoDataUltimaAtualizacao = x.FormaPagamentoDataUltimaAtualizacao
-                    }).ToListAsync();
-            }
-            return await _context.FormasPagamento
-                .Where(x => x.FormaPagamentoDeletado == false)
-                .Select(x => new ExibirFormaPagamentoDTO
-                {
-                    FormaPagamentoId = x.FormaPagamentoId,
-                    FormaPagamentoNome = x.FormaPagamentoNome,
-                    FormaPagamentoDataUltimaAtualizacao = x.FormaPagamentoDataUltimaAtualizacao
-                }).ToListAsync();
+                FormaPagamentoId = x.FormaPagamentoId,
+                FormaPagamentoNome = x.FormaPagamentoNome,
+                FormaPagamentoDataUltimaAtualizacao = x.FormaPagamentoDataUltimaAtualizacao
+            }).ToListAsync();
         }
 
         public void Salvar()

@@ -51,26 +51,16 @@ namespace Repositorys.Repos
 
         public async Task<IEnumerable<ExibirUsuarioTipoDTO>> ObterUsuarioTipos(int? usuarioTipoId)
         {
+            var usuarioTipos = _context.UsuarioTipos.Where(x => x.UsuarioTipoDeletado == false);
             if (usuarioTipoId != null)
+                usuarioTipos = usuarioTipos.Where(x => x.UsuarioTipoId == usuarioTipoId);
+
+            return await usuarioTipos.Select(x => new ExibirUsuarioTipoDTO
             {
-                return await _context.UsuarioTipos
-                    .Where(x => x.UsuarioTipoDeletado == false && x.UsuarioTipoId == usuarioTipoId)
-                    .Select(x => new ExibirUsuarioTipoDTO
-                    {
-                        UsuarioTipoId = x.UsuarioTipoId,
-                        UsuarioTipoNome = x.UsuarioTipoNome,
-                        UsuarioTipoDataUltimaAtualizacao = x.UsuarioTipoDataUltimaAtualizacao
-                    })
-                    .ToListAsync();
-            }
-            return await _context.UsuarioTipos
-                .Where(x => x.UsuarioTipoDeletado == false)
-                .Select(x => new ExibirUsuarioTipoDTO
-                {
-                    UsuarioTipoId = x.UsuarioTipoId,
-                    UsuarioTipoNome = x.UsuarioTipoNome,
-                    UsuarioTipoDataUltimaAtualizacao = x.UsuarioTipoDataUltimaAtualizacao
-                })
+                UsuarioTipoId = x.UsuarioTipoId,
+                UsuarioTipoNome = x.UsuarioTipoNome,
+                UsuarioTipoDataUltimaAtualizacao = x.UsuarioTipoDataUltimaAtualizacao
+            })
                 .ToListAsync();
         }
 

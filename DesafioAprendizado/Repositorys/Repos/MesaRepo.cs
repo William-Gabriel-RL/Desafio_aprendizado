@@ -51,25 +51,16 @@ namespace Repositorys.Repos
 
         public async Task<IEnumerable<ExibirMesaDTO>> ObterMesas(int? mesaId)
         {
-            if(mesaId != null)
+            var mesas = _context.Mesas.Where(x => x.MesaDeletada != false);
+            if (mesaId != null)
+                mesas = mesas.Where(x => x.MesaId == mesaId);
+
+            return await mesas.Select(x => new ExibirMesaDTO
             {
-                return await _context.Mesas
-                    .Where(x => x.MesaDeletada == false && x.MesaId == mesaId)
-                    .Select(x => new ExibirMesaDTO
-                    {
-                        MesaId = x.MesaId,
-                        MesaOcupada = x.MesaOcupada,
-                        MesaDataUltimaAtualizacao = x.MesaDataUltimaAtualizacao
-                    }).ToListAsync();
-            }
-            return await _context.Mesas
-                .Where(x => x.MesaDeletada == false)
-                .Select(x => new ExibirMesaDTO
-                {
-                    MesaId = x.MesaId,
-                    MesaOcupada = x.MesaOcupada,
-                    MesaDataUltimaAtualizacao = x.MesaDataUltimaAtualizacao
-                }).ToListAsync();
+                MesaId = x.MesaId,
+                MesaOcupada = x.MesaOcupada,
+                MesaDataUltimaAtualizacao = x.MesaDataUltimaAtualizacao
+            }).ToListAsync();
         }
 
         public void Salvar()

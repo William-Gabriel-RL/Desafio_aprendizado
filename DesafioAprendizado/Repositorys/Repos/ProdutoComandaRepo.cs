@@ -52,20 +52,24 @@ namespace Repositorys.Repos
 
         public async Task<IEnumerable<ExibirProdutoComandaDTO>> ObterProdutoComanda(int? produtoComandaId, int? produtoId, string? comandaId)
         {
-            if (produtoComandaId != null || produtoId != null || comandaId != null)
+            var produtosComandas = _context.ProdutosComandas.Where(x => x.ProdutoComandaDeletado == false);
+            if (produtoComandaId != null)
+                produtosComandas = produtosComandas.Where(x => x.ProdutoComandaId == produtoComandaId);
+            if (produtoId != null)
+                produtosComandas = produtosComandas.Where(x => x.ProdutoId == produtoId);
+            if (comandaId != null)
+                produtosComandas = produtosComandas.Where(x => x.ComandaId.ToString() == comandaId);
+
+            return await produtosComandas.Select(x => new ExibirProdutoComandaDTO
             {
-                return await _context.ProdutosComandas
-                    .Where(x => x.ProdutoComandaId == produtoComandaId || x.ProdutoId == produtoId || x.ComandaId.ToString() == comandaId)
-                    .Select(x => new ExibirProdutoComandaDTO
-                    {
-                        ProdutoComandaId = x.ProdutoComandaId,
-                        ProdutoComandaQuantidadeProdutos = x.ProdutoComandaQuantidadeProdutos,
-                        ProdutoComandaPreco = x.ProdutoComandaPreco,
-                        ProdutoComandaObservacao = x.ProdutoComandaObservacao,
-                        ProdutoId = x.ProdutoId,
-                        ProdutoNome = x.Produto.ProdutoNome,
-                        ComandaId = x.ComandaId,
-                        Situacoes = x.Situacoes
+                ProdutoComandaId = x.ProdutoComandaId,
+                ProdutoComandaQuantidadeProdutos = x.ProdutoComandaQuantidadeProdutos,
+                ProdutoComandaPreco = x.ProdutoComandaPreco,
+                ProdutoComandaObservacao = x.ProdutoComandaObservacao,
+                ProdutoId = x.ProdutoId,
+                ProdutoNome = x.Produto.ProdutoNome,
+                ComandaId = x.ComandaId,
+                Situacoes = x.Situacoes
                         .Where(x => x.ProdutoComandaSituacaoDeletado == false)
                         .Select(x => new ExibirProdutoComandaSituacaoStatus
                         {
@@ -79,37 +83,8 @@ namespace Repositorys.Repos
                             StatusSituacaoNome = x.StatusSituacao.StatusSituacaoNome,
                             ProdutoComandaSituacaoDataUltimaAtualizacao = x.ProdutoComandaSituacaoDataHora
                         }),
-                        ProdutoComandaDataUltimaAtualizacao = x.ProdutoComandaDataUltimaAtualizacao
-                    })
-                    .ToListAsync();
-            }
-            return await _context.ProdutosComandas
-                .Select(x => new ExibirProdutoComandaDTO
-                {
-                    ProdutoComandaId = x.ProdutoComandaId,
-                    ProdutoComandaQuantidadeProdutos = x.ProdutoComandaQuantidadeProdutos,
-                    ProdutoComandaPreco = x.ProdutoComandaPreco,
-                    ProdutoComandaObservacao = x.ProdutoComandaObservacao,
-                    ProdutoId = x.ProdutoId,
-                    ProdutoNome = x.Produto.ProdutoNome,
-                    ComandaId = x.ComandaId,
-                    Situacoes = x.Situacoes
-                    .Where(x => x.ProdutoComandaSituacaoDeletado == false)
-                    .Select(x => new ExibirProdutoComandaSituacaoStatus
-                    {
-                        ProdutoComandaSituacaoId = x.ProdutoComandaSituacaoId,
-                        ProdutoComandaSituacaoDataHora = x.ProdutoComandaSituacaoDataHora,
-                        ProdutoComandaSituacaoMotivo = x.ProdutoComandaSituacaoMotivo,
-                        UsuarioMatricula = x.UsuarioMatricula,
-                        UsuarioNome = x.Usuario.UsuarioNome,
-                        UsuarioTipo = x.Usuario.Tipo.UsuarioTipoNome,
-                        StatusSituacaoId = x.StatusSituacaoId,
-                        StatusSituacaoNome = x.StatusSituacao.StatusSituacaoNome,
-                        ProdutoComandaSituacaoDataUltimaAtualizacao = x.ProdutoComandaSituacaoDataHora
-                    }),
-                    ProdutoComandaDataUltimaAtualizacao = x.ProdutoComandaDataUltimaAtualizacao
-                })
-                .ToListAsync();
+                ProdutoComandaDataUltimaAtualizacao = x.ProdutoComandaDataUltimaAtualizacao
+            }).ToListAsync();
         }
 
         public void Salvar()

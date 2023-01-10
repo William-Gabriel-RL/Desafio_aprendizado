@@ -51,27 +51,16 @@ namespace Repositorys.Repos
 
         public async Task<IEnumerable<ExibirCategoriaDTO>> ObterCategorias(int? categoriaId)
         {
+            var categorias = _context.Categorias.Where(x => x.CategoriaDeletado == false);
             if (categoriaId != null)
+                categorias = categorias.Where(x => x.CategoriaId == categoriaId);
+
+            return await categorias.Select(x => new ExibirCategoriaDTO
             {
-                return await _context.Categorias
-                    .Where(x => x.CategoriaDeletado == false && x.CategoriaId == categoriaId)
-                    .Select(x => new ExibirCategoriaDTO
-                    {
-                        CategoriaId = x.CategoriaId,
-                        CategoriaNome = x.CategoriaNome,
-                        CategoriaDataUltimaAtualizacao = x.CategoriaDataUltimaAtualizacao
-                    })
-                    .ToListAsync();
-            }
-            return await _context.Categorias
-                .Where(x => x.CategoriaDeletado == false)
-                .Select(x => new ExibirCategoriaDTO
-                {
-                    CategoriaId = x.CategoriaId,
-                    CategoriaNome= x.CategoriaNome,
-                    CategoriaDataUltimaAtualizacao = x.CategoriaDataUltimaAtualizacao
-                })
-                .ToListAsync();
+                CategoriaId = x.CategoriaId,
+                CategoriaNome = x.CategoriaNome,
+                CategoriaDataUltimaAtualizacao = x.CategoriaDataUltimaAtualizacao
+            }).ToListAsync();
         }
 
         public void Salvar()

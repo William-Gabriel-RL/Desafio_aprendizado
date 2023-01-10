@@ -51,32 +51,20 @@ namespace Repositorys.Repos
 
         public async Task<IEnumerable<ExibirProdutoCategoriaDTO>> ObterProdutosCategorias(int? produtoId, int? categoriaId)
         {
-            if(produtoId != null || categoriaId != null)
+            var produtosCategorias = _context.ProdutosCategorias.Where(x => x.ProdutoCategoriaDeletado == false);
+            if (produtoId != null)
+                produtosCategorias = produtosCategorias.Where(x => x.ProdutoId == produtoId);
+            if (categoriaId != null)
+                produtosCategorias = produtosCategorias.Where(x => x.CategoriaId == categoriaId);
+
+            return await produtosCategorias.Select(x => new ExibirProdutoCategoriaDTO
             {
-                return await _context.ProdutosCategorias
-                    .Where(x => x.ProdutoId == produtoId || x.CategoriaId == categoriaId)
-                    .Where(x => x.ProdutoCategoriaDeletado == false)
-                    .Select(x => new ExibirProdutoCategoriaDTO
-                    {
-                        ProdutoId = x.ProdutoId,
-                        Produto = x.Produto.ProdutoNome,
-                        CategoriaId = x.CategoriaId,
-                        Categoria = x.Categoria.CategoriaNome,
-                        ProdutoCategoriaDataUltimaAtualizacao = x.ProdutoCategoriaDataUltimaAtualizacao
-                    })
-                    .ToListAsync();
-            }
-            return await _context.ProdutosCategorias
-                .Where(x => x.ProdutoCategoriaDeletado == false)
-                .Select(x => new ExibirProdutoCategoriaDTO
-                {
-                    ProdutoId = x.ProdutoId,
-                    Produto = x.Produto.ProdutoNome,
-                    CategoriaId = x.CategoriaId,
-                    Categoria = x.Categoria.CategoriaNome,
-                    ProdutoCategoriaDataUltimaAtualizacao = x.ProdutoCategoriaDataUltimaAtualizacao
-                })
-                .ToListAsync();
+                ProdutoId = x.ProdutoId,
+                Produto = x.Produto.ProdutoNome,
+                CategoriaId = x.CategoriaId,
+                Categoria = x.Categoria.CategoriaNome,
+                ProdutoCategoriaDataUltimaAtualizacao = x.ProdutoCategoriaDataUltimaAtualizacao
+            }).ToListAsync();
         }
 
         public void Salvar()

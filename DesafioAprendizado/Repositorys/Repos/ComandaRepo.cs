@@ -52,22 +52,33 @@ namespace Repositorys.Repos
 
         public async Task<IEnumerable<ExibirComandaDTO>> ObterComandas(string? comandaId, bool? finalizada, string? usuarioMatricula, int? mesaId, int? ano, int? mes, int? dia)
         {
-            if(comandaId != null || finalizada != null || usuarioMatricula != null || mesaId != null || ano != null || mes != null || dia != null)
+            var comandas = _context.Comandas.Where(x => x.ComandaDeletado == false);
+            if (comandaId != null)
+                comandas = comandas.Where(x => x.ComandaId.ToString() == comandaId);
+            if (finalizada != null)
+                comandas = comandas.Where(x => x.ComandaFinalizada == finalizada);
+            if (usuarioMatricula != null)
+                comandas = comandas.Where(x => x.AtendenteMatricula == usuarioMatricula);
+            if (mesaId != null)
+                comandas = comandas.Where(x => x.MesaId == mesaId);
+            if (ano != null)
+                comandas = comandas.Where(x => x.ComandaHoraAbertura.Year == ano);
+            if (mes != null)
+                comandas = comandas.Where(x => x.ComandaHoraAbertura.Month == mes);
+            if (dia != null)
+                comandas = comandas.Where(x => x.ComandaHoraAbertura.Day == dia);
+
+            return await comandas.Select(x => new ExibirComandaDTO
             {
-                return await _context.Comandas
-                    .Where(x => x.ComandaId.ToString() == comandaId || x.ComandaFinalizada == finalizada || x.AtendenteMatricula == usuarioMatricula || x.MesaId == mesaId || x.ComandaHoraAbertura.Year == ano || x.ComandaHoraAbertura.Month == mes || x.ComandaHoraAbertura.Day == dia)
-                    .Where(x => x.ComandaDeletado == false)
-                    .Select(x => new ExibirComandaDTO
-                    {
-                        ComandaId = x.ComandaId,
-                        ComandaHoraAbertura = x.ComandaHoraAbertura,
-                        ComandaTotal = x.ComandaTotal,
-                        ComandaFinalizada = x.ComandaFinalizada,
-                        ComandaDataUltimaAtualizacao = x.ComandaDataUltimaAtualizacao,
-                        AtendenteMatricula = x.AtendenteMatricula,
-                        Atendente = x.Atendente.UsuarioNome,
-                        MesaId = x.MesaId,
-                        ProdutosComanda = x.ProdutosComanda
+                ComandaId = x.ComandaId,
+                ComandaHoraAbertura = x.ComandaHoraAbertura,
+                ComandaTotal = x.ComandaTotal,
+                ComandaFinalizada = x.ComandaFinalizada,
+                ComandaDataUltimaAtualizacao = x.ComandaDataUltimaAtualizacao,
+                AtendenteMatricula = x.AtendenteMatricula,
+                Atendente = x.Atendente.UsuarioNome,
+                MesaId = x.MesaId,
+                ProdutosComanda = x.ProdutosComanda
                         .Where(x => x.ProdutoComandaDeletado == false)
                         .Select(x => new ComandaExibirProdutoComanda
                         {
@@ -76,7 +87,7 @@ namespace Repositorys.Repos
                             ProdutoComandaPreco = x.ProdutoComandaPreco,
                             ProdutoComandaObservacao = x.ProdutoComandaObservacao
                         }),
-                        Pagamento = x.Pagamento
+                Pagamento = x.Pagamento
                         .Where(x => x.PagamentoDeletado == false)
                         .Select(x => new ComandaExibirPagamento
                         {
@@ -89,45 +100,7 @@ namespace Repositorys.Repos
                             UsuarioNome = x.Usuario.UsuarioNome,
                             PagamentoDataUltimaAtualizacao = x.PagamentoDataUltimaAtualizacao
                         })
-                    })
-                    .ToListAsync();
-            }
-            return await _context.Comandas
-                .Where(x => x.ComandaDeletado == false)
-                .Select(x => new ExibirComandaDTO
-                {
-                    ComandaId = x.ComandaId,
-                    ComandaHoraAbertura = x.ComandaHoraAbertura,
-                    ComandaTotal = x.ComandaTotal,
-                    ComandaFinalizada = x.ComandaFinalizada,
-                    ComandaDataUltimaAtualizacao = x.ComandaDataUltimaAtualizacao,
-                    AtendenteMatricula = x.AtendenteMatricula,
-                    Atendente = x.Atendente.UsuarioNome,
-                    MesaId = x.MesaId,
-                    ProdutosComanda = x.ProdutosComanda
-                    .Where(x => x.ProdutoComandaDeletado == false)
-                    .Select(x => new ComandaExibirProdutoComanda
-                    {
-                        ProdutoComandaQuantidadeProdutos = x.ProdutoComandaQuantidadeProdutos,
-                        ProdutoComandaNome = x.Produto.ProdutoNome,
-                        ProdutoComandaPreco = x.ProdutoComandaPreco,
-                        ProdutoComandaObservacao = x.ProdutoComandaObservacao
-                    }),
-                    Pagamento = x.Pagamento
-                    .Where(x => x.PagamentoDeletado == false)
-                    .Select(x => new ComandaExibirPagamento
-                    {
-                        PagamentoId = x.PagamentoId,
-                        PagamentoDataHora = x.PagamentoDataHora,
-                        Valor = x.Valor,
-                        FormaPagamentoId = x.FormaPagamentoId,
-                        FormaPagamento = x.FormaPagamento.FormaPagamentoNome,
-                        UsuarioMatricula = x.UsuarioMatricula,
-                        UsuarioNome = x.Usuario.UsuarioNome,
-                        PagamentoDataUltimaAtualizacao = x.PagamentoDataUltimaAtualizacao
-                    })
-                })
-                .ToListAsync();
+            }).ToListAsync();
         }
 
         public void ObterTotal(string comandaId)
