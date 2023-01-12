@@ -1,4 +1,6 @@
-﻿namespace Repositorys.DTO.ComandaDTO
+﻿using Entities.Models;
+
+namespace Repositorys.DTO.ComandaDTO
 {
     public class ExibirComandaDTO
     {
@@ -10,6 +12,7 @@
         public string AtendenteMatricula { get; set; }
         public string Atendente { get; set; }
         public int MesaId { get; set; }
+        public string Mesa { get; set; }
         public virtual IEnumerable<ComandaExibirProdutoComanda>? ProdutosComanda { get; set; }
         public virtual IEnumerable<ComandaExibirPagamento>? Pagamento { get; set; }
     }

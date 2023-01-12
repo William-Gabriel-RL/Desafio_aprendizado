@@ -69,6 +69,7 @@ namespace Repositorys.Repos
                 ProdutoId = x.ProdutoId,
                 ProdutoNome = x.Produto.ProdutoNome,
                 ComandaId = x.ComandaId,
+                Mesa = x.Comanda.Mesa.MesaNome,
                 Situacoes = x.Situacoes
                         .Where(x => x.ProdutoComandaSituacaoDeletado == false)
                         .Select(x => new ExibirProdutoComandaSituacaoStatus

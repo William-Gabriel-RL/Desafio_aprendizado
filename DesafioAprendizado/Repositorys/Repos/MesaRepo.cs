@@ -51,13 +51,14 @@ namespace Repositorys.Repos
 
         public async Task<IEnumerable<ExibirMesaDTO>> ObterMesas(int? mesaId)
         {
-            var mesas = _context.Mesas.Where(x => x.MesaDeletada != false);
+            var mesas = _context.Mesas.Where(x => x.MesaDeletada == false);
             if (mesaId != null)
                 mesas = mesas.Where(x => x.MesaId == mesaId);
 
             return await mesas.Select(x => new ExibirMesaDTO
             {
                 MesaId = x.MesaId,
+                MesaNome= x.MesaNome,
                 MesaOcupada = x.MesaOcupada,
                 MesaDataUltimaAtualizacao = x.MesaDataUltimaAtualizacao
             }).ToListAsync();

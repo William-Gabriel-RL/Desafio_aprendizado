@@ -2,5 +2,6 @@
 {
     public class CriarMesaDTO
     {
+        public string MesaNome { get; set; } = string.Empty;
     }
 }

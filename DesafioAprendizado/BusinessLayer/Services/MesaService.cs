@@ -21,6 +21,7 @@ namespace BusinessLayer.Services
             Mesa mesa = new()
             {
                 MesaId = atualizarMesaDTO.MesaId,
+                MesaNome = atualizarMesaDTO.MesaNome,
                 MesaOcupada = atualizarMesaDTO.MesaOcupada,
                 MesaDeletada = atualizarMesaDTO.MesaDeletada,
                 MesaDataUltimaAtualizacao = DateTime.Now
@@ -30,7 +31,10 @@ namespace BusinessLayer.Services
 
         public void CriarMesa(CriarMesaDTO criarMesaDTO)
         {
-            Mesa mesa = new();
+            Mesa mesa = new Mesa
+            {
+                MesaNome = criarMesaDTO.MesaNome
+            };
             _mesaRepo.CriarMesa(mesa);
         }
 

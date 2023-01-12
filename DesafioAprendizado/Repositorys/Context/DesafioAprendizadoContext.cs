@@ -161,6 +161,7 @@ namespace Repositorys.Context
             {
                 entity.ToTable("Mesa");
                 entity.HasKey(e => e.MesaId);
+                entity.Property(e => e.MesaNome).HasMaxLength(20).IsUnicode(false);
                 entity.Property(e => e.MesaOcupada).HasColumnType("bit");
                 entity.Property(e => e.MesaDeletada).HasColumnType("bit");
                 entity.Property(e => e.MesaDataUltimaAtualizacao).HasColumnType("datetime");

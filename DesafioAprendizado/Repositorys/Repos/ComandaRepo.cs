@@ -78,6 +78,7 @@ namespace Repositorys.Repos
                 AtendenteMatricula = x.AtendenteMatricula,
                 Atendente = x.Atendente.UsuarioNome,
                 MesaId = x.MesaId,
+                Mesa = x.Mesa.MesaNome,
                 ProdutosComanda = x.ProdutosComanda
                         .Where(x => x.ProdutoComandaDeletado == false)
                         .Select(x => new ComandaExibirProdutoComanda

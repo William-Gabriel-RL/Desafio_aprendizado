@@ -1,11 +1,9 @@
 ﻿using BusinessLayer.DTO.CategoriaDTO;
 using BusinessLayer.Interfaces;
 using BusinessLayer.Services;
-using Entities.Models;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Repositorys.DTO.CategoriaDTO;
-using System.Data;
 
 namespace API.Controllers
 {
@@ -21,7 +19,7 @@ namespace API.Controllers
         }
 
         [HttpPost]
-        public ActionResult Create([Bind(include: "CategoriaNome")]CriarCategoriaDTO criarCategoriaDTO)
+        public ActionResult Create([Bind(include: "CategoriaNome")] CriarCategoriaDTO criarCategoriaDTO)
         {
             _categoriaService.CriarCategoria(criarCategoriaDTO);
             return Ok("Categoria criada com sucesso");
@@ -34,7 +32,7 @@ namespace API.Controllers
         }
 
         [HttpPut]
-        public ActionResult Edit([Bind(include: "CategoriaId, CategoriaNome, CategoriaDeletado")]AtualizarCategoriaDTO atualizarCategoriaDTO)
+        public ActionResult Edit([Bind(include: "CategoriaId, CategoriaNome, CategoriaDeletado")] AtualizarCategoriaDTO atualizarCategoriaDTO)
         {
             _categoriaService.AtualizarCategoria(atualizarCategoriaDTO);
             return Ok("Categoria atualizada com sucesso");

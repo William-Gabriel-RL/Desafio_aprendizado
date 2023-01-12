@@ -11,6 +11,7 @@ namespace Repositorys.DTO.ProdutoComandaDTO
         public int ProdutoId { get; set; }
         public string ProdutoNome { get; set; }
         public Guid ComandaId { get; set; }
+        public string Mesa { get; set; }
         public virtual IEnumerable<ExibirProdutoComandaSituacaoStatus> Situacoes { get; set; }
         public DateTime ProdutoComandaDataUltimaAtualizacao { get; set; }
     }
